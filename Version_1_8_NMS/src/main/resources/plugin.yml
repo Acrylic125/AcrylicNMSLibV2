@@ -1,0 +1,5 @@
+name: Version_1_8_NMS
+version: ${project.version}
+main: com.acrylic.version_1_8_nms.Version_1_8_NMS
+authors: [ Acrylic ]
+description: The 1.8 module.

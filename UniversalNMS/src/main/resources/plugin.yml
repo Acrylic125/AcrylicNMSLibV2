@@ -1,0 +1,6 @@
+name: UniversalNMS
+version: ${project.version}
+main: com.acrylic.universalnms.UniversalNMS
+api-version: 1.16
+authors: [ Acrylic ]
+description: The universal module.
