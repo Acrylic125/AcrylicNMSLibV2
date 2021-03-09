@@ -8,11 +8,6 @@ package com.acrylic.universalnms.enums;
  * This enum has been compressed down and adapted for
  * this use.
  *
- * As of now, there is no support for ARM_SWING_OFFHAND,
- * START_ELYTRA, and STOP_ELYTRA animations as there is no
- * 1.9+ support.
- *
- * @see com.acrylic.universal.packets.EntityAnimationPackets
  */
 public enum EntityAnimationEnum {
 

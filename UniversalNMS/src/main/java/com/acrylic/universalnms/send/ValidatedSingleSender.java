@@ -82,8 +82,8 @@ public class ValidatedSingleSender extends SingleSender {
      * @param player The player to send to.
      */
     @Override
-    public void sendToPlayerOnBatch(Player player) {
-        super.sendToPlayerOnBatch(player);
+    public void batchSend(Player player) {
+        super.batchSend(player);
     }
 
     public void setValidation(@Nullable Validation validation) {

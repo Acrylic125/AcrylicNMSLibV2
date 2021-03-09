@@ -1,7 +1,7 @@
 package com.acrylic.universalnms.packets.types;
 
-import com.acrylic.universal.packet.SinglePacketWrapper;
 import com.acrylic.universal.utils.BukkitHashCode;
+import com.acrylic.universalnms.packets.SinglePacketWrapper;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
 

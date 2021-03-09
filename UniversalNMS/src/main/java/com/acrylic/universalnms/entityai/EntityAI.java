@@ -6,4 +6,6 @@ public interface EntityAI {
 
     EntityInstance getInstance();
 
+    void tick();
+
 }

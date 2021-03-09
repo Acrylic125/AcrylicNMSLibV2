@@ -1,6 +1,6 @@
-name: UniversalNMS
+name: AcrylicNMSLib
 version: ${project.version}
-main: com.acrylic.universalnms.UniversalNMS
+main: com.acrylic.acrylicnmslib.AcrylicNMSLib
 api-version: 1.16
 authors: [ Acrylic ]
 description: The universal module.

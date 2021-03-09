@@ -1,6 +1,8 @@
 package com.acrylic.universalnms.packets;
 
-public interface PacketWrapper extends PlayerSendable {
+import com.acrylic.universalnms.send.Sendable;
+
+public interface PacketWrapper extends Sendable {
 
     void validateUse();
 

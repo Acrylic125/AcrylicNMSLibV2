@@ -1,16 +1,13 @@
 package com.acrylic.universalnms.json;
 
+import com.acrylic.universalnms.send.SingleSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 /**
  * Example:
@@ -44,13 +41,6 @@ public final class JSON implements AbstractJSON {
     }
 
     @Override
-    public void sendAndDo(@Nullable Consumer<Player> action, @NotNull Player sendTo) {
-        if (action != null)
-            action.accept(sendTo);
-        sendTo.spigot().sendMessage(textComponent);
-    }
-
-    @Override
     public String toJson() {
         return toString();
     }
@@ -68,5 +58,10 @@ public final class JSON implements AbstractJSON {
     @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
+    }
+
+    @Override
+    public SingleSender send() {
+        return SingleSender.builder(player -> player.spigot().sendMessage(textComponent)).build();
     }
 }

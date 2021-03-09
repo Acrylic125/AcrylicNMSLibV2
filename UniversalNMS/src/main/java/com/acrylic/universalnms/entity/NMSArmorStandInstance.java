@@ -4,4 +4,5 @@ import com.acrylic.universal.entity.ArmorStandInstance;
 
 public interface NMSArmorStandInstance
         extends NMSLivingEntityInstance, ArmorStandInstance {
+
 }

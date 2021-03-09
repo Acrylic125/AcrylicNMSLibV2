@@ -1,7 +1,7 @@
 package com.acrylic.universalnms.packets.types;
 
 import com.acrylic.universal.entity.equipment.EntityEquipmentBuilder;
-import com.acrylic.universal.packet.MultiPacketWrapper;
+import com.acrylic.universalnms.packets.MultiPacketWrapper;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.EntityEquipment;
 import org.jetbrains.annotations.NotNull;

@@ -1,7 +1,7 @@
 package com.acrylic.universalnms.packets.types;
 
-import com.acrylic.universal.enums.EntityAnimationEnum;
-import com.acrylic.universal.packet.MultiPacketWrapper;
+import com.acrylic.universalnms.enums.EntityAnimationEnum;
+import com.acrylic.universalnms.packets.MultiPacketWrapper;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;

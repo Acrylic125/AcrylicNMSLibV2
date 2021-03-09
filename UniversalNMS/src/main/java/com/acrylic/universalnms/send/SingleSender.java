@@ -13,6 +13,10 @@ public class SingleSender implements BatchableSender {
     private Consumer<Player> attachedAction;
     private Predicate<Player> condition;
 
+    public static Builder builder(Consumer<Player> action) {
+        return new Builder(new SingleSender(action));
+    }
+
     public static class Builder {
 
         private final SingleSender singleSender;
@@ -77,7 +81,7 @@ public class SingleSender implements BatchableSender {
     public void onInitialBatchCall() { }
 
     @Override
-    public void sendToPlayerOnBatch(Player player) {
+    public void batchSend(Player player) {
         sendTo(player);
     }
 }

@@ -6,6 +6,6 @@ public interface BatchableSender extends Sender {
 
     void onInitialBatchCall();
 
-    void sendToPlayerOnBatch(Player player);
+    void batchSend(Player player);
 
 }

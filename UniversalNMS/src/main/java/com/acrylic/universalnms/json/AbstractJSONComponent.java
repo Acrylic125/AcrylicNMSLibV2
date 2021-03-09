@@ -1,6 +1,6 @@
 package com.acrylic.universalnms.json;
 
-import com.acrylic.universal.nbt.AbstractNBTItem;
+import com.acrylic.universalnms.nbt.AbstractNBTItem;
 import net.md_5.bungee.api.chat.TextComponent;
 
 public interface AbstractJSONComponent {

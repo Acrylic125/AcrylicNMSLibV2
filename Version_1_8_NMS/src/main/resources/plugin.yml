@@ -1,5 +1,5 @@
-name: Version_1_8_NMS
+name: AcrylicNMSLib
 version: ${project.version}
-main: com.acrylic.version_1_8_nms.Version_1_8_NMS
+main: com.acrylic.acrylicnmslib.AcrylicNMSLib
 authors: [ Acrylic ]
 description: The 1.8 module.

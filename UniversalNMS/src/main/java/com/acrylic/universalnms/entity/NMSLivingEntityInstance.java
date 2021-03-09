@@ -1,15 +1,13 @@
 package com.acrylic.universalnms.entity;
 
+import com.acrylic.universal.entity.LivingEntityInstance;
 import com.acrylic.universal.entity.equipment.EntityEquipmentBuilder;
-import com.acrylic.universal.packet.types.EntityAnimationPackets;
-import com.acrylic.universal.packet.types.EntityEquipmentPackets;
-import com.acrylic.universal.packet.types.EntityMetadataPacket;
+import com.acrylic.universalnms.packets.types.EntityEquipmentPackets;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EntityEquipment;
 import org.jetbrains.annotations.NotNull;
 
 public interface NMSLivingEntityInstance extends NMSEntityInstance, LivingEntityInstance {
-
 
     int getMaxNoDamageCooldown();
 
@@ -17,14 +15,11 @@ public interface NMSLivingEntityInstance extends NMSEntityInstance, LivingEntity
 
     void knockback(@NotNull LivingEntity attacker);
 
-    void attack(@NotNull LivingEntity victim);
+    void damage(@NotNull LivingEntity attacker);
 
-    EntityAnimationPackets getEntityAnimationPackets();
+    void damage(@NotNull LivingEntity attacker, float damage);
 
-    @NotNull
-    EntityEquipmentPackets getEquipmentPackets();
-
-    EntityMetadataPacket getMetadataPacket();
+    void damage(float damage);
 
     @Override
     void setEquipment(@NotNull EntityEquipmentBuilder entityEquipmentBuilder);

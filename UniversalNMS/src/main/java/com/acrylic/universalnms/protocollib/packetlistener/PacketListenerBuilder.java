@@ -1,13 +1,17 @@
 package com.acrylic.universalnms.protocollib.packetlistener;
 
+import com.acrylic.universal.Universal;
 import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.ListenerPriority;
+import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
-public class PacketListenerBuilder implements AbstractPacketListenerBuilder {
+public final class PacketListenerBuilder {
 
     private ListenerPriority listenerPriority = ListenerPriority.NORMAL;
     private Consumer<PacketEvent> handleReceivingPackets;
@@ -22,47 +26,62 @@ public class PacketListenerBuilder implements AbstractPacketListenerBuilder {
         this.packetTypes = packetTypes;
     }
 
-    @Override
-    public AbstractPacketListenerBuilder priority(@NotNull ListenerPriority priority) {
+    public PacketListenerBuilder priority(@NotNull ListenerPriority priority) {
         this.listenerPriority = priority;
         return this;
     }
 
-    @Override
     public ListenerPriority getPriority() {
         return listenerPriority;
     }
 
-    @Override
-    public AbstractPacketListenerBuilder handleReceivingPacket(@NotNull Consumer<PacketEvent> handle) {
+    public PacketListenerBuilder handleReceivingPacket(@NotNull Consumer<PacketEvent> handle) {
         this.handleReceivingPackets = handle;
         return this;
     }
 
-    @Override
     public Consumer<PacketEvent> getPacketReceivingHandle() {
         return handleReceivingPackets;
     }
 
-    @Override
-    public AbstractPacketListenerBuilder handleSendingPacket(@NotNull Consumer<PacketEvent> handle) {
+    public PacketListenerBuilder handleSendingPacket(@NotNull Consumer<PacketEvent> handle) {
         this.handleSendingPackets = handle;
         return this;
     }
 
-    @Override
     public Consumer<PacketEvent> getPacketSendingHandle() {
         return handleSendingPackets;
     }
 
-    @Override
-    public AbstractPacketListenerBuilder packetTypes(PacketType... packetTypes) {
+    public PacketListenerBuilder packetTypes(PacketType... packetTypes) {
         this.packetTypes = packetTypes;
         return this;
     }
 
-    @Override
     public PacketType[] getPacketTypes() {
         return packetTypes;
     }
+
+    public void build() {
+        build(Universal.getPlugin());
+    }
+
+    public void build(@NotNull JavaPlugin plugin) {
+        ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(plugin, getPriority(), getPacketTypes()) {
+            @Override
+            public void onPacketReceiving(PacketEvent event) {
+                Consumer<PacketEvent> action = getPacketReceivingHandle();
+                if (action != null)
+                    action.accept(event);
+            }
+
+            @Override
+            public void onPacketSending(PacketEvent event) {
+                Consumer<PacketEvent> action = getPacketSendingHandle();
+                if (action != null)
+                    action.accept(event);
+            }
+        });
+    }
+
 }

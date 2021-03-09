@@ -1,13 +1,12 @@
 package com.acrylic.universalnms.entity;
 
-import com.acrylic.universal.packet.types.EntityEquipmentPackets;
-import com.acrylic.universal.packet.types.EntitySpawnPacket;
-import com.acrylic.universal.packet.types.TeleportPacket;
-import com.acrylic.universal.render.Renderer;
+import com.acrylic.universalnms.packets.types.EntitySpawnPacket;
+import com.acrylic.universalnms.packets.types.TeleportPacket;
+import com.acrylic.universalnms.renderer.Renderer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public interface EntityDisplayer {
+public interface EntityPacketHandler {
 
     @NotNull
     NMSEntityInstance getEntityInstance();

@@ -1,9 +1,9 @@
 package com.acrylic.universalnms.entity;
 
-import com.acrylic.universal.packet.types.EntityEquipmentPackets;
+import com.acrylic.universalnms.packets.types.EntityEquipmentPackets;
 import org.jetbrains.annotations.NotNull;
 
-public interface LivingEntityDisplayer extends EntityDisplayer {
+public interface LivingEntityPacketHandler extends EntityPacketHandler {
 
     @NotNull
     @Override

@@ -1,6 +1,6 @@
 package com.acrylic.universalnms.packets.types;
 
-import com.acrylic.universal.packet.SinglePacketWrapper;
+import com.acrylic.universalnms.packets.SinglePacketWrapper;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;
