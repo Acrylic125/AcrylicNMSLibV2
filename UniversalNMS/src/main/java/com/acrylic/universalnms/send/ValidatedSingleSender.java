@@ -13,6 +13,11 @@ import java.util.function.Predicate;
 public class ValidatedSingleSender extends SingleSender {
 
     private Validation validation;
+    private String attachedMessage;
+
+    public static Builder validateBuilder(Consumer<Player> action) {
+        return new Builder(new ValidatedSingleSender(action));
+    }
 
     public static class Builder {
 
@@ -37,6 +42,11 @@ public class ValidatedSingleSender extends SingleSender {
             return this;
         }
 
+        public Builder attachValidationMessage(@Nullable String validationMessage) {
+            this.singleSender.setAttachedValidationMessage(validationMessage);
+            return this;
+        }
+
         public ValidatedSingleSender build() {
             return singleSender;
         }
@@ -50,28 +60,28 @@ public class ValidatedSingleSender extends SingleSender {
     @Override
     public void sendTo(@NotNull Player sendTo) {
         if (validation != null && !validation.validate())
-            throw new Validation.ValidationFailedException("The validation failed while trying to send to " + sendTo.getName() + ".");
+            throw new Validation.ValidationFailedException("The validation failed while trying to send to " + sendTo.getName() + "." + getAppendedAttachMessage());
         super.sendTo(sendTo);
     }
 
     @Override
     public void sendToAll(@NotNull Collection<? extends Player> sendTo) {
         if (validation != null && !validation.validate())
-            throw new Validation.ValidationFailedException("The validation failed while trying to send to ALL " + sendTo + ".");
+            throw new Validation.ValidationFailedException("The validation failed while trying to send to ALL " + sendTo + "." + getAppendedAttachMessage());
         super.sendToAll(sendTo);
     }
 
     @Override
     public void sendToAll(@NotNull Player... sendTo) {
         if (validation != null && !validation.validate())
-            throw new Validation.ValidationFailedException("The validation failed while trying to send to ALL " + Arrays.toString(sendTo) + ".");
+            throw new Validation.ValidationFailedException("The validation failed while trying to send to ALL " + Arrays.toString(sendTo) + "." + getAppendedAttachMessage());
         super.sendToAll(sendTo);
     }
 
     @Override
     public void onInitialBatchCall() {
         if (validation != null && !validation.validate())
-            throw new Validation.ValidationFailedException("The validation failed on batch call.");
+            throw new Validation.ValidationFailedException("The validation failed on batch call." + getAppendedAttachMessage());
         super.onInitialBatchCall();
     }
 
@@ -89,4 +99,13 @@ public class ValidatedSingleSender extends SingleSender {
     public void setValidation(@Nullable Validation validation) {
         this.validation = validation;
     }
+
+    public void setAttachedValidationMessage(@Nullable String attachedMessage) {
+        this.attachedMessage = attachedMessage;
+    }
+
+    private String getAppendedAttachMessage() {
+        return ((attachedMessage == null) ? "" : " " + attachedMessage);
+    }
+
 }
