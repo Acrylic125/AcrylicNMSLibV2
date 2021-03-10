@@ -8,4 +8,6 @@ public interface EntityMetadataPacket extends SinglePacketWrapper {
 
     void apply(@NotNull Entity entity);
 
+    void apply(@NotNull Entity entity, boolean b);
+
 }

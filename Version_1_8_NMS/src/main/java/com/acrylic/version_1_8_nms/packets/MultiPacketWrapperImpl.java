@@ -2,7 +2,6 @@ package com.acrylic.version_1_8_nms.packets;
 
 import com.acrylic.universalnms.packets.MultiPacketWrapper;
 import com.acrylic.universalnms.send.ValidatedSingleSender;
-import com.acrylic.universalnms.util.Validation;
 import com.acrylic.version_1_8_nms.NMSUtils;
 import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PlayerConnection;
@@ -19,7 +18,7 @@ public abstract class MultiPacketWrapperImpl
     }
 
     @Override
-    public abstract Collection<Packet<?>> getPackets();
+    public abstract Collection<? extends Packet<?>> getPackets();
 
     @Override
     public ValidatedSingleSender send() {

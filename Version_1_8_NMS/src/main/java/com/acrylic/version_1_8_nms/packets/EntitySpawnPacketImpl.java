@@ -1,7 +1,8 @@
 package com.acrylic.version_1_8_nms.packets;
 
 import com.acrylic.universalnms.packets.types.EntitySpawnPacket;
-import net.minecraft.server.v1_8_R3.Packet;
+import com.acrylic.version_1_8_nms.NMSUtils;
+import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntity;
 import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 
@@ -9,13 +10,23 @@ public class EntitySpawnPacketImpl
         extends SinglePacketWrapperImpl
         implements EntitySpawnPacket {
 
-    @Override
-    public void apply(@NotNull Entity entity) {
+    private PacketPlayOutSpawnEntity packetPlayOutSpawnEntity;
 
+    public void apply(net.minecraft.server.v1_8_R3.Entity entity, int entityTypeID) {
+        packetPlayOutSpawnEntity = new PacketPlayOutSpawnEntity(entity, entityTypeID);
+    }
+
+    public void apply(net.minecraft.server.v1_8_R3.Entity entity) {
+        apply(entity, entity.getBukkitEntity().getType().getTypeId());
     }
 
     @Override
-    public Packet<?> getPacket() {
-        return null;
+    public void apply(@NotNull Entity entity) {
+        packetPlayOutSpawnEntity = new PacketPlayOutSpawnEntity(NMSUtils.convertToNMSEntity(entity), entity.getType().getTypeId());
+    }
+
+    @Override
+    public PacketPlayOutSpawnEntity getPacket() {
+        return packetPlayOutSpawnEntity;
     }
 }
