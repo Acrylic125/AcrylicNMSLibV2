@@ -9,4 +9,6 @@ public interface TeleportPacket extends SinglePacketWrapper {
 
     void apply(@NotNull Entity entity, @NotNull Location location);
 
+    void apply(@NotNull Entity entity);
+
 }
