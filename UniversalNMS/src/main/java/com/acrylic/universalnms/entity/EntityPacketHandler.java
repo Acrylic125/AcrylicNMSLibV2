@@ -22,4 +22,14 @@ public interface EntityPacketHandler {
     @NotNull
     TeleportPacket getTeleportPacket();
 
+    void displayEntityToPlayer(Player player);
+
+    void hideEntityFromPlayer(Player player);
+
+    static void initializeRenderer(EntityPacketHandler entityPacketHandler) {
+        Renderer<Player> renderer = entityPacketHandler.getRenderer();
+        renderer.setOnInitialize(entityPacketHandler::displayEntityToPlayer);
+        renderer.setOnDeinitialize(entityPacketHandler::hideEntityFromPlayer);
+    }
+
 }

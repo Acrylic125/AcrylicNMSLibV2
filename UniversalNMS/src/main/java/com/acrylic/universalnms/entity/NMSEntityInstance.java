@@ -2,16 +2,12 @@ package com.acrylic.universalnms.entity;
 
 import com.acrylic.universal.entity.EntityInstance;
 import com.acrylic.universal.utils.LocationUtils;
-import com.acrylic.universal.utils.TeleportationUtils;
 import com.acrylic.universalnms.entityai.EntityAI;
 import com.acrylic.universalnms.packets.types.TeleportPacket;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Objects;
 
 public interface NMSEntityInstance extends EntityInstance {
 
@@ -45,7 +41,7 @@ public interface NMSEntityInstance extends EntityInstance {
         EntityPacketHandler displayer = getDisplayer();
         TeleportPacket teleportPacket = displayer.getTeleportPacket();
         teleportPacket.apply(entity, location);
-        teleportPacket.send().sendToAllByRenderer(displayer.getRenderer());
+        teleportPacket.getSender().sendToAllByRenderer(displayer.getRenderer());
     }
 
 }

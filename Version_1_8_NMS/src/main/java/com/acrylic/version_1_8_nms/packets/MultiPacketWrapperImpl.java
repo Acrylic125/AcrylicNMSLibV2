@@ -12,6 +12,14 @@ public abstract class MultiPacketWrapperImpl
         extends PacketWrapperImpl
         implements MultiPacketWrapper {
 
+    private final ValidatedSingleSender send = ValidatedSingleSender.validateBuilder(player -> {
+        PlayerConnection playerConnection = (NMSUtils.convertToNMSPlayer(player)).playerConnection;
+        for (Packet<?> packet : getPackets())
+            sendPacket(playerConnection, packet);
+    }).validation(this::validateUse)
+            .attachValidationMessage("The packets cannot be null. Ensure that the packets are setup.")
+            .build();
+
     @Override
     public boolean validateUse() {
         return getPackets() != null;
@@ -21,14 +29,8 @@ public abstract class MultiPacketWrapperImpl
     public abstract Collection<? extends Packet<?>> getPackets();
 
     @Override
-    public ValidatedSingleSender send() {
-        return ValidatedSingleSender.validateBuilder(player -> {
-            PlayerConnection playerConnection = (NMSUtils.convertToNMSPlayer(player)).playerConnection;
-            for (Packet<?> packet : getPackets())
-                sendPacket(playerConnection, packet);
-        }).validation(this::validateUse)
-                .attachValidationMessage("The packets cannot be null. Ensure that the packets are setup.")
-                .build();
+    public ValidatedSingleSender getSender() {
+        return send;
     }
 
 }

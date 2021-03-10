@@ -8,5 +8,5 @@ public interface PacketWrapper extends Sendable {
     boolean validateUse();
 
     @Override
-    ValidatedSingleSender send();
+    ValidatedSingleSender getSender();
 }

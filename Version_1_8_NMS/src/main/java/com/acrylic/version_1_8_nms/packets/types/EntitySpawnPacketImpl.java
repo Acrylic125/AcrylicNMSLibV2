@@ -1,7 +1,8 @@
-package com.acrylic.version_1_8_nms.packets;
+package com.acrylic.version_1_8_nms.packets.types;
 
 import com.acrylic.universalnms.packets.types.EntitySpawnPacket;
 import com.acrylic.version_1_8_nms.NMSUtils;
+import com.acrylic.version_1_8_nms.packets.SinglePacketWrapperImpl;
 import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntity;
 import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;

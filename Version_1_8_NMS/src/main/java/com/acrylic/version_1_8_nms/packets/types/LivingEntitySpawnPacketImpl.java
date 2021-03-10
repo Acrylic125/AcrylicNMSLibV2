@@ -1,10 +1,9 @@
-package com.acrylic.version_1_8_nms.packets;
+package com.acrylic.version_1_8_nms.packets.types;
 
-import com.acrylic.universalnms.packets.types.EntitySpawnPacket;
 import com.acrylic.universalnms.packets.types.LivingEntitySpawnPacket;
 import com.acrylic.version_1_8_nms.NMSUtils;
+import com.acrylic.version_1_8_nms.packets.SinglePacketWrapperImpl;
 import net.minecraft.server.v1_8_R3.EntityLiving;
-import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntity;
 import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntityLiving;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;

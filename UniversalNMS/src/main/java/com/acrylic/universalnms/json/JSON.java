@@ -61,7 +61,7 @@ public final class JSON implements AbstractJSON {
     }
 
     @Override
-    public SingleSender send() {
+    public SingleSender getSender() {
         return SingleSender.builder(player -> player.spigot().sendMessage(textComponent)).build();
     }
 }

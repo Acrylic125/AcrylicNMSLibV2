@@ -1,7 +1,8 @@
-package com.acrylic.version_1_8_nms.packets;
+package com.acrylic.version_1_8_nms.packets.types;
 
 import com.acrylic.universalnms.packets.types.TeleportPacket;
 import com.acrylic.version_1_8_nms.NMSUtils;
+import com.acrylic.version_1_8_nms.packets.SinglePacketWrapperImpl;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityTeleport;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;

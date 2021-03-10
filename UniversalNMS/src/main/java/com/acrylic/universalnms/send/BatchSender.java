@@ -4,12 +4,17 @@ import com.acrylic.universalnms.renderer.Renderer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BatchSender implements Sender {
 
     private final Collection<BatchableSender> batchableSenders;
+
+    public BatchSender() {
+        this(new ArrayList<>());
+    }
 
     public BatchSender(@NotNull Collection<BatchableSender> batchableSenders) {
         this.batchableSenders = batchableSenders;

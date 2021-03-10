@@ -1,7 +1,8 @@
-package com.acrylic.version_1_8_nms.packets;
+package com.acrylic.version_1_8_nms.packets.types;
 
 import com.acrylic.universalnms.packets.types.EntityEquipmentPackets;
 import com.acrylic.version_1_8_nms.NMSUtils;
+import com.acrylic.version_1_8_nms.packets.MultiPacketWrapperImpl;
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityEquipment;
 import org.bukkit.entity.LivingEntity;
