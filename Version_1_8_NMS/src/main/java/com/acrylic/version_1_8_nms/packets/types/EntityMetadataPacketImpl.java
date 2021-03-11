@@ -3,7 +3,6 @@ package com.acrylic.version_1_8_nms.packets.types;
 import com.acrylic.universalnms.packets.types.EntityMetadataPacket;
 import com.acrylic.version_1_8_nms.NMSUtils;
 import com.acrylic.version_1_8_nms.packets.SinglePacketWrapperImpl;
-import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityMetadata;
 import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;

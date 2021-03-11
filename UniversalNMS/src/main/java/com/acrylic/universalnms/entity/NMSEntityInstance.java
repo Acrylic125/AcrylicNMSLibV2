@@ -2,6 +2,7 @@ package com.acrylic.universalnms.entity;
 
 import com.acrylic.universal.entity.EntityInstance;
 import com.acrylic.universal.utils.LocationUtils;
+import com.acrylic.universalnms.entity.wrapper.NMSEntityWrapper;
 import com.acrylic.universalnms.entityai.EntityAI;
 import com.acrylic.universalnms.packets.types.TeleportPacket;
 import org.bukkit.Location;
@@ -13,6 +14,8 @@ public interface NMSEntityInstance extends EntityInstance {
 
     Object getNMSEntity();
 
+    NMSEntityWrapper getEntityWrapper();
+
     int getTicksLived();
 
     int getFireTicks();
@@ -22,7 +25,7 @@ public interface NMSEntityInstance extends EntityInstance {
     @Nullable
     EntityAI getAI();
 
-    EntityPacketHandler getDisplayer();
+    EntityPacketHandler getPacketHandler();
 
     boolean isNoClip();
 
@@ -32,13 +35,17 @@ public interface NMSEntityInstance extends EntityInstance {
 
     void addToWorld();
 
-    void tick();
+    default void tick() {
+        if (getTicksLived() % 20 == 0) {
+            getPacketHandler().getRenderer().doChecks();
+        }
+    }
 
     @Override
     default void teleport(@NotNull Location location) {
         Entity entity = getBukkitEntity();
         LocationUtils.teleport(entity, location);
-        EntityPacketHandler displayer = getDisplayer();
+        EntityPacketHandler displayer = getPacketHandler();
         TeleportPacket teleportPacket = displayer.getTeleportPacket();
         teleportPacket.apply(entity, location);
         teleportPacket.getSender().sendToAllByRenderer(displayer.getRenderer());

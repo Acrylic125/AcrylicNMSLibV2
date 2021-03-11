@@ -70,7 +70,7 @@ public class SingleSender implements BatchableSender {
 
     @Override
     public void sendTo(@NotNull Player sendTo) {
-        if (condition != null && condition.test(sendTo)) {
+        if (condition == null || condition.test(sendTo)) {
             primaryAction.accept(sendTo);
             if (attachedAction != null)
                 attachedAction.accept(sendTo);

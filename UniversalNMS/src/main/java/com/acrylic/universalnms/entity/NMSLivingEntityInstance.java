@@ -2,12 +2,19 @@ package com.acrylic.universalnms.entity;
 
 import com.acrylic.universal.entity.LivingEntityInstance;
 import com.acrylic.universal.entity.equipment.EntityEquipmentBuilder;
+import com.acrylic.universalnms.entity.wrapper.NMSLivingEntityWrapper;
 import com.acrylic.universalnms.packets.types.EntityEquipmentPackets;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EntityEquipment;
 import org.jetbrains.annotations.NotNull;
 
 public interface NMSLivingEntityInstance extends NMSEntityInstance, LivingEntityInstance {
+
+    @Override
+    LivingEntityPacketHandler getPacketHandler();
+
+    @Override
+    NMSLivingEntityWrapper getEntityWrapper();
 
     int getMaxNoDamageCooldown();
 
@@ -22,8 +29,18 @@ public interface NMSLivingEntityInstance extends NMSEntityInstance, LivingEntity
     void damage(float damage);
 
     @Override
-    void setEquipment(@NotNull EntityEquipmentBuilder entityEquipmentBuilder);
+    default void setEquipment(@NotNull EntityEquipmentBuilder entityEquipmentBuilder) {
+        entityEquipmentBuilder.apply(getBukkitEntity());
+        EntityEquipmentPackets equipmentPackets = getPacketHandler().getEquipmentPackets();
+        equipmentPackets.setEquipment(entityEquipmentBuilder);
+        equipmentPackets.apply(getBukkitEntity());
+    }
 
     @Override
-    void setEquipment(@NotNull EntityEquipment entityEquipment);
+    default void setEquipment(@NotNull EntityEquipment entityEquipment) {
+        EntityEquipmentBuilder.cloneEquipment(getBukkitEntity().getEquipment(), entityEquipment);
+        EntityEquipmentPackets equipmentPackets = getPacketHandler().getEquipmentPackets();
+        equipmentPackets.setEquipment(entityEquipment);
+        equipmentPackets.apply(getBukkitEntity());
+    }
 }

@@ -1,6 +1,7 @@
 package com.acrylic.version_1_8_nms.entity;
 
 import com.acrylic.universal.text.ChatUtils;
+import com.acrylic.universalnms.entity.EntityPacketHandler;
 import com.acrylic.universalnms.entity.NMSEntityInstance;
 import net.minecraft.server.v1_8_R3.Entity;
 import org.bukkit.util.Vector;

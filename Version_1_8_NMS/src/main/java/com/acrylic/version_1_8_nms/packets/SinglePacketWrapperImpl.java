@@ -26,4 +26,11 @@ public abstract class SinglePacketWrapperImpl
     public ValidatedSingleSender getSender() {
         return send;
     }
+
+    @Override
+    public String toString() {
+        return getClass().getName() + "{" +
+                "send=" + send +
+                '}';
+    }
 }

@@ -33,4 +33,11 @@ public abstract class MultiPacketWrapperImpl
         return send;
     }
 
+    @Override
+    public String toString() {
+        return getClass().getName() + "{" +
+                "send=" + send +
+                '}';
+    }
+
 }

@@ -5,6 +5,7 @@ import com.acrylic.version_1_8_nms.NMSUtils;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PlayerConnection;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public abstract class PacketWrapperImpl
@@ -19,6 +20,7 @@ public abstract class PacketWrapperImpl
     }
 
     public static void sendPacket(PlayerConnection playerConnection, Packet<?> packet) {
+        Bukkit.broadcastMessage(packet + "");
         playerConnection.sendPacket(packet);
     }
 

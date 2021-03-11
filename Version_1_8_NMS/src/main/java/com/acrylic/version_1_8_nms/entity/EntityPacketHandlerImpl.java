@@ -9,6 +9,7 @@ import com.acrylic.version_1_8_nms.packets.types.EntitySpawnPacketImpl;
 import com.acrylic.version_1_8_nms.packets.types.TeleportPacketImpl;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class EntityPacketHandlerImpl implements EntityPacketHandler {
 
@@ -18,9 +19,11 @@ public class EntityPacketHandlerImpl implements EntityPacketHandler {
     private final EntityDestroyPacketImpl entityDestroyPacket = new EntityDestroyPacketImpl();
     private Renderer<Player> renderer;
 
-    public EntityPacketHandlerImpl(@NotNull NMSEntityInstanceImpl entityInstance, @NotNull Renderer<Player> renderer) {
+    public EntityPacketHandlerImpl(@NotNull NMSEntityInstanceImpl entityInstance, @Nullable Renderer<Player> renderer) {
         this.entityInstance = entityInstance;
         this.renderer = renderer;
+        if (renderer != null)
+            EntityPacketHandler.initializeRenderer(this);
         this.entityDestroyPacket.apply(entityInstance.getNMSEntity());
     }
 
@@ -33,6 +36,7 @@ public class EntityPacketHandlerImpl implements EntityPacketHandler {
     @Override
     public void setRenderer(@NotNull Renderer<Player> renderer) {
         this.renderer = renderer;
+        EntityPacketHandler.initializeRenderer(this);
     }
 
     @NotNull

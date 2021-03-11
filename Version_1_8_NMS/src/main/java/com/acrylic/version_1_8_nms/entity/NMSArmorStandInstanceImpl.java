@@ -2,13 +2,18 @@ package com.acrylic.version_1_8_nms.entity;
 
 import com.acrylic.universal.entity.equipment.EntityEquipmentBuilder;
 import com.acrylic.universalnms.entity.EntityPacketHandler;
+import com.acrylic.universalnms.entity.LivingEntityPacketHandler;
 import com.acrylic.universalnms.entity.NMSArmorStandInstance;
+import com.acrylic.universalnms.entity.wrapper.NMSLivingEntityWrapper;
 import com.acrylic.universalnms.entityai.EntityAI;
+import com.acrylic.universalnms.renderer.Renderer;
 import com.acrylic.version_1_8_nms.NMSUtils;
+import com.acrylic.version_1_8_nms.entity.wrapper.ArmorStandWrapper;
 import net.minecraft.server.v1_8_R3.EntityArmorStand;
 import net.minecraft.server.v1_8_R3.Vector3f;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.util.EulerAngle;
 import org.jetbrains.annotations.NotNull;
@@ -18,14 +23,17 @@ public class NMSArmorStandInstanceImpl
         extends NMSLivingEntityInstanceImpl
         implements NMSArmorStandInstance {
 
-    private final EntityArmorStand armorStand;
+    private final ArmorStandWrapper armorStand;
+    private final LivingEntityPacketHandlerImpl entityPacketHandler;
 
-    public NMSArmorStandInstanceImpl(@NotNull Location location) {
-        this.armorStand = new EntityArmorStand(NMSUtils.convertToNMSWorld(location.getWorld()), location.getX(), location.getY(), location.getZ());
+    public NMSArmorStandInstanceImpl(@NotNull Location location, @Nullable Renderer<Player> renderer) {
+        this.armorStand = new ArmorStandWrapper(this, NMSUtils.convertToNMSWorld(location.getWorld()), location.getX(), location.getY(), location.getZ());
+        this.entityPacketHandler = new LivingEntityPacketHandlerImpl(this, renderer);
     }
 
-    public NMSArmorStandInstanceImpl(@NotNull EntityArmorStand armorStand) {
+    public NMSArmorStandInstanceImpl(@NotNull ArmorStandWrapper armorStand, @Nullable Renderer<Player> renderer) {
         this.armorStand = armorStand;
+        this.entityPacketHandler = new LivingEntityPacketHandlerImpl(this, renderer);
     }
 
     @NotNull
@@ -127,23 +135,13 @@ public class NMSArmorStandInstanceImpl
     }
 
     @Override
-    public EntityPacketHandler getDisplayer() {
-        return null;
+    public LivingEntityPacketHandlerImpl getPacketHandler() {
+        return entityPacketHandler;
     }
 
     @Override
-    public void tick() {
-
-    }
-
-    @Override
-    public void setEquipment(@NotNull EntityEquipmentBuilder entityEquipmentBuilder) {
-
-    }
-
-    @Override
-    public void setEquipment(@NotNull EntityEquipment entityEquipment) {
-
+    public NMSLivingEntityWrapper getEntityWrapper() {
+        return armorStand;
     }
 
     @Override

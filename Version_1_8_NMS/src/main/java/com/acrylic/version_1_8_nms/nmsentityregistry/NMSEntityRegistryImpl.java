@@ -1,6 +1,7 @@
 package com.acrylic.version_1_8_nms.nmsentityregistry;
 
 import com.acrylic.universalnms.nmsentityregistry.AbstractNMSEntityRegistry;
+import com.acrylic.version_1_8_nms.entity.wrapper.ArmorStandWrapper;
 import net.minecraft.server.v1_8_R3.EntityInsentient;
 import net.minecraft.server.v1_8_R3.EntityTypes;
 import org.bukkit.entity.EntityType;
@@ -21,7 +22,6 @@ public class NMSEntityRegistryImpl extends AbstractNMSEntityRegistry {
         if (nmsEntityClass.isAssignableFrom(EntityInsentient.class))
             throw new IllegalArgumentException("The NMS Entity class must be an instance of " + EntityInsentient.class.getName());
         try {
-
             List<Map<?, ?>> dataMap = new ArrayList<>();
             for (Field f : EntityTypes.class.getDeclaredFields()) {
                 if (f.getType().getSimpleName().equals(Map.class.getSimpleName())) {
@@ -48,6 +48,6 @@ public class NMSEntityRegistryImpl extends AbstractNMSEntityRegistry {
 
     @Override
     public void registerDefaults() {
-
+        registerNMSEntityClass(ArmorStandWrapper.class);
     }
 }

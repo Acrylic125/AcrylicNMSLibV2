@@ -3,6 +3,7 @@ package com.acrylic.universalnms.entity;
 import com.acrylic.universalnms.packets.types.EntitySpawnPacket;
 import com.acrylic.universalnms.packets.types.TeleportPacket;
 import com.acrylic.universalnms.renderer.Renderer;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,7 +29,10 @@ public interface EntityPacketHandler {
 
     static void initializeRenderer(EntityPacketHandler entityPacketHandler) {
         Renderer<Player> renderer = entityPacketHandler.getRenderer();
-        renderer.setOnInitialize(entityPacketHandler::displayEntityToPlayer);
+        renderer.setOnInitialize(player -> {
+            Bukkit.broadcastMessage(player + "");
+            entityPacketHandler.displayEntityToPlayer(player);
+        });
         renderer.setOnDeinitialize(entityPacketHandler::hideEntityFromPlayer);
     }
 

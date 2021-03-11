@@ -1,5 +1,6 @@
 package com.acrylic.version_1_8_nms.entity;
 
+import com.acrylic.universalnms.entity.EntityPacketHandler;
 import com.acrylic.universalnms.entity.LivingEntityPacketHandler;
 import com.acrylic.universalnms.packets.types.EntitySpawnPacket;
 import com.acrylic.universalnms.packets.types.TeleportPacket;
@@ -9,6 +10,7 @@ import com.acrylic.version_1_8_nms.packets.types.*;
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class LivingEntityPacketHandlerImpl implements LivingEntityPacketHandler {
 
@@ -21,9 +23,11 @@ public class LivingEntityPacketHandlerImpl implements LivingEntityPacketHandler 
     private final BatchSender displaySender = new BatchSender();
     private Renderer<Player> renderer;
 
-    public LivingEntityPacketHandlerImpl(@NotNull NMSLivingEntityInstanceImpl entityInstance, @NotNull Renderer<Player> renderer) {
+    public LivingEntityPacketHandlerImpl(@NotNull NMSLivingEntityInstanceImpl entityInstance, @Nullable Renderer<Player> renderer) {
         this.entityInstance = entityInstance;
         this.renderer = renderer;
+        if (renderer != null)
+            EntityPacketHandler.initializeRenderer(this);
         entityDestroyPacket.apply(entityInstance.getNMSEntity());
         equipmentPackets.apply(entityInstance.getNMSEntity());
         displaySender.attachSender(entitySpawnPacket.getSender());
@@ -46,6 +50,7 @@ public class LivingEntityPacketHandlerImpl implements LivingEntityPacketHandler 
     @Override
     public void setRenderer(@NotNull Renderer<Player> renderer) {
         this.renderer = renderer;
+        EntityPacketHandler.initializeRenderer(this);
     }
 
     @NotNull
