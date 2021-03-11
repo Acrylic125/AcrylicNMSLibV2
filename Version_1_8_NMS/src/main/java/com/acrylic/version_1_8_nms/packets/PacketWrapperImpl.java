@@ -20,7 +20,6 @@ public abstract class PacketWrapperImpl
     }
 
     public static void sendPacket(PlayerConnection playerConnection, Packet<?> packet) {
-        Bukkit.broadcastMessage(packet + "");
         playerConnection.sendPacket(packet);
     }
 

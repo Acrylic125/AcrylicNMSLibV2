@@ -11,7 +11,7 @@ import java.util.function.Consumer;
 
 public class RangedRendererPlayer implements RendererPlayer {
 
-    private double range = 0;
+    private double range = 32;
     private volatile Location location;
     private volatile Collection<UUID> rendered;
     private Consumer<Player> initialize, deinitialize;
@@ -60,6 +60,7 @@ public class RangedRendererPlayer implements RendererPlayer {
                     if (deinitialize != null && player != null)
                         deinitialize.accept(player);
                     iterator.remove();
+                    Bukkit.broadcastMessage("Removed");
                 }
             });
             for (Player player : Bukkit.getOnlinePlayers()) {
@@ -68,6 +69,7 @@ public class RangedRendererPlayer implements RendererPlayer {
                     if (initialize != null)
                         initialize.accept(player);
                     rendered.add(uuid);
+                    Bukkit.broadcastMessage("Added");
                 }
             }
         }
@@ -83,7 +85,6 @@ public class RangedRendererPlayer implements RendererPlayer {
         this.deinitialize = action;
     }
 
-
     @Override
     public void runForAllRendered(@NotNull Consumer<Player> action) {
         for (UUID uuid : rendered) {
@@ -94,7 +95,7 @@ public class RangedRendererPlayer implements RendererPlayer {
     }
 
     private boolean isPlayerValid(@Nullable Player player) {
-        return player != null && player.isOnline() && location.distanceSquared(location) <= (range * range);
+        return player != null && player.isOnline() && player.getLocation().distanceSquared(location) <= (range * range);
     }
 
 }

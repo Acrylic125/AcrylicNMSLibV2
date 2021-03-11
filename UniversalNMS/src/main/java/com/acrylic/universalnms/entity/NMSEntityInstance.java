@@ -18,6 +18,12 @@ public interface NMSEntityInstance extends EntityInstance {
 
     int getTicksLived();
 
+    void setTicksLived(int ticks);
+
+    default void addTicksLived() {
+        setTicksLived(getTicksLived() + 1);
+    }
+
     int getFireTicks();
 
     void setFireTicks(int ticks);

@@ -1,8 +1,5 @@
 package com.acrylic.version_1_8_nms.entity;
 
-import com.acrylic.universal.entity.equipment.EntityEquipmentBuilder;
-import com.acrylic.universalnms.entity.EntityPacketHandler;
-import com.acrylic.universalnms.entity.LivingEntityPacketHandler;
 import com.acrylic.universalnms.entity.NMSArmorStandInstance;
 import com.acrylic.universalnms.entity.wrapper.NMSLivingEntityWrapper;
 import com.acrylic.universalnms.entityai.EntityAI;
@@ -14,7 +11,6 @@ import net.minecraft.server.v1_8_R3.Vector3f;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.util.EulerAngle;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

@@ -7,14 +7,16 @@ import net.minecraft.server.v1_8_R3.Entity;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class NMSEntityInstanceImpl implements NMSEntityInstance {
+public abstract class NMSEntityInstanceImpl
+        implements NMSEntityInstance {
 
     @Override
     public abstract Entity getNMSEntity();
 
     @Override
     public void setName(String s) {
-        getNMSEntity().setCustomName((s == null) ? null : ChatUtils.get(s));
+        if (s != null)
+            getNMSEntity().setCustomName(ChatUtils.get(s));
     }
 
     @Override
@@ -25,6 +27,11 @@ public abstract class NMSEntityInstanceImpl implements NMSEntityInstance {
     @Override
     public int getTicksLived() {
         return getNMSEntity().ticksLived;
+    }
+
+    @Override
+    public void setTicksLived(int ticks) {
+        getNMSEntity().ticksLived = ticks;
     }
 
     @Override

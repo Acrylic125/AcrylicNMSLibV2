@@ -7,7 +7,8 @@ import org.bukkit.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class NMSLivingEntityInstanceImpl
-        extends NMSEntityInstanceImpl implements NMSLivingEntityInstance {
+        extends NMSEntityInstanceImpl
+        implements NMSLivingEntityInstance {
 
     @Override
     public abstract EntityLiving getNMSEntity();

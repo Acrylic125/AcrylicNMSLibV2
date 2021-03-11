@@ -2,6 +2,7 @@ package com.acrylic.version_1_8_nms.nmsentityregistry;
 
 import com.acrylic.universalnms.nmsentityregistry.AbstractNMSEntityRegistry;
 import com.acrylic.version_1_8_nms.entity.wrapper.ArmorStandWrapper;
+import com.acrylic.version_1_8_nms.entity.wrapper.GiantWrapper;
 import net.minecraft.server.v1_8_R3.EntityInsentient;
 import net.minecraft.server.v1_8_R3.EntityTypes;
 import org.bukkit.entity.EntityType;
@@ -49,5 +50,6 @@ public class NMSEntityRegistryImpl extends AbstractNMSEntityRegistry {
     @Override
     public void registerDefaults() {
         registerNMSEntityClass(ArmorStandWrapper.class);
+        registerNMSEntityClass(GiantWrapper.class);
     }
 }
