@@ -1,5 +1,6 @@
 package com.acrylic.universalnms.pathfinder;
 
+import org.bukkit.World;
 import org.jetbrains.annotations.Nullable;
 
 public interface PathNode {
@@ -9,6 +10,8 @@ public interface PathNode {
 
     @Nullable
     PathNode[] getSuccessors();
+
+    World getWorld();
 
     int getX();
 
