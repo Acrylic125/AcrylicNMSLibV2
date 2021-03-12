@@ -11,13 +11,14 @@ import org.bukkit.World;
 
 import java.util.*;
 
-public class JPSPathfinder extends AbstractAStarPathfinder<JPSPathNode> {
+public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
 
     private final JPSPathfinderGenerator pathfinderGenerator;
     private final Map<Chunk, ChunkExaminer> chunkExaminerMap = new HashMap<>();
     private final JPSBaseNode startNode, endNode;
     private final World world;
     private final double distanceFromAndTo;
+    private boolean searched = false, completed = false;
 
     protected JPSPathfinder(JPSPathfinderGenerator pathfinderGenerator, Location start, Location end) {
         this.pathfinderGenerator = pathfinderGenerator;
@@ -44,6 +45,37 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSPathNode> {
     @Override
     public JPSBaseNode getEndNode() {
         return endNode;
+    }
+
+    @Override
+    public void pathfind() {
+        if (searched)
+            throw new IllegalStateException("The pathfinder has already started a searched.");
+        searched = true;
+        final Set<JPSBaseNode> open = getOpen(), closed = getClosed();
+        while (completed && !open.isEmpty()) {
+            JPSBaseNode currentNode = getCheapestNodeFromOpen();
+            if (currentNode == null) {
+                completed = true;
+            } else {
+                open.remove(currentNode);
+                closed.add(currentNode);
+                if (currentNode.equals(getEndNode())) {
+
+                }
+            }
+
+        }
+    }
+
+    @Override
+    public boolean hasSearched() {
+        return searched;
+    }
+
+    @Override
+    public boolean hasCompleted() {
+        return completed;
     }
 
     @Override

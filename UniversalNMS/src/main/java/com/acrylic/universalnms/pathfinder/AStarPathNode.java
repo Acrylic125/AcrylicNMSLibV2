@@ -12,7 +12,7 @@ public interface AStarPathNode extends PathNode {
 
     @NotNull
     @Override
-    AbstractAStarPathfinder<?> getPathfinder();
+    AbstractAStarPathfinder getPathfinder();
 
     double getGCost();
 

@@ -1,6 +1,7 @@
 package com.acrylic.universalnms.pathfinder.astar;
 
 import com.acrylic.universalnms.pathfinder.AStarPathNode;
+import com.acrylic.universalnms.pathfinder.PathNode;
 import com.acrylic.universalnms.pathfinder.Pathfinder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -12,7 +13,6 @@ public abstract class AbstractAStarPathfinder<N extends AStarPathNode>
         implements Pathfinder {
 
     private final Set<N> open, closed;
-    private boolean searched = false, completed = false;
 
     public AbstractAStarPathfinder() {
         this(new HashSet<>(), new HashSet<>());
@@ -29,23 +29,6 @@ public abstract class AbstractAStarPathfinder<N extends AStarPathNode>
 
     public Set<N> getClosed() {
         return closed;
-    }
-
-    @Override
-    public void pathfind() {
-        if (searched)
-            throw new IllegalStateException("The pathfinder has already started/finished.");
-        searched = true;
-    }
-
-    @Override
-    public boolean hasSearched() {
-        return searched;
-    }
-
-    @Override
-    public boolean hasCompleted() {
-        return completed;
     }
 
     @Nullable
@@ -66,6 +49,15 @@ public abstract class AbstractAStarPathfinder<N extends AStarPathNode>
         return cursor;
     }
 
+    public void complete(N node) {
+
+    }
+
     public abstract double getDistanceFromStartToEnd();
 
+    @Override
+    public abstract AStarPathNode getStartNode();
+
+    @Override
+    public abstract AStarPathNode getEndNode();
 }

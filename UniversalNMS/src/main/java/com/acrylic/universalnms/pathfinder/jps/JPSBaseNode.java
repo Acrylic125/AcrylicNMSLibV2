@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 public class JPSBaseNode implements AStarPathNode {
 
     private final JPSPathfinder pathfinder;
-    private final JPSBaseNode parent;
+    private JPSBaseNode parent;
     private final int x, y, z;
     private final double gCost, hCost;
     private JPSPathNode[] pathNodes;
@@ -67,6 +67,10 @@ public class JPSBaseNode implements AStarPathNode {
         return hCost;
     }
 
+    public void setParent(JPSBaseNode jpsBaseNode) {
+        this.parent = jpsBaseNode;
+    }
+
     @Nullable
     @Override
     public JPSBaseNode getParent() {
@@ -79,7 +83,7 @@ public class JPSBaseNode implements AStarPathNode {
 
     @Nullable
     @Override
-    public PathNode[] getSuccessors() {
+    public JPSPathNode[] getSuccessors() {
         return pathNodes;
     }
 
