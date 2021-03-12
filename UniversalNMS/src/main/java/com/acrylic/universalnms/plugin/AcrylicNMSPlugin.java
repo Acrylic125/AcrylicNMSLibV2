@@ -1,4 +1,4 @@
-package com.acrylic.acrylicnmslib.plugin;
+package com.acrylic.universalnms.plugin;
 
 import com.acrylic.universalnms.factory.NMSAbstractFactory;
 import com.acrylic.universalnms.nmsentityregistry.AbstractNMSEntityRegistry;

@@ -50,8 +50,8 @@ public class JPSBaseNode implements AStarPathNode {
         this.x = x;
         this.y = y;
         this.z = z;
-        this.gCost = AStarPathNode.calculateDistance2D(this, jpsPathfinder.getStartNode());
-        this.hCost = AStarPathNode.calculateDistance2D(this, jpsPathfinder.getStartNode());
+        this.gCost = PathNode.calculateDistance2D(this, jpsPathfinder.getStartNode());
+        this.hCost = PathNode.calculateDistance2D(this, jpsPathfinder.getStartNode());
     }
 
     @NotNull

@@ -2,23 +2,22 @@ package com.acrylic.acrylicnmslib;
 
 import com.acrylic.acrylicnmslib.plugin.AcrylicNMSPlugin;
 import com.acrylic.universal.Universal;
+import com.acrylic.universalnms.NMSLib;
+import com.acrylic.universalnms.factory.NMSAbstractFactory;
 import com.acrylic.universalnms.nmsentityregistry.AbstractNMSEntityRegistry;
+import com.acrylic.version_1_8_nms.factory.NMSAbstractFactoryImpl;
 import com.acrylic.version_1_8_nms.nmsentityregistry.NMSEntityRegistryImpl;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 public final class AcrylicNMSLib
-        extends JavaPlugin
-        implements AcrylicNMSPlugin {
+        extends JavaPlugin {
 
-    private static AcrylicNMSPlugin acrylicNMSPlugin;
     private static JavaPlugin plugin;
-
-    private AbstractNMSEntityRegistry entityRegistry;
 
     @Override
     public void onEnable() {
-        acrylicNMSPlugin = this;
+        NMSLib.setAcrylicNMSPlugin(new NMSLib());
         plugin = this;
         // Plugin startup logic
         Command.createCommand();
@@ -32,21 +31,17 @@ public final class AcrylicNMSLib
 
     private void loadByVersion() {
         short version = Universal.getAcrylicPlugin().getVersionStore().getVersion();
+        NMSLib nmsLib = NMSLib.getNMSPlugin();
         switch (version) {
             case 8:
-                entityRegistry = new NMSEntityRegistryImpl();
+                nmsLib.setEntityRegistry(new NMSEntityRegistryImpl());
+                nmsLib.setNMSAbstractFactory(new NMSAbstractFactoryImpl());
                 break;
             case 16:
             default:
                 throw new IllegalStateException("1." + version + " is not supported.");
         }
-        entityRegistry.registerDefaults();
-    }
-
-    @NotNull
-    @Override
-    public AbstractNMSEntityRegistry getNMSEntityRegistry() {
-        return entityRegistry;
+        nmsLib.getNMSEntityRegistry().registerDefaults();
     }
 
     @NotNull
@@ -54,8 +49,4 @@ public final class AcrylicNMSLib
         return plugin;
     }
 
-    @NotNull
-    public static AcrylicNMSPlugin getNMSPlugin() {
-        return acrylicNMSPlugin;
-    }
 }

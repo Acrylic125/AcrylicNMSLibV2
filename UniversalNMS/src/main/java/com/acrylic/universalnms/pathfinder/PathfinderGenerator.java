@@ -14,7 +14,7 @@ import javax.xml.stream.Location;
  */
 public interface PathfinderGenerator {
 
-    double getMaximumSearchDistance();
+    double getMaximumSearchRange();
 
     @NotNull
     Pathfinder generatePathfinder(@NotNull Location start, @NotNull Location end);
@@ -22,5 +22,7 @@ public interface PathfinderGenerator {
     float getMaximumDropHeight();
 
     float getMaximumHeight();
+
+    float getMinimumHeightToTraverse();
 
 }

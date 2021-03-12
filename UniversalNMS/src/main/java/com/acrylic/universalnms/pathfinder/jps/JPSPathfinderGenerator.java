@@ -9,7 +9,10 @@ public class JPSPathfinderGenerator implements PathfinderGenerator {
 
     private double maximumSearchDistance = 32;
     private int recursionMaximumHorizontal = 12, recursionMaximumDiagonal = 12;
-    private float maximumDropHeight = 2, maximumHeight = 2;
+    private float maximumDropHeight = 2,
+            maximumHeight = 2,
+            minimumHeightToTraverse = 2
+    ;
 
     public JPSPathfinderGenerator setMaximumSearchDistance(double maximumSearchDistance) {
         this.maximumSearchDistance = maximumSearchDistance;
@@ -17,7 +20,7 @@ public class JPSPathfinderGenerator implements PathfinderGenerator {
     }
 
     @Override
-    public double getMaximumSearchDistance() {
+    public double getMaximumSearchRange() {
         return maximumSearchDistance;
     }
 
@@ -50,6 +53,16 @@ public class JPSPathfinderGenerator implements PathfinderGenerator {
 
     public float getMaximumHeight() {
         return maximumHeight;
+    }
+
+    public JPSPathfinderGenerator setMinimumHeightToTraverse(float minimumHeightToTraverse) {
+        this.minimumHeightToTraverse = minimumHeightToTraverse;
+        return this;
+    }
+
+    @Override
+    public float getMinimumHeightToTraverse() {
+        return minimumHeightToTraverse;
     }
 
     public JPSPathfinderGenerator setMaximumHeight(float maximumHeight) {

@@ -16,7 +16,6 @@ import com.acrylic.version_1_8_nms.worldexaminer.ChunkExaminerImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
