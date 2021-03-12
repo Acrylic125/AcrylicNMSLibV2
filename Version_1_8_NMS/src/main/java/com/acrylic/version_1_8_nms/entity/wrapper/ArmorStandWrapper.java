@@ -1,6 +1,5 @@
 package com.acrylic.version_1_8_nms.entity.wrapper;
 
-import com.acrylic.universalnms.entity.NMSLivingEntityInstance;
 import com.acrylic.universalnms.entity.wrapper.NMSLivingEntityWrapper;
 import com.acrylic.universalnms.nmsentityregistry.NMSEntity;
 import com.acrylic.version_1_8_nms.entity.NMSArmorStandInstanceImpl;

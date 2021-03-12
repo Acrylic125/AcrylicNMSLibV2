@@ -3,7 +3,7 @@ package com.acrylic.universalnms.json;
 import com.acrylic.universal.items.ItemUtils;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universalnms.nbt.AbstractNBTCompound;
-import com.acrylic.universalnms.nbt.AbstractNBTItem;
+import com.acrylic.universalnms.nbt.NBTItem;
 import net.md_5.bungee.api.chat.*;
 
 public final class JSONComponent implements AbstractJSONComponent {
@@ -47,7 +47,7 @@ public final class JSONComponent implements AbstractJSONComponent {
     }
 
     @Override
-    public AbstractJSONComponent item(AbstractNBTItem nbtItem) {
+    public AbstractJSONComponent item(NBTItem nbtItem) {
         if (ItemUtils.isAir(nbtItem.getOriginalItem()))
             return this;
         AbstractNBTCompound abstractNBTCompound = nbtItem.getCompound();

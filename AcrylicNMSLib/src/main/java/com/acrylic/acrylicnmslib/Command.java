@@ -3,7 +3,9 @@ package com.acrylic.acrylicnmslib;
 import com.acrylic.universal.command.AbstractCommandBuilder;
 import com.acrylic.universal.command.CommandBuilder;
 import com.acrylic.universal.text.ChatUtils;
+import org.bukkit.ChunkSnapshot;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class Command {
 
@@ -12,6 +14,8 @@ public class Command {
         CommandBuilder.create("acrylicnms")
                 .handle(commandExecuted -> {
                     CommandSender sender = commandExecuted.getSender();
+                    Player player = (Player) sender;
+
                     ChatUtils.send(sender,
                             "&e&lAcrylic NMS Lib",
                             "&e/acrylicnms <version>"

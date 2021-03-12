@@ -1,6 +1,6 @@
 package com.acrylic.universalnms.json;
 
-import com.acrylic.universalnms.nbt.AbstractNBTItem;
+import com.acrylic.universalnms.nbt.NBTItem;
 import net.md_5.bungee.api.chat.TextComponent;
 
 public interface AbstractJSONComponent {
@@ -11,7 +11,7 @@ public interface AbstractJSONComponent {
 
     AbstractJSONComponent suggestCommand(String text);
 
-    AbstractJSONComponent item(AbstractNBTItem nbtItem);
+    AbstractJSONComponent item(NBTItem nbtItem);
 
     AbstractJSONComponent link(String text);
 

@@ -1,20 +1,19 @@
 package com.acrylic.universalnms.util;
 
-import com.acrylic.universal.items.ItemUtils;
-import com.acrylic.universalnms.nbt.AbstractNBTItem;
+import com.acrylic.universalnms.nbt.NBTItem;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 public class ItemContainer {
 
     private final ItemStack item;
-    private final AbstractNBTItem nbtItem;
+    private final NBTItem nbtItem;
 
     //public ItemContainer(@Nullable ItemStack item) {
     //    this(item, (ItemUtils.isAir(item)) ? null : NMSAbstractFactory.getAbstractFactory().getNewNBTItem(item));
     //}
 
-    public ItemContainer(@Nullable ItemStack item, @Nullable AbstractNBTItem nbtItem) {
+    public ItemContainer(@Nullable ItemStack item, @Nullable NBTItem nbtItem) {
         this.item = item;
         this.nbtItem = nbtItem;
     }
@@ -25,7 +24,7 @@ public class ItemContainer {
     }
 
     @Nullable
-    public AbstractNBTItem getNbtItem() {
+    public NBTItem getNbtItem() {
         return nbtItem;
     }
 }

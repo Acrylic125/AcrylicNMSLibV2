@@ -1,16 +1,14 @@
 package com.acrylic.universalnms.nbt;
 
 import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class AbstractNBTTileEntity implements AbstractNBT {
+public abstract class NBTTileEntity implements NBT {
 
     private final Block originalBlock;
     private AbstractNBTCompound nbtCompound;
 
-    public AbstractNBTTileEntity(@NotNull Block block) {
+    public NBTTileEntity(@NotNull Block block) {
         this.originalBlock = block;
     }
 

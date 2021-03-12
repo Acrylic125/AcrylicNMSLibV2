@@ -4,11 +4,11 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class AbstractNBTEntity implements AbstractNBT {
+public abstract class NBTEntity implements NBT {
 
     private final Entity originalEntity;
 
-    public AbstractNBTEntity(@NotNull Entity entity) {
+    public NBTEntity(@NotNull Entity entity) {
         this.originalEntity = entity;
     }
 
