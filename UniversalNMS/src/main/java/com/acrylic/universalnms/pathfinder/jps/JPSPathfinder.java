@@ -1,15 +1,16 @@
 package com.acrylic.universalnms.pathfinder.jps;
 
 import com.acrylic.universalnms.pathfinder.AStarPathNode;
-import com.acrylic.universalnms.pathfinder.Pathfinder;
+import com.acrylic.universalnms.pathfinder.Path;
 import com.acrylic.universalnms.pathfinder.astar.AbstractAStarPathfinder;
 import com.acrylic.universalnms.worldexaminer.ChunkExaminer;
 import org.bukkit.Chunk;
-import org.bukkit.ChunkSnapshot;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
 
@@ -61,11 +62,18 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
                 open.remove(currentNode);
                 closed.add(currentNode);
                 if (currentNode.equals(getEndNode())) {
+                    //TODO: Complete
+                } else {
 
                 }
             }
 
         }
+    }
+
+    private List<JPSBaseNode> generateNeighboursAndIterate(JPSBaseNode node, Consumer<JPSBaseNode> action) {
+        List<JPSBaseNode> nodes = new ArrayList<>();
+        return nodes;
     }
 
     @Override
@@ -76,6 +84,12 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
     @Override
     public boolean hasCompleted() {
         return completed;
+    }
+
+    @NotNull
+    @Override
+    public Path generatePath() {
+        return null;
     }
 
     @Override

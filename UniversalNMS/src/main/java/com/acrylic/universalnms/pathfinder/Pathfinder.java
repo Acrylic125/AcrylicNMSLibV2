@@ -1,5 +1,7 @@
 package com.acrylic.universalnms.pathfinder;
 
+import org.jetbrains.annotations.NotNull;
+
 public interface Pathfinder {
 
     PathfinderGenerator getPathfinderGenerator();
@@ -13,5 +15,8 @@ public interface Pathfinder {
     boolean hasSearched();
 
     boolean hasCompleted();
+
+    @NotNull
+    Path generatePath();
 
 }

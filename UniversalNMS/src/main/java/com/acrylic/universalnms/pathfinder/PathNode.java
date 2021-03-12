@@ -5,13 +5,15 @@ import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
+
 public interface PathNode {
 
     @NotNull
     Pathfinder getPathfinder();
 
     @Nullable
-    PathNode[] getSuccessors();
+    Collection<? extends PathNode> getSuccessors();
 
     @Nullable
     PathNode getParent();

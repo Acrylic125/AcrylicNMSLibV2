@@ -8,13 +8,15 @@ import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
+
 public class JPSBaseNode implements AStarPathNode {
 
     private final JPSPathfinder pathfinder;
     private JPSBaseNode parent;
     private final int x, y, z;
     private final double gCost, hCost;
-    private JPSPathNode[] pathNodes;
+    private Collection<JPSPathNode> pathNodes;
 
     protected static JPSBaseNode createStartNode(@NotNull JPSPathfinder jpsPathfinder, @NotNull Location location) {
         return createStartNode(jpsPathfinder, location.getBlock());
@@ -77,13 +79,13 @@ public class JPSBaseNode implements AStarPathNode {
         return parent;
     }
 
-    public void setSuccessors(JPSPathNode[] pathNodes) {
+    public void setSuccessors(Collection<JPSPathNode> pathNodes) {
         this.pathNodes = pathNodes;
     }
 
     @Nullable
     @Override
-    public JPSPathNode[] getSuccessors() {
+    public Collection<JPSPathNode> getSuccessors() {
         return pathNodes;
     }
 

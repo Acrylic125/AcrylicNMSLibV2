@@ -19,4 +19,8 @@ public interface PathfinderGenerator {
     @NotNull
     Pathfinder generatePathfinder(@NotNull Location start, @NotNull Location end);
 
+    float getMaximumDropHeight();
+
+    float getMaximumHeight();
+
 }
