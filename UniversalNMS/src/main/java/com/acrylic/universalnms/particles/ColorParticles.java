@@ -2,7 +2,11 @@ package com.acrylic.universalnms.particles;
 
 import org.jetbrains.annotations.NotNull;
 
-public interface ColorParticles extends Particles {
+public interface ColorParticles extends AbstractParticles {
+
+    float getSize();
+
+    void setSize(float size);
 
     RGB getRGB();
 

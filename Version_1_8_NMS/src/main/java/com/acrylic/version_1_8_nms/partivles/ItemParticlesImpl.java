@@ -2,17 +2,21 @@ package com.acrylic.version_1_8_nms.partivles;
 
 import com.acrylic.universalnms.particles.ItemParticles;
 import com.acrylic.version_1_8_nms.NMSUtils;
+import com.comphenix.protocol.wrappers.EnumWrappers;
+import net.minecraft.server.v1_8_R3.EnumParticle;
 import net.minecraft.server.v1_8_R3.Item;
 import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public class ItemParticlesImpl
-        extends ParticlesImpl
+        extends AbstractParticlesImpl
         implements ItemParticles {
 
     private int itemId = 0;
     private int data = 0;
     private boolean isValidItem = false;
+    private EnumParticle particleType;
 
     @Override
     public void setItem(ItemStack item) {
@@ -23,6 +27,20 @@ public class ItemParticlesImpl
             isValidItem = true;
         } else
             isValidItem = false;
+    }
+
+    @Override
+    public EnumParticle getParticleType() {
+        return particleType;
+    }
+
+    public void setParticleType(@NotNull EnumParticle particle) {
+        this.particleType = particle;
+    }
+
+    @Override
+    public void setParticleType(@NotNull EnumWrappers.Particle particle) {
+        setParticleType(EnumParticle.a(particle.getId()));
     }
 
     @Override

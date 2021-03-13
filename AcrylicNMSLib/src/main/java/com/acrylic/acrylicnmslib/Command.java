@@ -20,7 +20,8 @@ public class Command {
                             "&e/acrylicnms <version>"
                     );
                 }).arguments(new AbstractCommandBuilder[] {
-                com.acrylic.version_1_8_nms.Command.getCommand()
+                com.acrylic.version_1_8_nms.Command.getCommand(),
+                com.acrylic.version_1_16_nms.Command.getCommand()
         }).register(AcrylicNMSLib.getPlugin());
     }
 

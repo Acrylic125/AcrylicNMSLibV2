@@ -85,5 +85,10 @@
             <artifactId>Version_1_8_NMS</artifactId>
             <version>1.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.acrylic</groupId>
+            <artifactId>Version_1_16_NMS</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 </project>

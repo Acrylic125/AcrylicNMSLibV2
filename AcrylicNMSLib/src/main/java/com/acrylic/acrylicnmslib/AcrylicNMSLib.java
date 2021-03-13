@@ -38,6 +38,9 @@ public final class AcrylicNMSLib
                 nmsLib.setNMSAbstractFactory(new NMSAbstractFactoryImpl());
                 break;
             case 16:
+                nmsLib.setEntityRegistry(new com.acrylic.version_1_16_nms.nmsentityregistry.NMSEntityRegistryImpl());
+                nmsLib.setNMSAbstractFactory(new com.acrylic.version_1_16_nms.factory.NMSAbstractFactoryImpl());
+                break;
             default:
                 throw new IllegalStateException("1." + version + " is not supported.");
         }

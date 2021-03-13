@@ -41,15 +41,11 @@ public abstract class ParticleBuilder<B extends ParticleBuilder<B>> {
         return itemParticleBuilder(EnumWrappers.Particle.FALLING_DUST);
     }
 
-    public static ColorParticleBuilder colorBuilder(@NotNull EnumWrappers.Particle particle) {
-        return new ColorParticleBuilder(particle);
-    }
-
     public static ColorParticleBuilder redstoneBuilder() {
-        return colorBuilder(EnumWrappers.Particle.REDSTONE);
+        return new ColorParticleBuilder();
     }
 
-    public abstract Particles getParticles();
+    public abstract AbstractParticles getParticles();
 
     public B amount(int amount) {
         getParticles().setAmount(amount);
@@ -81,7 +77,7 @@ public abstract class ParticleBuilder<B extends ParticleBuilder<B>> {
         return (B) this;
     }
 
-    public abstract Particles build();
+    public abstract AbstractParticles build();
 
     public static class NormalBuilder extends ParticleBuilder<NormalBuilder> {
 
@@ -161,7 +157,6 @@ public abstract class ParticleBuilder<B extends ParticleBuilder<B>> {
 
         private ColorParticleBuilder(EnumWrappers.Particle particleType) {
             this(NMSLib.getFactory().getNMSUtilsFactory().getNewColorParticles());
-            particles.setParticleType(particleType);
         }
 
         private ColorParticleBuilder(ColorParticles particles) {
