@@ -5,6 +5,6 @@ import org.jetbrains.annotations.Nullable;
 public interface NBT {
 
     @Nullable
-    AbstractNBTCompound getCompound();
+    NBTCompound getCompound();
 
 }

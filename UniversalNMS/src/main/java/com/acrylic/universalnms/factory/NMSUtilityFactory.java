@@ -3,6 +3,9 @@ package com.acrylic.universalnms.factory;
 import com.acrylic.universalnms.nbt.NBTEntity;
 import com.acrylic.universalnms.nbt.NBTItem;
 import com.acrylic.universalnms.nbt.NBTTileEntity;
+import com.acrylic.universalnms.particles.ColorParticles;
+import com.acrylic.universalnms.particles.ItemParticles;
+import com.acrylic.universalnms.particles.Particles;
 import com.acrylic.universalnms.worldexaminer.ChunkExaminer;
 import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
@@ -22,5 +25,11 @@ public interface NMSUtilityFactory {
     NBTEntity getNBTEntity(@NotNull Entity entity);
 
     NBTTileEntity getNBTTileEntity(@NotNull Block entity);
+
+    Particles getNewParticles();
+
+    ColorParticles getNewColorParticles();
+
+    ItemParticles getNewItemParticles();
 
 }

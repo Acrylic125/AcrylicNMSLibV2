@@ -6,18 +6,18 @@ import org.jetbrains.annotations.NotNull;
 public abstract class NBTTileEntity implements NBT {
 
     private final Block originalBlock;
-    private AbstractNBTCompound nbtCompound;
+    private NBTCompound nbtCompound;
 
     public NBTTileEntity(@NotNull Block block) {
         this.originalBlock = block;
     }
 
-    public void setNBTCompound(AbstractNBTCompound nbtCompound) {
+    public void setNBTCompound(NBTCompound nbtCompound) {
         this.nbtCompound = nbtCompound;
     }
 
     @Override
-    public AbstractNBTCompound getCompound() {
+    public NBTCompound getCompound() {
         return this.nbtCompound;
     }
 

@@ -2,7 +2,7 @@ package com.acrylic.universalnms.json;
 
 import com.acrylic.universal.items.ItemUtils;
 import com.acrylic.universal.text.ChatUtils;
-import com.acrylic.universalnms.nbt.AbstractNBTCompound;
+import com.acrylic.universalnms.nbt.NBTCompound;
 import com.acrylic.universalnms.nbt.NBTItem;
 import net.md_5.bungee.api.chat.*;
 
@@ -50,9 +50,9 @@ public final class JSONComponent implements AbstractJSONComponent {
     public AbstractJSONComponent item(NBTItem nbtItem) {
         if (ItemUtils.isAir(nbtItem.getOriginalItem()))
             return this;
-        AbstractNBTCompound abstractNBTCompound = nbtItem.getCompound();
-        assert abstractNBTCompound != null;
-        HoverEvent event = new HoverEvent(HoverEvent.Action.SHOW_ITEM, new BaseComponent[]{new TextComponent(abstractNBTCompound.getCompoundString())});
+        NBTCompound NBTCompound = nbtItem.getCompound();
+        assert NBTCompound != null;
+        HoverEvent event = new HoverEvent(HoverEvent.Action.SHOW_ITEM, new BaseComponent[]{new TextComponent(NBTCompound.getCompoundString())});
         textComponent.setHoverEvent(event);
         return this;
     }
