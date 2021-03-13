@@ -15,7 +15,7 @@ public class EntityMetadataPacketImpl
     private PacketPlayOutEntityMetadata packetPlayOutEntityMetadata;
 
     public void apply(@NotNull net.minecraft.server.v1_16_R3.Entity entity) {
-        apply(entity, false);
+        apply(entity, true);
     }
 
     public void apply(@NotNull net.minecraft.server.v1_16_R3.Entity entity, boolean b) {

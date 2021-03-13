@@ -1,5 +1,6 @@
 package com.acrylic.version_1_16_nms.entity;
 
+import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universalnms.entity.EntityPacketHandler;
 import com.acrylic.universalnms.entity.LivingEntityPacketHandler;
 import com.acrylic.universalnms.packets.types.EntitySpawnPacket;
