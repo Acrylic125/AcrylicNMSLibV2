@@ -11,6 +11,7 @@ public class Command {
 
     public static void createCommand() {
         CommandBuilder.create("acrylicnms")
+                .permissions("acrylicnms.admin")
                 .handle(commandExecuted -> {
                     CommandSender sender = commandExecuted.getSender();
                     Player player = (Player) sender;
