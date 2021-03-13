@@ -8,6 +8,9 @@ import com.acrylic.universalnms.particles.ColorParticles;
 import com.acrylic.universalnms.particles.ItemParticles;
 import com.acrylic.universalnms.particles.Particles;
 import com.acrylic.universalnms.worldexaminer.ChunkExaminer;
+import com.acrylic.version_1_8_nms.nbt.NBTEntityImpl;
+import com.acrylic.version_1_8_nms.nbt.NBTItemImpl;
+import com.acrylic.version_1_8_nms.nbt.NBTTileEntityImpl;
 import com.acrylic.version_1_8_nms.partivles.ColorParticlesImpl;
 import com.acrylic.version_1_8_nms.partivles.ItemParticlesImpl;
 import com.acrylic.version_1_8_nms.partivles.ParticlesImpl;
@@ -33,17 +36,17 @@ public final class NMSUtilityFactoryImpl implements NMSUtilityFactory {
 
     @Override
     public NBTItem getNBTItem(@NotNull ItemStack item) {
-        return null;
+        return new NBTItemImpl(item);
     }
 
     @Override
     public NBTEntity getNBTEntity(@NotNull Entity entity) {
-        return null;
+        return new NBTEntityImpl(entity);
     }
 
     @Override
     public NBTTileEntity getNBTTileEntity(@NotNull Block entity) {
-        return null;
+        return new NBTTileEntityImpl(entity);
     }
 
     @Override
