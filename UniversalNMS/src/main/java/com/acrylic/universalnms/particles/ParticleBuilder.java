@@ -151,7 +151,7 @@ public abstract class ParticleBuilder<B extends ParticleBuilder<B>> {
         }
     }
 
-    public static class ColorParticleBuilder extends ParticleBuilder<ItemParticleBuilder> {
+    public static class ColorParticleBuilder extends ParticleBuilder<ColorParticleBuilder> {
 
         private final ColorParticles particles;
 

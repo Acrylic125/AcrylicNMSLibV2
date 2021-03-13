@@ -17,7 +17,7 @@ public class NBTItemImpl extends NBTItem {
         this.nmsItem = (ItemUtils.isAir(item)) ? null : NMSUtils.convertToNMSItem(item);
     }
 
-    public NBTItemImpl(@NotNull ItemStack item) {
+    public NBTItemImpl(@NotNull ItemStack item, boolean saveTag) {
         super(item);
         if (ItemUtils.isAir(item)) {
             this.nmsItem = null;
@@ -25,7 +25,7 @@ public class NBTItemImpl extends NBTItem {
         } else {
             this.nmsItem = NMSUtils.convertToNMSItem(item);
             NBTTagCompound nbtTagCompound = nmsItem.getTag();
-            if (nbtTagCompound == null) {
+            if (nbtTagCompound == null && saveTag) {
                 nbtTagCompound = new NBTTagCompound();
                 nmsItem.save(nbtTagCompound);
             }

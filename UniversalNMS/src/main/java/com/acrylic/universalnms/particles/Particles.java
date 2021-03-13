@@ -34,11 +34,11 @@ public interface Particles
     void setLocation(double x, double y, double z);
 
     default void setLocation(@NotNull Location location) {
-        setLocation(location.getZ(), location.getY(), location.getZ());
+        setLocation(location.getX(), location.getY(), location.getZ());
     }
 
     default void setLocation(@NotNull Block block) {
-        setLocation(block.getZ(), block.getY(), block.getZ());
+        setLocation(block.getX(), block.getY(), block.getZ());
     }
 
     void setOffset(float x, float y, float z);

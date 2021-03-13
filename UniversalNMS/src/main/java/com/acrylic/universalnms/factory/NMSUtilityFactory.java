@@ -20,7 +20,11 @@ public interface NMSUtilityFactory {
 
     ChunkExaminer getNewChunkExaminer(@NotNull Chunk chunk);
 
-    NBTItem getNBTItem(@NotNull ItemStack item);
+    default NBTItem getNBTItem(@NotNull ItemStack item) {
+        return getNBTItem(item, false);
+    }
+
+    NBTItem getNBTItem(@NotNull ItemStack item, boolean saveTag);
 
     NBTEntity getNBTEntity(@NotNull Entity entity);
 

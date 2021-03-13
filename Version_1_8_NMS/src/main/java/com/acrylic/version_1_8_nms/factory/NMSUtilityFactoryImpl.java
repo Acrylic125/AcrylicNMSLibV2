@@ -35,8 +35,8 @@ public final class NMSUtilityFactoryImpl implements NMSUtilityFactory {
     }
 
     @Override
-    public NBTItem getNBTItem(@NotNull ItemStack item) {
-        return new NBTItemImpl(item);
+    public NBTItem getNBTItem(@NotNull ItemStack item, boolean saveTag) {
+        return new NBTItemImpl(item, saveTag);
     }
 
     @Override

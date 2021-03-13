@@ -7,12 +7,17 @@ import com.acrylic.universal.command.AbstractCommandExecuted;
 import com.acrylic.universal.command.CommandBuilder;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.threads.Scheduler;
+import com.acrylic.universalnms.NMSLib;
+import com.acrylic.universalnms.nbt.NBTEntity;
+import com.acrylic.universalnms.nbt.NBTItem;
+import com.acrylic.universalnms.particles.ParticleBuilder;
 import com.acrylic.universalnms.renderer.EntityRendererPlayer;
 import com.acrylic.universalnms.worldexaminer.ChunkExaminer;
 import com.acrylic.version_1_8.equipment.EntityEquipmentBuilderImpl;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import com.acrylic.version_1_8_nms.entity.NMSGiantInstanceImpl;
 import com.acrylic.version_1_8_nms.worldexaminer.ChunkExaminerImpl;
+import com.comphenix.protocol.wrappers.EnumWrappers;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -56,17 +61,12 @@ public class Command {
                                 handRotationAnimation.teleportWithHolograms(location);
                             });
                 }).arguments(new AbstractCommandBuilder[] {
-                        CommandBuilder.create("chunk")
+                        CommandBuilder.create("p")
                                 .filter(AbstractCommandExecuted::isPlayer)
                                 .setTimerActive(true)
                                 .handle(commandExecuted -> {
                                     Player player = (Player) commandExecuted.getSender();
 
-                                    long l = System.currentTimeMillis();
-
-                            ChunkExaminer chunkExaminer = new ChunkExaminerImpl(player.getLocation().getChunk());
-                            MCBlockData mcBlockData = chunkExaminer.getBlockDataAt(player.getLocation());
-                            Bukkit.broadcastMessage(mcBlockData.getMaterial() + " " + mcBlockData.getData());
                         })
                 });
     }

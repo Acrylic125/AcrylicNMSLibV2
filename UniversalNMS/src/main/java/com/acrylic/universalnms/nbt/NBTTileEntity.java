@@ -16,6 +16,7 @@ public abstract class NBTTileEntity implements NBT {
         this.nbtCompound = nbtCompound;
     }
 
+    @NotNull
     @Override
     public NBTCompound getCompound() {
         return this.nbtCompound;
