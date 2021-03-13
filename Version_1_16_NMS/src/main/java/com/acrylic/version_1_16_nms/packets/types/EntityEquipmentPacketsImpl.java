@@ -6,6 +6,7 @@ import com.acrylic.version_1_16_nms.packets.MultiPacketWrapperImpl;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.server.v1_16_R3.EntityLiving;
 import net.minecraft.server.v1_16_R3.EnumItemSlot;
+import net.minecraft.server.v1_16_R3.Items;
 import net.minecraft.server.v1_16_R3.PacketPlayOutEntityEquipment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
@@ -25,6 +26,8 @@ public class EntityEquipmentPacketsImpl
         List<Pair<EnumItemSlot, net.minecraft.server.v1_16_R3.ItemStack>> equipment = new ArrayList<>(itemStackMap.size());
         int id = entity.getId();
         itemStackMap.forEach((slot, item) -> {
+            if (item == null)
+                item = Items.AIR.createItemStack();
             equipment.add(new Pair<>(slot, item));
         });
         entityEquipments.add(new PacketPlayOutEntityEquipment(id, equipment));

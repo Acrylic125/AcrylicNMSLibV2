@@ -3,13 +3,13 @@ package com.acrylic.acrylicnmslib;
 import com.acrylic.universal.command.AbstractCommandBuilder;
 import com.acrylic.universal.command.CommandBuilder;
 import com.acrylic.universal.text.ChatUtils;
+import com.acrylic.universalnms.NMSLib;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Command {
 
     public static void createCommand() {
-        com.acrylic.version_1_8_nms.Command.plugin = AcrylicNMSLib.getPlugin();
         CommandBuilder.create("acrylicnms")
                 .handle(commandExecuted -> {
                     CommandSender sender = commandExecuted.getSender();
@@ -22,7 +22,7 @@ public class Command {
                 }).arguments(new AbstractCommandBuilder[] {
                 com.acrylic.version_1_8_nms.Command.getCommand(),
                 com.acrylic.version_1_16_nms.Command.getCommand()
-        }).register(AcrylicNMSLib.getPlugin());
+        }).register(NMSLib.getPlugin());
     }
 
 }

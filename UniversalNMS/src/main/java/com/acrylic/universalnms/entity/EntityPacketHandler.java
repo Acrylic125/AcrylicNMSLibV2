@@ -29,11 +29,12 @@ public interface EntityPacketHandler {
 
     static void initializeRenderer(EntityPacketHandler entityPacketHandler) {
         Renderer<Player> renderer = entityPacketHandler.getRenderer();
-        renderer.setOnInitialize(player -> {
-            Bukkit.broadcastMessage(player + "");
-            entityPacketHandler.displayEntityToPlayer(player);
-        });
+        renderer.setOnInitialize(player -> entityPacketHandler.displayEntityToPlayer(player));
         renderer.setOnDeinitialize(entityPacketHandler::hideEntityFromPlayer);
     }
+
+    void updatePackets();
+
+    void resendPackets();
 
 }

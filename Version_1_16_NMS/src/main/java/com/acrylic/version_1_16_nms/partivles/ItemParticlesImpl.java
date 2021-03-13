@@ -38,12 +38,13 @@ public class ItemParticlesImpl
     @Override
     public void build() {
         if (location == null || !isValidItem)
-            throw new IllegalStateException("A valid item, a location and the particle type (It must either be ITEM_CRACK, BLOCK_CRACK, or BLOCK_DUST) must be specified in order to build a particle.");
+            throw new IllegalStateException("A valid item, a location and the particle type (It must either be ITEM_CRACK, BLOCK_CRACK, BLOCK_DUST. FALLING_DUST) must be specified in order to build a particle.");
         ParticleParam particleParam;
         switch (this.particleType) {
             case ITEM_CRACK:
                 particleParam = new ParticleParamItem(Particles.ITEM, NMSUtils.convertToNMSItem(item));
                 break;
+            case BLOCK_DUST:
             case BLOCK_CRACK:
                 particleParam = new ParticleParamBlock(Particles.BLOCK, CraftMagicNumbers.getBlock(item.getType(), (byte) 0));
                 break;
@@ -55,7 +56,7 @@ public class ItemParticlesImpl
                 break;
         }
         if (particleParam == null)
-            throw new IllegalStateException("A valid item, a location and the particle type (It must either be ITEM_CRACK, BLOCK_CRACK, or BLOCK_DUST) must be specified in order to build a particle.");
+            throw new IllegalStateException("A valid item, a location and the particle type (It must either be ITEM_CRACK, BLOCK_CRACK, BLOCK_DUST. FALLING_DUST) must be specified in order to build a particle.");
         this.packet = (offset == null) ?
                 new PacketPlayOutWorldParticles(particleParam,
                         this.longDistance, this.location[0], this.location[1], this.location[2],

@@ -5,6 +5,7 @@ import com.acrylic.version_1_16_nms.NMSUtils;
 import net.minecraft.server.v1_16_R3.EntityPlayer;
 import net.minecraft.server.v1_16_R3.Packet;
 import net.minecraft.server.v1_16_R3.PlayerConnection;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public abstract class PacketWrapperImpl

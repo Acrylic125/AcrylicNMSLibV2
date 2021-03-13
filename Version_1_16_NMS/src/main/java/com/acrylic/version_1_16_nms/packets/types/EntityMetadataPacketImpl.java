@@ -4,6 +4,7 @@ import com.acrylic.universalnms.packets.types.EntityMetadataPacket;
 import com.acrylic.version_1_16_nms.NMSUtils;
 import com.acrylic.version_1_16_nms.packets.SinglePacketWrapperImpl;
 import net.minecraft.server.v1_16_R3.PacketPlayOutEntityMetadata;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 

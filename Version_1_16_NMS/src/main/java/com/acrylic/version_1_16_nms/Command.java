@@ -4,20 +4,21 @@ import com.acrylic.universal.animations.rotational.HandRotationAnimation;
 import com.acrylic.universal.command.AbstractCommandBuilder;
 import com.acrylic.universal.command.AbstractCommandExecuted;
 import com.acrylic.universal.command.CommandBuilder;
+import com.acrylic.universal.entity.equipment.EntityEquipmentBuilderImpl;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.threads.Scheduler;
+import com.acrylic.universalnms.NMSLib;
+import com.acrylic.universalnms.particles.ParticleBuilder;
 import com.acrylic.universalnms.renderer.EntityRendererPlayer;
-import com.acrylic.version_1_8.equipment.EntityEquipmentBuilderImpl;
-import com.acrylic.version_1_8.items.ItemBuilder;
+import com.acrylic.version_1_16_nms.entity.NMSArmorStandInstanceImpl;
 import com.acrylic.version_1_16_nms.entity.NMSGiantInstanceImpl;
+import com.acrylic.version_1_8.items.ItemBuilder;
+import com.comphenix.protocol.wrappers.EnumWrappers;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 
 public class Command {
-
-    public static JavaPlugin plugin;
 
     public static AbstractCommandBuilder getCommand() {
         return CommandBuilder.create("1.16")
@@ -36,17 +37,16 @@ public class Command {
                 .filter(AbstractCommandExecuted::isPlayer)
                 .handle(commandExecuted -> {
                     Player player = (Player) commandExecuted.getSender();
-                    NMSGiantInstanceImpl armorStandInstance = new NMSGiantInstanceImpl(player.getLocation(), null);
+                    NMSArmorStandInstanceImpl armorStandInstance = new NMSArmorStandInstanceImpl(player.getLocation(), null);
                     armorStandInstance.getPacketHandler().setRenderer(new EntityRendererPlayer(armorStandInstance.getBukkitEntity()));
                     armorStandInstance.asAnimator();
-                    armorStandInstance.upsideDown();
                     armorStandInstance.setEquipment(new EntityEquipmentBuilderImpl().
-                            setItemInHand(ItemBuilder.of(Material.ENDER_CHEST))
+                            setItemInHand(ItemBuilder.of(Material.DIAMOND_PICKAXE))
                     );
                     Location location = player.getLocation();
                     HandRotationAnimation handRotationAnimation = new HandRotationAnimation(armorStandInstance);
                     Scheduler.sync().runRepeatingTask(1, 1)
-                            .plugin(plugin)
+                            .plugin(NMSLib.getPlugin())
                             .handleThenBuild(() -> {
                                 armorStandInstance.tick();
                                 handRotationAnimation.teleportWithHolograms(location);
@@ -57,6 +57,15 @@ public class Command {
                                 .setTimerActive(true)
                                 .handle(commandExecuted -> {
                                     Player player = (Player) commandExecuted.getSender();
+                            ParticleBuilder.blockDustParticleBuilder()
+                                    .location(player.getLocation())
+                                    .speed(0.15f)
+                                    .item(ItemBuilder.of(Material.GOLD_BLOCK).build())
+                                    .offset(1, 1, 1)
+                                    .amount(100)
+                                    .build()
+                                    .getSender()
+                                    .sendTo(player);
 
                         })
                 });

@@ -17,11 +17,19 @@ public class ColorParticlesImpl
     public void build() {
         if (location == null)
             throw new IllegalStateException("A location must be specified in order to build a particle.");
-        this.packet = new PacketPlayOutWorldParticles(new ParticleParamRedstone(this.rgb.getNMSRed(), this.rgb.getNMSGreen(), this.rgb.getNMSBlue(), size),
-                false, this.location[0], this.location[1], this.location[2],
-                this.rgb.getNMSRed(), this.rgb.getNMSGreen(), rgb.getNMSBlue(),
-                speed, amount
-        );
+
+        this.packet = (offset != null) ?
+                new PacketPlayOutWorldParticles(new ParticleParamRedstone(this.rgb.getNMSRed(), this.rgb.getNMSGreen(), this.rgb.getNMSBlue(), size),
+                        false, this.location[0], this.location[1], this.location[2],
+                        offset[0], offset[1], offset[2],
+                        speed, amount
+                )
+                :
+                new PacketPlayOutWorldParticles(new ParticleParamRedstone(this.rgb.getNMSRed(), this.rgb.getNMSGreen(), this.rgb.getNMSBlue(), size),
+                        false, this.location[0], this.location[1], this.location[2],
+                        0, 0, 0,
+                        speed, amount
+                );
     }
 
     @Override

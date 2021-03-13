@@ -1,10 +1,7 @@
 package com.acrylic.acrylicnmslib;
 
-import com.acrylic.acrylicnmslib.plugin.AcrylicNMSPlugin;
 import com.acrylic.universal.Universal;
 import com.acrylic.universalnms.NMSLib;
-import com.acrylic.universalnms.factory.NMSAbstractFactory;
-import com.acrylic.universalnms.nmsentityregistry.AbstractNMSEntityRegistry;
 import com.acrylic.version_1_8_nms.factory.NMSAbstractFactoryImpl;
 import com.acrylic.version_1_8_nms.nmsentityregistry.NMSEntityRegistryImpl;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -13,12 +10,10 @@ import org.jetbrains.annotations.NotNull;
 public final class AcrylicNMSLib
         extends JavaPlugin {
 
-    private static JavaPlugin plugin;
-
     @Override
     public void onEnable() {
         NMSLib.setAcrylicNMSPlugin(new NMSLib());
-        plugin = this;
+        NMSLib.setPlugin(this);
         // Plugin startup logic
         Command.createCommand();
         loadByVersion();
@@ -45,11 +40,6 @@ public final class AcrylicNMSLib
                 throw new IllegalStateException("1." + version + " is not supported.");
         }
         nmsLib.getNMSEntityRegistry().registerDefaults();
-    }
-
-    @NotNull
-    public static JavaPlugin getPlugin() {
-        return plugin;
     }
 
 }

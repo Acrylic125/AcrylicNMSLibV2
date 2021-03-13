@@ -73,14 +73,24 @@ public class LivingEntityPacketHandlerImpl implements LivingEntityPacketHandler 
 
     @Override
     public void displayEntityToPlayer(Player player) {
-        EntityLiving entityLiving = entityInstance.getNMSEntity();
-        entitySpawnPacket.apply(entityLiving);
-        entityMetadataPacket.apply(entityLiving);
+        updatePackets();
         displaySender.sendTo(player);
     }
 
     @Override
     public void hideEntityFromPlayer(Player player) {
         entityDestroyPacket.getSender().sendTo(player);
+    }
+
+    @Override
+    public void updatePackets() {
+        EntityLiving entityLiving = entityInstance.getNMSEntity();
+        entitySpawnPacket.apply(entityLiving);
+        entityMetadataPacket.apply(entityLiving);
+    }
+
+    @Override
+    public void resendPackets() {
+        displaySender.sendToAllByRenderer(getRenderer());
     }
 }

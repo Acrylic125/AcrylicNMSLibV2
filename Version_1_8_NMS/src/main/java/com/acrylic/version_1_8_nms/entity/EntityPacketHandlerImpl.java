@@ -59,12 +59,22 @@ public class EntityPacketHandlerImpl implements EntityPacketHandler {
 
     @Override
     public void displayEntityToPlayer(Player player) {
-        entitySpawnPacket.apply(getEntityInstance().getNMSEntity());
+        updatePackets();
         entitySpawnPacket.getSender().sendTo(player);
     }
 
     @Override
     public void hideEntityFromPlayer(Player player) {
         entityDestroyPacket.getSender().sendTo(player);
+    }
+
+    @Override
+    public void updatePackets() {
+        entitySpawnPacket.apply(getEntityInstance().getNMSEntity());
+    }
+
+    @Override
+    public void resendPackets() {
+        entitySpawnPacket.getSender().sendToAllByRenderer(getRenderer());
     }
 }

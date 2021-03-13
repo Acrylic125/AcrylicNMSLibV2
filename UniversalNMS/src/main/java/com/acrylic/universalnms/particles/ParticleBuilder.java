@@ -1,5 +1,6 @@
 package com.acrylic.universalnms.particles;
 
+import com.acrylic.universal.items.AbstractItemBuilder;
 import com.acrylic.universalnms.NMSLib;
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import org.bukkit.Location;
@@ -130,6 +131,10 @@ public abstract class ParticleBuilder<B extends ParticleBuilder<B>> {
             this.particles = particles;
         }
 
+        public ItemParticleBuilder item(AbstractItemBuilder itemBuilder) {
+            return item(itemBuilder.build());
+        }
+
         public ItemParticleBuilder item(ItemStack item) {
             this.particles.setItem(item);
             return this;
@@ -161,6 +166,11 @@ public abstract class ParticleBuilder<B extends ParticleBuilder<B>> {
 
         private ColorParticleBuilder(ColorParticles particles) {
             this.particles = particles;
+        }
+
+        public ColorParticleBuilder size(float size) {
+            this.particles.setSize(size);
+            return this;
         }
 
         public ColorParticleBuilder rgb(RGB rgb) {

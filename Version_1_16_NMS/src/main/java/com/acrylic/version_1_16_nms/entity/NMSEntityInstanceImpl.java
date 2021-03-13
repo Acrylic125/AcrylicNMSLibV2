@@ -2,10 +2,9 @@ package com.acrylic.version_1_16_nms.entity;
 
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universalnms.entity.NMSEntityInstance;
-import net.minecraft.server.v1_16_R3.Entity;
-import net.minecraft.server.v1_16_R3.EnumMoveType;
-import net.minecraft.server.v1_16_R3.IChatBaseComponent;
-import net.minecraft.server.v1_16_R3.Vec3D;
+import net.minecraft.server.v1_16_R3.*;
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_16_R3.util.CraftChatMessage;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,7 +17,7 @@ public abstract class NMSEntityInstanceImpl
     @Override
     public void setName(String s) {
         if (s != null)
-            getNMSEntity().setCustomName(IChatBaseComponent.ChatSerializer.a(ChatUtils.get(s)));
+            getNMSEntity().setCustomName(new ChatComponentText(ChatUtils.get(s)));
     }
 
     @Override
