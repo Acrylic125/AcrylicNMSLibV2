@@ -55,9 +55,10 @@ public class LivingEntityPacketHandlerImpl implements LivingEntityPacketHandler 
         EntityPacketHandler.initializeRenderer(this);
     }
 
-    @NotNull
     @Override
     public PlayerCheckableRenderer getRenderer() {
+        if (renderer == null)
+            EntityPacketHandler.throwNoRendererError();
         return renderer;
     }
 
