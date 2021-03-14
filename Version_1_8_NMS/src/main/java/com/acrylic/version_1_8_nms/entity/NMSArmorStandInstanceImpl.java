@@ -3,6 +3,7 @@ package com.acrylic.version_1_8_nms.entity;
 import com.acrylic.universalnms.entity.NMSArmorStandInstance;
 import com.acrylic.universalnms.entity.wrapper.NMSLivingEntityWrapper;
 import com.acrylic.universalnms.entityai.EntityAI;
+import com.acrylic.universalnms.renderer.PlayerCheckableRenderer;
 import com.acrylic.universalnms.renderer.Renderer;
 import com.acrylic.version_1_8_nms.NMSUtils;
 import com.acrylic.version_1_8_nms.entity.wrapper.ArmorStandWrapper;
@@ -22,12 +23,12 @@ public class NMSArmorStandInstanceImpl
     private final ArmorStandWrapper armorStand;
     private final LivingEntityPacketHandlerImpl entityPacketHandler;
 
-    public NMSArmorStandInstanceImpl(@NotNull Location location, @Nullable Renderer<Player> renderer) {
+    public NMSArmorStandInstanceImpl(@NotNull Location location, @Nullable PlayerCheckableRenderer renderer) {
         this.armorStand = new ArmorStandWrapper(this, NMSUtils.convertToNMSWorld(location.getWorld()), location.getX(), location.getY(), location.getZ());
         this.entityPacketHandler = new LivingEntityPacketHandlerImpl(this, renderer);
     }
 
-    public NMSArmorStandInstanceImpl(@NotNull ArmorStandWrapper armorStand, @Nullable Renderer<Player> renderer) {
+    public NMSArmorStandInstanceImpl(@NotNull ArmorStandWrapper armorStand, @Nullable PlayerCheckableRenderer renderer) {
         this.armorStand = armorStand;
         this.entityPacketHandler = new LivingEntityPacketHandlerImpl(this, renderer);
     }

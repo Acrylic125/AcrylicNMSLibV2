@@ -2,6 +2,7 @@ package com.acrylic.universalnms.entity;
 
 import com.acrylic.universalnms.packets.types.EntitySpawnPacket;
 import com.acrylic.universalnms.packets.types.TeleportPacket;
+import com.acrylic.universalnms.renderer.PlayerCheckableRenderer;
 import com.acrylic.universalnms.renderer.Renderer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -12,10 +13,10 @@ public interface EntityPacketHandler {
     @NotNull
     NMSEntityInstance getEntityInstance();
 
-    void setRenderer(@NotNull Renderer<Player> renderer);
+    void setRenderer(@NotNull PlayerCheckableRenderer renderer);
 
     @NotNull
-    Renderer<Player> getRenderer();
+    PlayerCheckableRenderer getRenderer();
 
     @NotNull
     EntitySpawnPacket getSpawnPacket();
@@ -28,7 +29,7 @@ public interface EntityPacketHandler {
     void hideEntityFromPlayer(Player player);
 
     static void initializeRenderer(EntityPacketHandler entityPacketHandler) {
-        Renderer<Player> renderer = entityPacketHandler.getRenderer();
+        PlayerCheckableRenderer renderer = entityPacketHandler.getRenderer();
         renderer.setOnInitialize(player -> entityPacketHandler.displayEntityToPlayer(player));
         renderer.setOnDeinitialize(entityPacketHandler::hideEntityFromPlayer);
     }

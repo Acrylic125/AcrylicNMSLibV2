@@ -4,4 +4,6 @@ public interface NMSAbstractFactory {
 
     NMSUtilityFactory getNMSUtilsFactory();
 
+    PacketFactory getPacketFactory();
+
 }

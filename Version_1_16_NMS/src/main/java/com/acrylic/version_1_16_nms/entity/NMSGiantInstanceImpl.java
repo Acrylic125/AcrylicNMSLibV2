@@ -4,6 +4,7 @@ import com.acrylic.universalnms.entity.LivingEntityPacketHandler;
 import com.acrylic.universalnms.entity.NMSGiantInstance;
 import com.acrylic.universalnms.entity.wrapper.NMSLivingEntityWrapper;
 import com.acrylic.universalnms.entityai.EntityAI;
+import com.acrylic.universalnms.renderer.PlayerCheckableRenderer;
 import com.acrylic.universalnms.renderer.Renderer;
 import com.acrylic.version_1_16_nms.NMSUtils;
 import com.acrylic.version_1_16_nms.entity.wrapper.GiantWrapper;
@@ -22,13 +23,13 @@ public class NMSGiantInstanceImpl
     private final GiantWrapper giant;
     private final LivingEntityPacketHandlerImpl entityPacketHandler;
 
-    public NMSGiantInstanceImpl(@NotNull Location location, @Nullable Renderer<Player> renderer) {
+    public NMSGiantInstanceImpl(@NotNull Location location, @Nullable PlayerCheckableRenderer renderer) {
         this.giant = new GiantWrapper(this, EntityTypes.GIANT, NMSUtils.convertToNMSWorld(location.getWorld()));
         giant.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
         this.entityPacketHandler = new LivingEntityPacketHandlerImpl(this, renderer);
     }
 
-    public NMSGiantInstanceImpl(@NotNull GiantWrapper giant, @Nullable Renderer<Player> renderer) {
+    public NMSGiantInstanceImpl(@NotNull GiantWrapper giant, @Nullable PlayerCheckableRenderer renderer) {
         this.giant = giant;
         this.entityPacketHandler = new LivingEntityPacketHandlerImpl(this, renderer);
     }

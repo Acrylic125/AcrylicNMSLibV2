@@ -12,5 +12,4 @@ public interface LivingEntityPacketHandler extends EntityPacketHandler {
     @NotNull
     EntityEquipmentPackets getEquipmentPackets();
 
-
 }

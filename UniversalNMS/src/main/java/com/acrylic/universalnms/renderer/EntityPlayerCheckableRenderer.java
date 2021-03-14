@@ -6,16 +6,16 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 import java.util.UUID;
 
-public class EntityRendererPlayer extends RangedRendererPlayer {
+public class EntityPlayerCheckableRenderer extends RangedPlayerCheckableRenderer {
 
     private final Entity entity;
 
-    public EntityRendererPlayer(@NotNull Entity entity) {
+    public EntityPlayerCheckableRenderer(@NotNull Entity entity) {
         super();
         this.entity = entity;
     }
 
-    public EntityRendererPlayer(@NotNull Entity entity, @NotNull Collection<UUID> rendered) {
+    public EntityPlayerCheckableRenderer(@NotNull Entity entity, @NotNull Collection<UUID> rendered) {
         super(rendered);
         this.entity = entity;
     }

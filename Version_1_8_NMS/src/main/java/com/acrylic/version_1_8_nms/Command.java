@@ -1,24 +1,15 @@
 package com.acrylic.version_1_8_nms;
 
 import com.acrylic.universal.animations.rotational.HandRotationAnimation;
-import com.acrylic.universal.blocks.MCBlockData;
 import com.acrylic.universal.command.AbstractCommandBuilder;
 import com.acrylic.universal.command.AbstractCommandExecuted;
 import com.acrylic.universal.command.CommandBuilder;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.threads.Scheduler;
-import com.acrylic.universalnms.NMSLib;
-import com.acrylic.universalnms.nbt.NBTEntity;
-import com.acrylic.universalnms.nbt.NBTItem;
-import com.acrylic.universalnms.particles.ParticleBuilder;
-import com.acrylic.universalnms.renderer.EntityRendererPlayer;
-import com.acrylic.universalnms.worldexaminer.ChunkExaminer;
+import com.acrylic.universalnms.renderer.EntityPlayerCheckableRenderer;
 import com.acrylic.version_1_8.equipment.EntityEquipmentBuilderImpl;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import com.acrylic.version_1_8_nms.entity.NMSGiantInstanceImpl;
-import com.acrylic.version_1_8_nms.worldexaminer.ChunkExaminerImpl;
-import com.comphenix.protocol.wrappers.EnumWrappers;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -46,7 +37,7 @@ public class Command {
                 .handle(commandExecuted -> {
                     Player player = (Player) commandExecuted.getSender();
                     NMSGiantInstanceImpl armorStandInstance = new NMSGiantInstanceImpl(player.getLocation(), null);
-                    armorStandInstance.getPacketHandler().setRenderer(new EntityRendererPlayer(armorStandInstance.getBukkitEntity()));
+                    armorStandInstance.getPacketHandler().setRenderer(new EntityPlayerCheckableRenderer(armorStandInstance.getBukkitEntity()));
                     armorStandInstance.asAnimator();
                     armorStandInstance.upsideDown();
                     armorStandInstance.setEquipment(new EntityEquipmentBuilderImpl().

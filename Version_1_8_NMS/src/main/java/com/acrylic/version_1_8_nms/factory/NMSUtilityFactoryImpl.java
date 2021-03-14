@@ -1,12 +1,14 @@
 package com.acrylic.version_1_8_nms.factory;
 
 import com.acrylic.universalnms.factory.NMSUtilityFactory;
+import com.acrylic.universalnms.misc.BoundingBoxExaminer;
 import com.acrylic.universalnms.nbt.NBTEntity;
 import com.acrylic.universalnms.nbt.NBTItem;
 import com.acrylic.universalnms.nbt.NBTTileEntity;
 import com.acrylic.universalnms.particles.ColorParticles;
 import com.acrylic.universalnms.particles.ItemParticles;
 import com.acrylic.universalnms.particles.Particles;
+import com.acrylic.universalnms.worldexaminer.BlockAnalyzer;
 import com.acrylic.universalnms.worldexaminer.ChunkExaminer;
 import com.acrylic.version_1_8_nms.nbt.NBTEntityImpl;
 import com.acrylic.version_1_8_nms.nbt.NBTItemImpl;
@@ -14,9 +16,12 @@ import com.acrylic.version_1_8_nms.nbt.NBTTileEntityImpl;
 import com.acrylic.version_1_8_nms.partivles.ColorParticlesImpl;
 import com.acrylic.version_1_8_nms.partivles.ItemParticlesImpl;
 import com.acrylic.version_1_8_nms.partivles.ParticlesImpl;
+import com.acrylic.version_1_8_nms.worldexaminer.BlockAnalyzerImpl;
+import com.acrylic.version_1_8_nms.worldexaminer.BoundingBoxExaminerImpl;
 import com.acrylic.version_1_8_nms.worldexaminer.ChunkExaminerImpl;
 import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
@@ -35,17 +40,17 @@ public final class NMSUtilityFactoryImpl implements NMSUtilityFactory {
     }
 
     @Override
-    public NBTItem getNBTItem(@NotNull ItemStack item, boolean saveTag) {
+    public NBTItem getNewNBTItem(@NotNull ItemStack item, boolean saveTag) {
         return new NBTItemImpl(item, saveTag);
     }
 
     @Override
-    public NBTEntity getNBTEntity(@NotNull Entity entity) {
+    public NBTEntity getNewNBTEntity(@NotNull Entity entity) {
         return new NBTEntityImpl(entity);
     }
 
     @Override
-    public NBTTileEntity getNBTTileEntity(@NotNull Block entity) {
+    public NBTTileEntity getNewNBTTileEntity(@NotNull Block entity) {
         return new NBTTileEntityImpl(entity);
     }
 
@@ -63,4 +68,16 @@ public final class NMSUtilityFactoryImpl implements NMSUtilityFactory {
     public ItemParticles getNewItemParticles() {
         return new ItemParticlesImpl();
     }
+
+    @Override
+    public BlockAnalyzer getNewBlockAnalyzer(@NotNull Block block) {
+         return new BlockAnalyzerImpl(block);
+    }
+
+    @Override
+    public BoundingBoxExaminer getNewBoundingBoxExaminer() {
+        return new BoundingBoxExaminerImpl();
+    }
+
+
 }

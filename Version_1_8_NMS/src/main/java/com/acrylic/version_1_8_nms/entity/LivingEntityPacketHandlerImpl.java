@@ -4,6 +4,7 @@ import com.acrylic.universalnms.entity.EntityPacketHandler;
 import com.acrylic.universalnms.entity.LivingEntityPacketHandler;
 import com.acrylic.universalnms.packets.types.EntitySpawnPacket;
 import com.acrylic.universalnms.packets.types.TeleportPacket;
+import com.acrylic.universalnms.renderer.PlayerCheckableRenderer;
 import com.acrylic.universalnms.renderer.Renderer;
 import com.acrylic.universalnms.send.BatchSender;
 import com.acrylic.version_1_8_nms.packets.types.*;
@@ -21,9 +22,9 @@ public class LivingEntityPacketHandlerImpl implements LivingEntityPacketHandler 
     private final EntityEquipmentPacketsImpl equipmentPackets = new EntityEquipmentPacketsImpl();
     private final EntityMetadataPacketImpl entityMetadataPacket = new EntityMetadataPacketImpl();
     private final BatchSender displaySender = new BatchSender();
-    private Renderer<Player> renderer;
+    private PlayerCheckableRenderer renderer;
 
-    public LivingEntityPacketHandlerImpl(@NotNull NMSLivingEntityInstanceImpl entityInstance, @Nullable Renderer<Player> renderer) {
+    public LivingEntityPacketHandlerImpl(@NotNull NMSLivingEntityInstanceImpl entityInstance, @Nullable PlayerCheckableRenderer renderer) {
         this.entityInstance = entityInstance;
         this.renderer = renderer;
         if (renderer != null)
@@ -48,14 +49,14 @@ public class LivingEntityPacketHandlerImpl implements LivingEntityPacketHandler 
     }
 
     @Override
-    public void setRenderer(@NotNull Renderer<Player> renderer) {
+    public void setRenderer(@NotNull PlayerCheckableRenderer renderer) {
         this.renderer = renderer;
         EntityPacketHandler.initializeRenderer(this);
     }
 
     @NotNull
     @Override
-    public Renderer<Player> getRenderer() {
+    public PlayerCheckableRenderer getRenderer() {
         return renderer;
     }
 

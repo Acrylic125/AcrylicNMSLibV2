@@ -9,11 +9,9 @@ import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.particles.ParticleBuilder;
-import com.acrylic.universalnms.renderer.EntityRendererPlayer;
+import com.acrylic.universalnms.renderer.EntityPlayerCheckableRenderer;
 import com.acrylic.version_1_16_nms.entity.NMSArmorStandInstanceImpl;
-import com.acrylic.version_1_16_nms.entity.NMSGiantInstanceImpl;
 import com.acrylic.version_1_8.items.ItemBuilder;
-import com.comphenix.protocol.wrappers.EnumWrappers;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -38,7 +36,7 @@ public class Command {
                 .handle(commandExecuted -> {
                     Player player = (Player) commandExecuted.getSender();
                     NMSArmorStandInstanceImpl armorStandInstance = new NMSArmorStandInstanceImpl(player.getLocation(), null);
-                    armorStandInstance.getPacketHandler().setRenderer(new EntityRendererPlayer(armorStandInstance.getBukkitEntity()));
+                    armorStandInstance.getPacketHandler().setRenderer(new EntityPlayerCheckableRenderer(armorStandInstance.getBukkitEntity()));
                     armorStandInstance.asAnimator();
                     armorStandInstance.setEquipment(new EntityEquipmentBuilderImpl().
                             setItemInHand(ItemBuilder.of(Material.DIAMOND_PICKAXE))
