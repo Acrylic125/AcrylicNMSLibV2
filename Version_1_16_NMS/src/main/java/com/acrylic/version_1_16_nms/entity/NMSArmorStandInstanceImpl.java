@@ -4,14 +4,12 @@ import com.acrylic.universalnms.entity.NMSArmorStandInstance;
 import com.acrylic.universalnms.entity.wrapper.NMSLivingEntityWrapper;
 import com.acrylic.universalnms.entityai.EntityAI;
 import com.acrylic.universalnms.renderer.PlayerCheckableRenderer;
-import com.acrylic.universalnms.renderer.Renderer;
 import com.acrylic.version_1_16_nms.NMSUtils;
 import com.acrylic.version_1_16_nms.entity.wrapper.ArmorStandWrapper;
 import net.minecraft.server.v1_16_R3.EntityArmorStand;
 import net.minecraft.server.v1_16_R3.Vector3f;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Player;
 import org.bukkit.util.EulerAngle;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -87,6 +85,15 @@ public class NMSArmorStandInstanceImpl
     @Override
     public void setMarker(boolean b) {
         armorStand.setMarker(b);
+    }
+
+    public void setHeadPose(Vector3f vector3f) {
+        armorStand.setHeadPose(vector3f);
+    }
+
+    @Override
+    public void setHeadPose(@NotNull EulerAngle eulerAngle) {
+        setHeadPose(new Vector3f((float) Math.toDegrees(eulerAngle.getX()), (float) Math.toDegrees(eulerAngle.getY()), (float) Math.toDegrees(eulerAngle.getZ())));
     }
 
     public void setRightArmPose(Vector3f vector3f) {

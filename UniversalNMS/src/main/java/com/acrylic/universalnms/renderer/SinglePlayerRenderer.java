@@ -5,11 +5,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
-public class SinglePlayerCheckableRenderer implements Renderer<Player> {
+public class SinglePlayerRenderer implements Renderer<Player> {
 
     private final Player player;
 
-    public SinglePlayerCheckableRenderer(@NotNull Player player) {
+    public SinglePlayerRenderer(@NotNull Player player) {
         this.player = player;
     }
 

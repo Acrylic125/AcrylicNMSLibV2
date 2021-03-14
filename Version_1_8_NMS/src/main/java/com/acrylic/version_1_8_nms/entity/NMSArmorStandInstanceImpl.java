@@ -89,6 +89,15 @@ public class NMSArmorStandInstanceImpl
         armorStand.n(b);
     }
 
+    public void setHeadPose(Vector3f vector3f) {
+        armorStand.setHeadPose(vector3f);
+    }
+
+    @Override
+    public void setHeadPose(@NotNull EulerAngle eulerAngle) {
+        setHeadPose(new Vector3f((float) Math.toDegrees(eulerAngle.getX()), (float) Math.toDegrees(eulerAngle.getY()), (float) Math.toDegrees(eulerAngle.getZ())));
+    }
+
     public void setRightArmPose(Vector3f vector3f) {
         armorStand.setRightArmPose(vector3f);
     }

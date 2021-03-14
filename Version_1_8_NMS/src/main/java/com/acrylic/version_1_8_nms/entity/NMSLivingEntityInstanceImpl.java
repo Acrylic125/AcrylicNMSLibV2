@@ -89,7 +89,7 @@ public abstract class NMSLivingEntityInstanceImpl
     }
 
     @Override
-    public double getMaxHealth() {
+    public float getMaxHealth() {
         return getNMSEntity().getMaxHealth();
     }
 
