@@ -12,9 +12,13 @@ public interface NBTCompound extends Configurable {
 
     NBTCompound set(@NotNull String var, byte val);
 
+    NBTCompound set(@NotNull String var, byte[] val);
+
     NBTCompound set(@NotNull String var, short val);
 
     NBTCompound set(@NotNull String var, int val);
+
+    NBTCompound set(@NotNull String var, int[] val);
 
     NBTCompound set(@NotNull String var, long val);
 

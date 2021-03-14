@@ -13,5 +13,7 @@ public interface PlayerCheckableRenderer extends Renderer<Player> {
 
     void setOnDeinitialize(@NotNull Consumer<Player> action);
 
+    void initializeAll();
 
+    void deinitializeAll();
 }

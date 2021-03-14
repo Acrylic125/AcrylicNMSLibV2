@@ -25,4 +25,9 @@ public class EntityPlayerCheckableRenderer extends RangedPlayerCheckableRenderer
         setLocation(entity.getLocation());
         super.doChecks();
     }
+
+    @Override
+    public EntityPlayerCheckableRenderer clone() {
+        return new EntityPlayerCheckableRenderer(entity, getRendered());
+    }
 }

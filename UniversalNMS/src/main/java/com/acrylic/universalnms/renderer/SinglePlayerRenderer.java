@@ -21,4 +21,9 @@ public class SinglePlayerRenderer implements Renderer<Player> {
     public void runForAllRendered(@NotNull Consumer<Player> action) {
         action.accept(player);
     }
+
+    @Override
+    public SinglePlayerRenderer clone() {
+        return new SinglePlayerRenderer(player);
+    }
 }

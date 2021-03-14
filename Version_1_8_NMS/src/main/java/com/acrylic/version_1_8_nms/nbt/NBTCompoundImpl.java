@@ -59,6 +59,12 @@ public class NBTCompoundImpl implements NBTCompound {
     }
 
     @Override
+    public NBTCompound set(@NotNull String var, byte[] val) {
+        tagCompound.setByteArray(var, val);
+        return this;
+    }
+
+    @Override
     public NBTCompoundImpl set(@NotNull String var, short val) {
         tagCompound.setShort(var, val);
         return this;
@@ -67,6 +73,12 @@ public class NBTCompoundImpl implements NBTCompound {
     @Override
     public NBTCompound set(@NotNull String var, int val) {
         tagCompound.setInt(var, val);
+        return this;
+    }
+
+    @Override
+    public NBTCompound set(@NotNull String var, int[] val) {
+        tagCompound.setIntArray(var, val);
         return this;
     }
 
@@ -102,12 +114,14 @@ public class NBTCompoundImpl implements NBTCompound {
 
     @Override
     public NBTCompound setArray(@NotNull String var, byte... val) {
-        return null;
+        tagCompound.setByteArray(var, val);
+        return this;
     }
 
     @Override
     public NBTCompound setArray(@NotNull String var, int... val) {
-        return null;
+        tagCompound.setIntArray(var, val);
+        return this;
     }
 
     @Override

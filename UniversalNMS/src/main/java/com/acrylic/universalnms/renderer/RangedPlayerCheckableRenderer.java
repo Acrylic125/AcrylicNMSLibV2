@@ -86,6 +86,16 @@ public class RangedPlayerCheckableRenderer implements PlayerCheckableRenderer {
     }
 
     @Override
+    public void initializeAll() {
+        runForAllRendered(initialize);
+    }
+
+    @Override
+    public void deinitializeAll() {
+        runForAllRendered(deinitialize);
+    }
+
+    @Override
     public void runForAllRendered(@NotNull Consumer<Player> action) {
         for (UUID uuid : rendered) {
             Player player = Bukkit.getPlayer(uuid);
@@ -96,6 +106,11 @@ public class RangedPlayerCheckableRenderer implements PlayerCheckableRenderer {
 
     private boolean isPlayerValid(@Nullable Player player) {
         return player != null && player.isOnline() && player.getLocation().distanceSquared(location) <= (range * range);
+    }
+
+    @Override
+    public RangedPlayerCheckableRenderer clone() {
+        return new RangedPlayerCheckableRenderer(rendered);
     }
 
 }
