@@ -1,7 +1,9 @@
 package com.acrylic.universalnms;
 
-import com.acrylic.universal.Universal;
 import com.acrylic.universalnms.factory.NMSAbstractFactory;
+import com.acrylic.universalnms.factory.NMSEntityFactory;
+import com.acrylic.universalnms.factory.NMSUtilityFactory;
+import com.acrylic.universalnms.factory.PacketFactory;
 import com.acrylic.universalnms.nmsentityregistry.AbstractNMSEntityRegistry;
 import com.acrylic.universalnms.plugin.AcrylicNMSPlugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -54,4 +56,18 @@ public class NMSLib implements AcrylicNMSPlugin {
     public static JavaPlugin getPlugin() {
         return plugin;
     }
+
+    //Static helper methods to cut down on code length
+    public static NMSUtilityFactory getNMSUtilityFactory() {
+        return getFactory().getNMSUtilsFactory();
+    }
+
+    public static PacketFactory getPacketFactory() {
+        return getFactory().getPacketFactory();
+    }
+
+    public static NMSEntityFactory getEntityFactory() {
+        return getFactory().getNMSEntityFactory();
+    }
+
 }
