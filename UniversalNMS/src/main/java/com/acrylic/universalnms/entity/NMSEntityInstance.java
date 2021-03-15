@@ -4,6 +4,7 @@ import com.acrylic.universal.entity.EntityInstance;
 import com.acrylic.universal.utils.LocationUtils;
 import com.acrylic.universalnms.entity.wrapper.NMSEntityWrapper;
 import com.acrylic.universalnms.entityai.EntityAI;
+import com.acrylic.universalnms.packets.types.EntityDestroyPacket;
 import com.acrylic.universalnms.packets.types.TeleportPacket;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -57,4 +58,13 @@ public interface NMSEntityInstance extends EntityInstance {
         teleportPacket.getSender().sendToAllByRenderer(displayer.getRenderer());
     }
 
+    @Override
+    default void delete() {
+        Entity entity = getBukkitEntity();
+        entity.remove();
+        removeFromWorld();
+        EntityDestroyPacket destroyPacket = getPacketHandler().getDestroyPacket();
+        destroyPacket.apply(entity);
+        destroyPacket.getSender().sendToAllOnline();
+    }
 }

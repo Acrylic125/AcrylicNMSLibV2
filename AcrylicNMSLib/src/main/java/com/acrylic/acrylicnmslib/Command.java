@@ -12,6 +12,7 @@ import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.entity.NMSArmorStandInstance;
 import com.acrylic.universalnms.packets.types.BlockCrackPacket;
 import com.acrylic.universalnms.packets.types.SoundPacket;
+import com.acrylic.universalnms.pathfinder.PathfinderGenerator;
 import com.acrylic.universalnms.renderer.EntityPlayerCheckableRenderer;
 import com.acrylic.version_1_16_nms.entity.NMSArmorStandInstanceImpl;
 import com.acrylic.version_1_8.items.ItemBuilder;
@@ -44,8 +45,9 @@ public class Command {
                 .filter(AbstractCommandExecuted::isPlayer)
                 .handle(commandExecuted -> {
                     Player player = (Player) commandExecuted.getSender();
-                    Bukkit.broadcastMessage(NMSLib.getFactory().getNMSUtilsFactory().getNewBoundingBoxExaminer(player) + "");
-                    Bukkit.broadcastMessage(NMSLib.getFactory().getNMSUtilsFactory().getNewBoundingBoxExaminer(player.getLocation()) + "");
+                    PathfinderGenerator.JPS_PATHFINDER_GENERATOR.generatePathfinder(player.getLocation(), player.getLocation().add(10, 0, 10)).pathfind();
+                    //Bukkit.broadcastMessage(NMSLib.getFactory().getNMSUtilsFactory().getNewBoundingBoxExaminer(player) + "");
+                    //Bukkit.broadcastMessage(NMSLib.getFactory().getNMSUtilsFactory().getNewBoundingBoxExaminer(player.getLocation()) + "");
                 });
     }
 

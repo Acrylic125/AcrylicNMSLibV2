@@ -1,6 +1,7 @@
 package com.acrylic.version_1_8_nms.entity;
 
 import com.acrylic.universalnms.entity.EntityPacketHandler;
+import com.acrylic.universalnms.packets.types.EntityDestroyPacket;
 import com.acrylic.universalnms.packets.types.EntitySpawnPacket;
 import com.acrylic.universalnms.packets.types.TeleportPacket;
 import com.acrylic.universalnms.renderer.PlayerCheckableRenderer;
@@ -78,5 +79,10 @@ public class EntityPacketHandlerImpl implements EntityPacketHandler {
     @Override
     public void resendPackets() {
         entitySpawnPacket.getSender().sendToAllByRenderer(getRenderer());
+    }
+
+    @Override
+    public EntityDestroyPacket getDestroyPacket() {
+        return entityDestroyPacket;
     }
 }

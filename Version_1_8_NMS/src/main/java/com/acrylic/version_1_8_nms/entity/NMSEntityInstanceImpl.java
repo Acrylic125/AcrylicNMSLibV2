@@ -1,5 +1,6 @@
 package com.acrylic.version_1_8_nms.entity;
 
+import com.acrylic.universal.entity.EntityInstance;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universalnms.entity.EntityPacketHandler;
 import com.acrylic.universalnms.entity.NMSEntityInstance;

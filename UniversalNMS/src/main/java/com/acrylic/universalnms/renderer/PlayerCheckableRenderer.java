@@ -16,4 +16,7 @@ public interface PlayerCheckableRenderer extends Renderer<Player> {
     void initializeAll();
 
     void deinitializeAll();
+
+    @Override
+    PlayerCheckableRenderer clone();
 }

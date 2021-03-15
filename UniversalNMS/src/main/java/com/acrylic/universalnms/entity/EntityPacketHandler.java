@@ -1,5 +1,6 @@
 package com.acrylic.universalnms.entity;
 
+import com.acrylic.universalnms.packets.types.EntityDestroyPacket;
 import com.acrylic.universalnms.packets.types.EntitySpawnPacket;
 import com.acrylic.universalnms.packets.types.TeleportPacket;
 import com.acrylic.universalnms.renderer.EntityPlayerCheckableRenderer;
@@ -18,9 +19,19 @@ public interface EntityPacketHandler {
 
     PlayerCheckableRenderer getRenderer();
 
-    default void useEntityPlayerCheckableRenderer() {
-        setRenderer(new EntityPlayerCheckableRenderer(getEntityInstance().getBukkitEntity()));
+    default EntityPlayerCheckableRenderer useEntityPlayerCheckableRenderer() {
+        EntityPlayerCheckableRenderer renderer = new EntityPlayerCheckableRenderer(getEntityInstance().getBukkitEntity());
+        setRenderer(renderer);
+        return renderer;
     }
+
+    default EntityPlayerCheckableRenderer useEntityPlayerCheckableRenderer(double range) {
+        EntityPlayerCheckableRenderer renderer = useEntityPlayerCheckableRenderer();
+        renderer.setRange(range);
+        return renderer;
+    }
+
+    EntityDestroyPacket getDestroyPacket();
 
     @NotNull
     EntitySpawnPacket getSpawnPacket();

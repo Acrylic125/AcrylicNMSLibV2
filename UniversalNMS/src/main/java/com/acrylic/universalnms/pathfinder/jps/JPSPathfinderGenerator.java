@@ -1,9 +1,8 @@
 package com.acrylic.universalnms.pathfinder.jps;
 
 import com.acrylic.universalnms.pathfinder.PathfinderGenerator;
+import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
-
-import javax.xml.stream.Location;
 
 public class JPSPathfinderGenerator implements PathfinderGenerator {
 
@@ -73,6 +72,6 @@ public class JPSPathfinderGenerator implements PathfinderGenerator {
     @NotNull
     @Override
     public JPSPathfinder generatePathfinder(@NotNull Location start, @NotNull Location end) {
-        return null;
+        return new JPSPathfinder(this, start, end);
     }
 }

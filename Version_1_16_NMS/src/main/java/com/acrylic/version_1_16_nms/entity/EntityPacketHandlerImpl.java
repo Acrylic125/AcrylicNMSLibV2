@@ -1,6 +1,7 @@
 package com.acrylic.version_1_16_nms.entity;
 
 import com.acrylic.universalnms.entity.EntityPacketHandler;
+import com.acrylic.universalnms.packets.types.EntityDestroyPacket;
 import com.acrylic.universalnms.packets.types.EntitySpawnPacket;
 import com.acrylic.universalnms.packets.types.TeleportPacket;
 import com.acrylic.universalnms.renderer.PlayerCheckableRenderer;
@@ -45,6 +46,11 @@ public class EntityPacketHandlerImpl implements EntityPacketHandler {
         if (renderer == null)
             EntityPacketHandler.throwNoRendererError();
         return renderer;
+    }
+
+    @Override
+    public EntityDestroyPacket getDestroyPacket() {
+        return entityDestroyPacket;
     }
 
     @NotNull

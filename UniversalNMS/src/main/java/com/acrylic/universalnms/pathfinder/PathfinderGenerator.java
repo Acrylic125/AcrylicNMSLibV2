@@ -1,8 +1,8 @@
 package com.acrylic.universalnms.pathfinder;
 
+import com.acrylic.universalnms.pathfinder.jps.JPSPathfinderGenerator;
+import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
-
-import javax.xml.stream.Location;
 
 /**
  * The path generator holds the configuration of the
@@ -13,6 +13,8 @@ import javax.xml.stream.Location;
  * @see Pathfinder
  */
 public interface PathfinderGenerator {
+
+    JPSPathfinderGenerator JPS_PATHFINDER_GENERATOR = new JPSPathfinderGenerator();
 
     double getMaximumSearchRange();
 
