@@ -2,3 +2,4 @@ name: AcrylicNMSLib
 version: ${project.version}
 main: com.acrylic.acrylicnmslib.AcrylicNMSLib
 api-version: 1.16
+

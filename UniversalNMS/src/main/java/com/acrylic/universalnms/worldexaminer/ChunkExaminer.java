@@ -35,7 +35,7 @@ public interface ChunkExaminer {
     }
 
     static int toRelativeChunkXZValue(int v) {
-        return (v >= 0) ? v % 16 : 16 - (Math.abs(v) % 16);
+        return v & 0xf;
     }
 
 }

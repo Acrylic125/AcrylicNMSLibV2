@@ -116,4 +116,26 @@ public class JPSBaseNode implements AStarPathNode {
         JPSBaseNode jpsBaseNode = (JPSBaseNode) obj;
         return jpsBaseNode.getX() == x && jpsBaseNode.getY() == y && jpsBaseNode.getZ() == z;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 19 * hash + (int) (Double.doubleToLongBits(this.x) ^ (Double.doubleToLongBits(this.x) >>> 32));
+        hash = 19 * hash + (int) (Double.doubleToLongBits(this.y) ^ (Double.doubleToLongBits(this.y) >>> 32));
+        hash = 19 * hash + (int) (Double.doubleToLongBits(this.z) ^ (Double.doubleToLongBits(this.z) >>> 32));
+        return hash;
+    }
+
+    @Override
+    public String toString() {
+        return "JPSBaseNode{" +
+                "parent=" + parent +
+                ", x=" + x +
+                ", y=" + y +
+                ", z=" + z +
+                ", gCost=" + gCost +
+                ", hCost=" + hCost +
+                ", pathNodes=" + pathNodes +
+                '}';
+    }
 }

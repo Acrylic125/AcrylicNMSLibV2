@@ -11,7 +11,10 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
@@ -55,19 +58,18 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
         if (searched)
             throw new IllegalStateException("The pathfinder has already started a searched.");
         searched = true;
-        final Set<JPSBaseNode> open = getOpen(), closed = getClosed();
-        closed.add(startNode);
+        addNodeToClosed(startNode);
         scanHorizontally(startNode, startNode.getX(), startNode.getY(), startNode.getZ(), 1, 0, 0);
         scanHorizontally(startNode, startNode.getX(), startNode.getY(), startNode.getZ(), -1, 0, 0);
         scanHorizontally(startNode, startNode.getX(), startNode.getY(), startNode.getZ(), 0, 1, 0);
         scanHorizontally(startNode, startNode.getX(), startNode.getY(), startNode.getZ(), 0, -1, 0);
-        while (completed && !open.isEmpty()) {
+        while (completed && !getOpen().isEmpty()) {
             JPSBaseNode currentNode = getCheapestNodeFromOpen();
             if (currentNode == null) {
                 completed = true;
             } else {
-                open.remove(currentNode);
-                closed.add(currentNode);
+                removeNodeFromOpen(currentNode);
+                addNodeToClosed(currentNode);
                 if (currentNode.equals(getEndNode())) {
                     Bukkit.broadcastMessage("Done");
                 } else if (currentNode instanceof JPSPathNode) {
@@ -89,12 +91,12 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
         return chunkExaminer.getBlockDataAt(x, y, z);
     }
 
-    private void addNode(JPSBaseNode newNode, JPSBaseNode parent) {
-        if (!getClosed().contains(newNode)) {
+    private void addNode(JPSBaseNode newNode, JPSBaseNode parent, boolean test) {
+        if (!isNodeInClosed(newNode)) {
             newNode.setParent(parent);
-            getOpen().add(newNode);
+            addNodeToOpen(newNode);
             for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                onlinePlayer.sendBlockChange(new Location(getWorld(), newNode.getX(), newNode.getY(), newNode.getZ()), Material.GOLD_BLOCK, (byte) 0);
+                onlinePlayer.sendBlockChange(new Location(getWorld(), newNode.getX(), newNode.getY(), newNode.getZ()), (test) ? Material.DIAMOND_BLOCK : Material.GOLD_BLOCK, (byte) 0);
             }
         }
     }
@@ -102,39 +104,46 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
     private void scanHorizontally(JPSBaseNode parent, int x, int y, int z, int facingX, int facingZ, int n) {
         x += facingX;
         z += facingZ;
-        Bukkit.broadcastMessage("x= " + x + " y= " + y + "  FACING : " + facingX + ", " + facingZ);
         //Only do recursion if the block is within bounds
         //(Within range of search range and within the recursion limit.
         if (n <= pathfinderGenerator.getRecursionMaximumHorizontal() &&
                 PathNode.calculateDistance2DSquared(x, z, startNode.getX(), startNode.getZ()) <= pathfinderGenerator.getMaximumSearchRange() * pathfinderGenerator.getMaximumSearchRange()) {
-            MCBlockData mcBlockData = getBlockDataAt(x, y, z);
+            MCBlockData mcBlockData = getBlockDataAt(x + facingX, y, z + facingZ);
             if (canPass(mcBlockData)) {
                 //Facing +-X
                 if (facingX != 0) {
                     if (!canPass(getBlockDataAt(x, y, z - 1)) &&
                             canPass(getBlockDataAt(x + facingX, y, z - 1))) {
-                        addNode(new JPSPathNode(getStartNode(), x, y, z, facingX, facingZ), parent);
+                      //  Bukkit.broadcastMessage("A " + x + " " + z);
+                        addNode(new JPSPathNode(getStartNode(), x, y, z, facingX, facingZ), parent, true);
                     } else if (!canPass(getBlockDataAt(x, y, z + 1)) &&
                             canPass(getBlockDataAt(x + facingX, y, z + 1))) {
-                        addNode(new JPSPathNode(getStartNode(), x, y, z, facingX, facingZ), parent);
+                      //  Bukkit.broadcastMessage("B " + x + " " + z);
+                        addNode(new JPSPathNode(getStartNode(), x, y, z, facingX, facingZ), parent, true);
                     } else {
                         //Scan
-                        scanHorizontally(parent, x, y, z, 0, 1, n + 1);
-                        scanHorizontally(parent, x, y, z, 0, -1, n + 1);
+                        if (canPass(getBlockDataAt(x, y, z + 1)))
+                            scanHorizontally(parent, x, y, z, 0, 1, n + 1);
+                        if (canPass(getBlockDataAt(x, y, z - 1)))
+                            scanHorizontally(parent, x, y, z, 0, -1, n + 1);
                         scanHorizontally(parent, x, y, z, facingX, facingZ, n + 1);
                     }
                 } //Facing +-Z
                 else if (facingZ != 0) {
                     if (!canPass(getBlockDataAt(x - 1, y, z)) &&
                             canPass(getBlockDataAt(x - 1, y, z + facingZ))) {
-                        addNode(new JPSPathNode(getStartNode(), x, y, z, facingX, facingZ), parent);
+                       // Bukkit.broadcastMessage("C " + x + " " + z);
+                        addNode(new JPSPathNode(getStartNode(), x, y, z, facingX, facingZ), parent, false);
                     } else if (!canPass(getBlockDataAt(x + 1, y, z)) &&
                             canPass(getBlockDataAt(x + 1, y, z + facingZ))) {
-                        addNode(new JPSPathNode(getStartNode(), x, y, z, facingX, facingZ), parent);
+                     //   Bukkit.broadcastMessage("D " + x + " " + z);
+                        addNode(new JPSPathNode(getStartNode(), x, y, z, facingX, facingZ), parent, false);
                     } else {
                         //Scan
-                        scanHorizontally(parent, x, y, z, 1, 0, n + 1);
-                        scanHorizontally(parent, x, y, z, -1, 0, n + 1);
+                        if (canPass(getBlockDataAt(x + 1, y, z)))
+                            scanHorizontally(parent, x, y, z, 1, 0, n + 1);
+                        if (canPass(getBlockDataAt(x - 1, y, z)))
+                            scanHorizontally(parent, x, y, z, -1, 0, n + 1);
                         scanHorizontally(parent, x, y, z, facingX, facingZ, n + 1);
                     }
                 }
