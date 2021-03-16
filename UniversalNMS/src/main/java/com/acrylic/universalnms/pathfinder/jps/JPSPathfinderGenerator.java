@@ -12,6 +12,8 @@ public class JPSPathfinderGenerator implements PathfinderGenerator {
             maximumHeight = 2,
             minimumHeightToTraverse = 2
     ;
+    private int maximumClosestChecks = 100;
+    private boolean debugMode = true;
 
     public JPSPathfinderGenerator setMaximumSearchDistance(double maximumSearchDistance) {
         this.maximumSearchDistance = maximumSearchDistance;
@@ -73,5 +75,23 @@ public class JPSPathfinderGenerator implements PathfinderGenerator {
     @Override
     public JPSPathfinder generatePathfinder(@NotNull Location start, @NotNull Location end) {
         return new JPSPathfinder(this, start, end);
+    }
+
+    public int getMaximumClosestChecks() {
+        return maximumClosestChecks;
+    }
+
+    public JPSPathfinderGenerator setMaximumClosestChecks(int maximumClosestChecks) {
+        this.maximumClosestChecks = maximumClosestChecks;
+        return this;
+    }
+
+    public boolean isDebugMode() {
+        return debugMode;
+    }
+
+    public JPSPathfinderGenerator setDebugMode(boolean debugMode) {
+        this.debugMode = debugMode;
+        return this;
     }
 }

@@ -50,8 +50,8 @@ public class JPSBaseNode implements AStarPathNode {
         this.x = x;
         this.y = y;
         this.z = z;
-        this.gCost = PathNode.calculateDistance2D(this, jpsPathfinder.getStartNode());
-        this.hCost = PathNode.calculateDistance2D(this, jpsPathfinder.getStartNode());
+        this.gCost = (parent == null) ? 0 : parent.getGCost() + PathNode.calculateDistance2D(this, parent);
+        this.hCost = PathNode.calculateDistance2D(this, jpsPathfinder.getEndNode());
     }
 
     @NotNull
@@ -107,6 +107,10 @@ public class JPSBaseNode implements AStarPathNode {
     @Override
     public int getZ() {
         return z;
+    }
+
+    public boolean equals(int x, int y, int z) {
+        return this.x == x && this.y == y && this.z == z;
     }
 
     @Override

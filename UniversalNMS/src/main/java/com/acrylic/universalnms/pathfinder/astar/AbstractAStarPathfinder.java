@@ -7,10 +7,7 @@ import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public abstract class AbstractAStarPathfinder<N extends AStarPathNode>
         implements Pathfinder {
@@ -36,9 +33,18 @@ public abstract class AbstractAStarPathfinder<N extends AStarPathNode>
 
     @Nullable
     public N getCheapestNodeFromOpen() {
+        return getCheapestNodeFromCollection(open.values());
+    }
+
+    @Nullable
+    public N getCheapestNodeFromClosed() {
+        return getCheapestNodeFromCollection(closed.values());
+    }
+
+    private N getCheapestNodeFromCollection(Collection<N> collection) {
         N cursor = null;
         double fCost = 0;
-        for (N node : open.values()) {
+        for (N node : collection) {
             if (cursor == null)
                 cursor = node;
             else {

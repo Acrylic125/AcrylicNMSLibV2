@@ -2,6 +2,7 @@ package com.acrylic.universalnms.pathfinder.jps;
 
 import com.acrylic.universal.blocks.MCBlockData;
 import com.acrylic.universal.items.ItemUtils;
+import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.pathfinder.Path;
 import com.acrylic.universalnms.pathfinder.PathNode;
@@ -11,10 +12,7 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
@@ -59,25 +57,36 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
             throw new IllegalStateException("The pathfinder has already started a searched.");
         searched = true;
         addNodeToClosed(startNode);
-        scanHorizontally(startNode, startNode.getX(), startNode.getY(), startNode.getZ(), 1, 0, 0);
-        scanHorizontally(startNode, startNode.getX(), startNode.getY(), startNode.getZ(), -1, 0, 0);
-        scanHorizontally(startNode, startNode.getX(), startNode.getY(), startNode.getZ(), 0, 1, 0);
-        scanHorizontally(startNode, startNode.getX(), startNode.getY(), startNode.getZ(), 0, -1, 0);
-        while (completed && !getOpen().isEmpty()) {
+        int sX = startNode.getX(), sY = startNode.getY(), sZ = startNode.getZ();
+        scanHorizontally(startNode, sX, sY, sZ, 1, 0);
+        scanHorizontally(startNode, sX, sY, sZ, -1, 0);
+        scanHorizontally(startNode, sX, sY, sZ, 0, 1);
+        scanHorizontally(startNode, sX, sY, sZ, 0, -1);
+        int i = 0;
+        while (!completed && !getOpen().isEmpty() && i <= pathfinderGenerator.getMaximumClosestChecks()) {
+            i++;
             JPSBaseNode currentNode = getCheapestNodeFromOpen();
             if (currentNode == null) {
-                completed = true;
+                break;
             } else {
                 removeNodeFromOpen(currentNode);
                 addNodeToClosed(currentNode);
                 if (currentNode.equals(getEndNode())) {
-                    Bukkit.broadcastMessage("Done");
+                    break;
                 } else if (currentNode instanceof JPSPathNode) {
                     JPSPathNode jpsPathNode = (JPSPathNode) currentNode;
-                    scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), jpsPathNode.getFacingX(), jpsPathNode.getFacingZ(), 0);
+                    scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), jpsPathNode.getFacingZ(), jpsPathNode.getFacingX());
+                    scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), jpsPathNode.getFacingZ() * -1, jpsPathNode.getFacingX());
+                    scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), jpsPathNode.getFacingX(), jpsPathNode.getFacingZ());
                 }
             }
-
+        }
+        completed = true;
+        if (pathfinderGenerator.isDebugMode()) {
+            Bukkit.broadcastMessage(ChatUtils.get("&a&lJPS Pathfinding complete with " + i + " CCs."));
+            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                onlinePlayer.sendBlockChange(new Location(getWorld(), getEndNode().getX(), getEndNode().getY() + 2, getEndNode().getZ()), Bukkit.createBlockData(Material.EMERALD_BLOCK));
+            }
         }
     }
 
@@ -95,60 +104,98 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
         if (!isNodeInClosed(newNode)) {
             newNode.setParent(parent);
             addNodeToOpen(newNode);
-            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                onlinePlayer.sendBlockChange(new Location(getWorld(), newNode.getX(), newNode.getY(), newNode.getZ()), (test) ? Material.DIAMOND_BLOCK : Material.GOLD_BLOCK, (byte) 0);
+            if (pathfinderGenerator.isDebugMode()) {
+                for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                    onlinePlayer.sendBlockChange(new Location(getWorld(), newNode.getX(), newNode.getY(), newNode.getZ()), (test) ? Bukkit.createBlockData(Material.DIAMOND_BLOCK) : Bukkit.createBlockData(Material.GOLD_BLOCK));
+                }
             }
         }
     }
 
-    private void scanHorizontally(JPSBaseNode parent, int x, int y, int z, int facingX, int facingZ, int n) {
-        x += facingX;
-        z += facingZ;
-        //Only do recursion if the block is within bounds
+    private void scanHorizontally(JPSBaseNode parent, int x, int y, int z, final int facingX, final int facingZ) {
+        if (completed)
+            return;
+        //Ensure the facing is not 0.
+        if (facingX == 0 && facingZ == 0)
+            throw new IllegalStateException("The direction is 0.");
+        double rangeSquared = pathfinderGenerator.getMaximumSearchRange(); rangeSquared *= rangeSquared; //Squared
+        int maxRecursion = pathfinderGenerator.getRecursionMaximumHorizontal(),
+                n = 0;
+        //Only do loop if the block is within bounds
         //(Within range of search range and within the recursion limit.
-        if (n <= pathfinderGenerator.getRecursionMaximumHorizontal() &&
-                PathNode.calculateDistance2DSquared(x, z, startNode.getX(), startNode.getZ()) <= pathfinderGenerator.getMaximumSearchRange() * pathfinderGenerator.getMaximumSearchRange()) {
-            MCBlockData mcBlockData = getBlockDataAt(x + facingX, y, z + facingZ);
-            if (canPass(mcBlockData)) {
-                //Facing +-X
-                if (facingX != 0) {
-                    if (!canPass(getBlockDataAt(x, y, z - 1)) &&
-                            canPass(getBlockDataAt(x + facingX, y, z - 1))) {
-                      //  Bukkit.broadcastMessage("A " + x + " " + z);
-                        addNode(new JPSPathNode(getStartNode(), x, y, z, facingX, facingZ), parent, true);
-                    } else if (!canPass(getBlockDataAt(x, y, z + 1)) &&
-                            canPass(getBlockDataAt(x + facingX, y, z + 1))) {
-                      //  Bukkit.broadcastMessage("B " + x + " " + z);
-                        addNode(new JPSPathNode(getStartNode(), x, y, z, facingX, facingZ), parent, true);
-                    } else {
-                        //Scan
-                        if (canPass(getBlockDataAt(x, y, z + 1)))
-                            scanHorizontally(parent, x, y, z, 0, 1, n + 1);
-                        if (canPass(getBlockDataAt(x, y, z - 1)))
-                            scanHorizontally(parent, x, y, z, 0, -1, n + 1);
-                        scanHorizontally(parent, x, y, z, facingX, facingZ, n + 1);
-                    }
-                } //Facing +-Z
-                else if (facingZ != 0) {
-                    if (!canPass(getBlockDataAt(x - 1, y, z)) &&
-                            canPass(getBlockDataAt(x - 1, y, z + facingZ))) {
-                       // Bukkit.broadcastMessage("C " + x + " " + z);
-                        addNode(new JPSPathNode(getStartNode(), x, y, z, facingX, facingZ), parent, false);
-                    } else if (!canPass(getBlockDataAt(x + 1, y, z)) &&
-                            canPass(getBlockDataAt(x + 1, y, z + facingZ))) {
-                     //   Bukkit.broadcastMessage("D " + x + " " + z);
-                        addNode(new JPSPathNode(getStartNode(), x, y, z, facingX, facingZ), parent, false);
-                    } else {
-                        //Scan
-                        if (canPass(getBlockDataAt(x + 1, y, z)))
-                            scanHorizontally(parent, x, y, z, 1, 0, n + 1);
-                        if (canPass(getBlockDataAt(x - 1, y, z)))
-                            scanHorizontally(parent, x, y, z, -1, 0, n + 1);
-                        scanHorizontally(parent, x, y, z, facingX, facingZ, n + 1);
-                    }
+        while (n < maxRecursion &&
+                PathNode.calculateDistance2DSquared(x, z, startNode.getX(), startNode.getZ()) <= rangeSquared) {
+            x += facingX; z += facingZ;
+            if (!canPass(x, y, z))
+                return;
+            //Facing in the X direction.
+            boolean isFollowingCellPassable = canPass(x + facingX, y, z + facingZ);
+            if (facingX != 0) {
+                if (isNodeInteresting_horizontalZ(x, y, z, -1) ||
+                        isNodeInteresting_horizontalZ(x, y, z, 1)) {
+                    addNode(new JPSPathNode(getStartNode(), x, y, z, facingX, facingZ), parent, true);
+                    return;
+                }
+            } else {
+                if (isNodeInteresting_horizontalX(x, y, z, -1) ||
+                        isNodeInteresting_horizontalX(x, y, z, 1)) {
+                    addNode(new JPSPathNode(getStartNode(), x, y, z, facingX, facingZ), parent, false);
+                    return;
                 }
             }
+            //If the following node is not passable, stop while loop.
+            if (!isFollowingCellPassable)
+                return;
+            n++;
         }
+    }
+
+    private boolean isNodeInteresting_horizontalX(int x, int y, int z, int facingX) {
+        int n = 0;
+        double rangeSquared = pathfinderGenerator.getMaximumSearchRange(); rangeSquared *= rangeSquared; //Squared
+        while (n < pathfinderGenerator.getMaximumSearchRange() &&
+                PathNode.calculateDistance2DSquared(x, z, startNode.getX(), startNode.getZ()) <= rangeSquared) {
+            x += facingX;
+            if (!canPass(x, y, z))
+                return false;
+            if (getEndNode().equals(x, y, z)) {
+                completed = true;
+                return true;
+            }
+            int nX = x + facingX;
+            if ((!canPass(x, y, z - 1) && canPass(nX, y, z - 1)) ||
+                    (!canPass(x, y, z + 1) && canPass(nX, y, z + 1)))
+                return (canPass(nX, y, z));
+            n++;
+        }
+        return false;
+    }
+
+    private boolean isNodeInteresting_horizontalZ(int x, int y, int z, final int facingZ) {
+        int n = 0;
+        double rangeSquared = pathfinderGenerator.getMaximumSearchRange(); rangeSquared *= rangeSquared; //Squared
+        while (n < pathfinderGenerator.getMaximumSearchRange() &&
+                PathNode.calculateDistance2DSquared(x, z, startNode.getX(), startNode.getZ()) <= rangeSquared) {
+            z += facingZ;
+            if (!canPass(x, y, z))
+                return false;
+            if (getEndNode().equals(x, y, z)) {
+                completed = true;
+                return true;
+            }
+            int nZ = z + facingZ;
+            if (!canPass(x, y, nZ))
+                return false;
+            if ((!canPass(x - 1, y, z) && canPass(x - 1, y, nZ)) ||
+                    (!canPass(x + 1, y, z) && canPass(x + 1, y, nZ)))
+                return true;
+            n++;
+        }
+        return false;
+    }
+
+    private boolean canPass(int x, int y, int z) {
+        return ItemUtils.isAir(getBlockDataAt(x, y, z).getMaterial());
     }
 
     private boolean canPass(MCBlockData mcBlockData) {
