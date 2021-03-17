@@ -112,20 +112,14 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
         return chunkExaminer.getBlockDataAt(x, y, z);
     }
 
-    private  int failed = 0;
-
     private void addNode(JPSBaseNode newNode, JPSBaseNode parent) {
-        newNode.setParent(parent);
         if (!isNodeInClosed(newNode)) {
+            newNode.setDepth(parent.getDepth() + 1);
+            newNode.setParent(parent);
             addNodeToOpen(newNode);
-            if (pathfinderGenerator.isDebugMode()) {
-                for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                    onlinePlayer.sendBlockChange(new Location(getWorld(), newNode.getX(), newNode.getY(), newNode.getZ()), Bukkit.createBlockData(Material.DIAMOND_BLOCK));
-                }
+            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                onlinePlayer.sendBlockChange(new Location(getWorld(), newNode.getX(), newNode.getY(), newNode.getZ()), Bukkit.createBlockData(Material.DIAMOND_BLOCK));
             }
-        } else {
-            failed++;
-            Bukkit.broadcastMessage("T " + failed + " " + newNode.getX() + " " + newNode.getY() + " " + newNode.getZ());
         }
     }
 
@@ -150,19 +144,22 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
                 if (isNodeInteresting_horizontalZ(x, y, z, -1) ||
                         isNodeInteresting_horizontalZ(x, y, z, 1)) {
                     newNode = new JPSPathNode(getStartNode(), x, y, z, facingX, facingZ);
-                } else if (interestingCheck_horizontalX(x, y, z, facingX) && canPass(x + facingX, y, z)) {
+                } else if (interestingCheck_horizontalX(x, y, z, facingX) &&
+                        canPass(x + facingX, y, z)) {
                     newNode = new JPSPathNode(getStartNode(), x + facingX, y, z, facingX, facingZ);
                 }
             } else {
                 if (isNodeInteresting_horizontalX(x, y, z, -1) ||
                         isNodeInteresting_horizontalX(x, y, z, 1)) {
                     newNode = new JPSPathNode(getStartNode(), x, y, z, facingX, facingZ);
-                } else if (interestingCheck_horizontalZ(x, y, z, facingZ) && canPass(x, y, z + facingZ)) {
+                } else if (interestingCheck_horizontalZ(x, y, z, facingZ) &&
+                        canPass(x, y, z + facingZ)) {
                     newNode = new JPSPathNode(getStartNode(), x, y, z + facingZ, facingX, facingZ);
                 }
             }
             //Check if there is a new node. If there is, stop this loop and set it as the lastNode.
             if (newNode != null) {
+                addNode(newNode, parent);
                 if (completed) {
                     JPSBaseNode jpsBaseNode = getEndNode();
                     jpsBaseNode.setDepth(newNode.getDepth() + 1);
@@ -170,7 +167,6 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
                     this.lastNode = endNode;
                 } else {
                     this.lastNode = newNode;
-                    addNode(newNode, parent);
                 }
                 return;
             }

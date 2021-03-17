@@ -18,7 +18,7 @@ public class PathImpl implements Path {
         this.points = points;
         for (Location point : points) {
             for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                onlinePlayer.sendBlockChange(point, Bukkit.createBlockData(Material.ICE));
+                onlinePlayer.sendBlockChange(point.add(0, 1, 0), Bukkit.createBlockData(Material.ICE));
             }
          }
     }
