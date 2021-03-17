@@ -1,10 +1,12 @@
 package com.acrylic.universalnms.pathfinder;
 
+import math.MathUtilsKt;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
@@ -40,7 +42,8 @@ public class PathImpl implements Path {
     }
 
     @Override
+    @Nullable
     public Location getLocation(int index) {
-        return points[index];
+        return (index < 0 || index >= points.length) ? null : points[index];
     }
 }

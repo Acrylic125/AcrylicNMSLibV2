@@ -1,8 +1,6 @@
 package com.acrylic.universalnms.pathfinder.jps;
 
 import com.acrylic.universal.blocks.MCBlockData;
-import com.acrylic.universal.files.configloader.ConfigLoader;
-import com.acrylic.universal.gui.uiformats.MiddleGUIComponent;
 import com.acrylic.universal.items.ItemUtils;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universalnms.NMSLib;

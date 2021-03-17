@@ -16,7 +16,6 @@ public class JPSBaseNode implements AStarPathNode {
     private JPSBaseNode parent;
     private final int x, y, z;
     private final double gCost, hCost;
-    private Collection<JPSPathNode> pathNodes;
     //The depth of the node is how layered this node is in base on it's parent(s).
     //The depth of the first node (start) is 0.
     private int depth;
@@ -89,16 +88,6 @@ public class JPSBaseNode implements AStarPathNode {
         return parent;
     }
 
-    public void setSuccessors(Collection<JPSPathNode> pathNodes) {
-        this.pathNodes = pathNodes;
-    }
-
-    @Nullable
-    @Override
-    public Collection<JPSPathNode> getSuccessors() {
-        return pathNodes;
-    }
-
     @Override
     public World getWorld() {
         return pathfinder.getWorld();
@@ -149,7 +138,6 @@ public class JPSBaseNode implements AStarPathNode {
                 ", z=" + z +
                 ", gCost=" + gCost +
                 ", hCost=" + hCost +
-                ", pathNodes=" + pathNodes +
                 '}';
     }
 

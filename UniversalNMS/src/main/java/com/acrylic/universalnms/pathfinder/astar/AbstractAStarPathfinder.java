@@ -58,10 +58,6 @@ public abstract class AbstractAStarPathfinder<N extends AStarPathNode>
         return cursor;
     }
 
-    public void complete(N node) {
-
-    }
-
     public void addNodeToOpen(N node) {
         getOpen().put(node.hashCode(), node);
     }

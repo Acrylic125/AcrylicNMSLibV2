@@ -2,6 +2,7 @@ package com.acrylic.universalnms.pathfinder;
 
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface Path {
 
@@ -15,6 +16,7 @@ public interface Path {
     @NotNull
     PathTraversal createTraversal();
 
+    @Nullable
     Location getLocation(int index);
 
 }

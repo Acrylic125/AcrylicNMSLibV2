@@ -13,9 +13,6 @@ public interface PathNode {
     Pathfinder getPathfinder();
 
     @Nullable
-    Collection<? extends PathNode> getSuccessors();
-
-    @Nullable
     PathNode getParent();
 
     default boolean hasParent() {
