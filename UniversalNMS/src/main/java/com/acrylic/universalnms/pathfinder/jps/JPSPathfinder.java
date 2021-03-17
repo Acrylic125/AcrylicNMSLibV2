@@ -20,7 +20,9 @@ import java.util.Map;
 /**
  * This implementation is designed for Minecraft Entity pathfinding. It does
  * not guarantee the most efficient path but it can speed up the AStar implementation
- * by magnitudes.
+ * by magnitudes. This is also thread safe due to the use of chunk snapshots.
+ *
+ * @see ChunkSnapshot
  *
  * The following links were used in the development of this pathfinding.
  *
@@ -66,16 +68,19 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
     }
 
     @Override
-    public void pathfind() {
+    public synchronized void pathfind() {
+        //Do not search if it has already been started.
         if (searched)
             throw new IllegalStateException("The pathfinder has already started a searched.");
         searched = true;
         addNodeToClosed(startNode);
         int sX = startNode.getX(), sY = startNode.getY(), sZ = startNode.getZ();
+        //Initial scans in all 4 orthogonal directions.
         scanHorizontally(startNode, sX, sY, sZ, 1, 0);
         scanHorizontally(startNode, sX, sY, sZ, -1, 0);
         scanHorizontally(startNode, sX, sY, sZ, 0, 1);
         scanHorizontally(startNode, sX, sY, sZ, 0, -1);
+        //Iterations, i
         int i = 0;
         while (!completed && !getOpen().isEmpty() && i <= pathfinderGenerator.getMaximumClosestChecks()) {
             i++;
@@ -102,6 +107,13 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
         }
     }
 
+    /**
+     *
+     * @param x The x coordinate of the block.
+     * @param y The y coordinate of the block.
+     * @param z The z coordinate of the block.
+     * @return The threadsafe block data at the given location.
+     */
     private MCBlockData getBlockDataAt(int x, int y, int z) {
         Chunk chunk = getWorld().getChunkAt(x >> 4, z >> 4);
         ChunkExaminer chunkExaminer = chunkExaminerMap.get(chunk);
@@ -161,9 +173,8 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
             if (newNode != null) {
                 addNode(newNode, parent);
                 if (completed) {
-                    JPSBaseNode jpsBaseNode = getEndNode();
-                    jpsBaseNode.setDepth(newNode.getDepth() + 1);
-                    jpsBaseNode.setParent(newNode);
+                    endNode.setDepth(newNode.getDepth() + 1);
+                    endNode.setParent(newNode);
                     this.lastNode = endNode;
                 } else {
                     this.lastNode = newNode;
@@ -247,15 +258,22 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
         return completed;
     }
 
+    /**
+     * Reverses the last node and maps it into a Location array.
+     *
+     * @return The path based on the last node.
+     */
     @NotNull
     @Override
     public PathImpl generatePath() {
+        //If there is no last node, returns a 0 path.
         if (lastNode == null)
             return new PathImpl(this, new Location[0]);
         int d = lastNode.getDepth() + 1;
         Location[] points = new Location[d];
         JPSBaseNode cursor = lastNode;
         for (int i = 0; i < d; i++) {
+            //This should never happen but if it does, it will throw an error.
             if (cursor == null)
                 throw new IllegalStateException("Something went terribly wrong. The cursor node is null while having a for loop index of " + i + ". This should never happen?");
             points[d - i - 1] = cursor.getLocation();
