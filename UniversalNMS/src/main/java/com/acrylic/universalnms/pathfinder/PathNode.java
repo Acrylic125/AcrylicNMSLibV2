@@ -18,6 +18,10 @@ public interface PathNode {
     @Nullable
     PathNode getParent();
 
+    default boolean hasParent() {
+        return getParent() != null;
+    }
+
     World getWorld();
 
     int getX();

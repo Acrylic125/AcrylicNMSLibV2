@@ -3,15 +3,13 @@ package com.acrylic.universalnms.pathfinder;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-
 public interface Path {
 
     @NotNull
-    Collection<Location> getLocations();
+    Location[] getLocations();
 
     default int getTotalLocations() {
-        return getLocations().size();
+        return getLocations().length;
     }
 
     @NotNull

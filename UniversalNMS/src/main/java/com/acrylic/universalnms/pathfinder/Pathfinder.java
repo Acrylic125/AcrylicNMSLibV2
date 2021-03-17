@@ -1,8 +1,11 @@
 package com.acrylic.universalnms.pathfinder;
 
+import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 
 public interface Pathfinder {
+
+    World getWorld();
 
     PathfinderGenerator getPathfinderGenerator();
 

@@ -17,13 +17,16 @@ public class JPSBaseNode implements AStarPathNode {
     private final int x, y, z;
     private final double gCost, hCost;
     private Collection<JPSPathNode> pathNodes;
+    //The depth of the node is how layered this node is in base on it's parent(s).
+    //The depth of the first node (start) is 0.
+    private int depth;
 
     protected static JPSBaseNode createStartNode(@NotNull JPSPathfinder jpsPathfinder, @NotNull Location location) {
         return createStartNode(jpsPathfinder, location.getBlock());
     }
 
     protected static JPSBaseNode createStartNode(@NotNull JPSPathfinder jpsPathfinder, @NotNull Block block) {
-        return new JPSBaseNode(jpsPathfinder, null, block.getX(), block.getY(), block.getZ(), 0, jpsPathfinder.getDistanceFromStartToEnd());
+        return new JPSBaseNode(jpsPathfinder, null, block.getX(), block.getY(), block.getZ(), 0, jpsPathfinder.getDistanceFromStartToEnd(), 0);
     }
 
     protected static JPSBaseNode createEndNode(@NotNull JPSPathfinder jpsPathfinder, @NotNull JPSBaseNode parent, @NotNull Location location) {
@@ -31,10 +34,10 @@ public class JPSBaseNode implements AStarPathNode {
     }
 
     protected static JPSBaseNode createEndNode(@NotNull JPSPathfinder jpsPathfinder, @NotNull JPSBaseNode parent, @NotNull Block block) {
-        return new JPSBaseNode(jpsPathfinder, parent, block.getX(), block.getY(), block.getZ(), jpsPathfinder.getDistanceFromStartToEnd(), 0);
+        return new JPSBaseNode(jpsPathfinder, parent, block.getX(), block.getY(), block.getZ(), jpsPathfinder.getDistanceFromStartToEnd(), 0, -1);
     }
 
-    protected JPSBaseNode(JPSPathfinder jpsPathfinder, @Nullable JPSBaseNode parent, int x, int y, int z, double gCost, double hCost) {
+    protected JPSBaseNode(JPSPathfinder jpsPathfinder, @Nullable JPSBaseNode parent, int x, int y, int z, double gCost, double hCost, int depth) {
         this.pathfinder = jpsPathfinder;
         this.parent = parent;
         this.x = x;
@@ -42,15 +45,22 @@ public class JPSBaseNode implements AStarPathNode {
         this.z = z;
         this.gCost = gCost;
         this.hCost = hCost;
+        this.depth = depth;
     }
 
     protected JPSBaseNode(JPSPathfinder jpsPathfinder, @Nullable JPSBaseNode parent, int x, int y, int z) {
         this.pathfinder = jpsPathfinder;
         this.parent = parent;
-        this.x = x;
+       this.x = x;
         this.y = y;
         this.z = z;
-        this.gCost = (parent == null) ? 0 : parent.getGCost() + PathNode.calculateDistance2D(this, parent);
+        if (parent != null) {
+            this.depth = parent.depth + 1;
+            this.gCost = parent.getGCost() + PathNode.calculateDistance2D(this, parent);
+        } else {
+            this.depth = 0;
+            this.gCost = 0;
+        }
         this.hCost = PathNode.calculateDistance2D(this, jpsPathfinder.getEndNode());
     }
 
@@ -141,5 +151,13 @@ public class JPSBaseNode implements AStarPathNode {
                 ", hCost=" + hCost +
                 ", pathNodes=" + pathNodes +
                 '}';
+    }
+
+    public int getDepth() {
+        return depth;
+    }
+
+    protected void setDepth(int depth) {
+        this.depth = depth;
     }
 }
