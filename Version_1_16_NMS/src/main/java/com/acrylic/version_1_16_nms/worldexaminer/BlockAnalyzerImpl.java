@@ -1,6 +1,7 @@
 package com.acrylic.version_1_16_nms.worldexaminer;
 
 import com.acrylic.universalnms.worldexaminer.BlockAnalyzer;
+import com.acrylic.universalnms.worldexaminer.BoundingBoxExaminerImpl;
 import com.acrylic.version_1_16_nms.NMSUtils;
 import net.minecraft.server.v1_16_R3.SoundEffect;
 import org.bukkit.block.Block;

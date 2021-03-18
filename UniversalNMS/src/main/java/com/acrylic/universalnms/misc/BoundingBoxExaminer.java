@@ -35,31 +35,29 @@ public interface BoundingBoxExaminer {
     /**
      *
      * @param block The block to examine.
-     * @return True if the block can be examined.
      */
-    default boolean examine(@NotNull Block block) {
-        return examine(block.getLocation());
-    }
+    void examine(@NotNull Block block);
 
     /**
      *
      * @param location The location to examine.
-     * @return True if the block can be examined.
      */
-    boolean examine(@NotNull Location location);
+    void examine(@NotNull Location location);
 
     /**
      *
      * @param entity The entity to examine.
-     * @return True if the entity can be examined.
      */
-    boolean examine(@NotNull Entity entity);
+    void examine(@NotNull Entity entity);
 
-    @Nullable
-    Object getNMSBoundingBox();
+    @NotNull
+    Object getBoundingBox(@NotNull Block block);
 
-    default boolean canExamine() {
-        return getNMSBoundingBox() != null;
-    }
+    @NotNull
+    Object getBoundingBox(@NotNull Location location);
+
+    @NotNull
+    Object getBoundingBox(@NotNull Entity entity);
+
 
 }

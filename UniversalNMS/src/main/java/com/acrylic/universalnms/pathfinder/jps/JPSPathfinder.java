@@ -32,7 +32,7 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
     private final JPSPathfinderGenerator pathfinderGenerator;
     private final Map<Chunk, ChunkExaminer> chunkExaminerMap = new HashMap<>();
     private final JPSBaseNode startNode, endNode;
-    private JPSBaseNode lastNode;
+    private JPSBaseNode finalNode;
     private final World world;
     private final double distanceFromAndTo;
     private boolean searched = false, completed = false;
@@ -99,7 +99,11 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
             }
         }
         completed = true;
-        Bukkit.broadcastMessage(ChatUtils.get("&a&lJPS Pathfinding complete with " + i + " CCs of depth " + lastNode.getDepth() + "."));
+        if (!endNode.equals(finalNode)) {
+            finalNode = getCheapestNodeFromClosed();
+            Bukkit.broadcastMessage("Unsucessful!");
+        }
+        Bukkit.broadcastMessage(ChatUtils.get("&a&lJPS Pathfinding complete with " + i + " CCs of depth " + finalNode.getDepth() + "."));
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
             onlinePlayer.sendBlockChange(new Location(getWorld(), getEndNode().getX(), getEndNode().getY() + 2, getEndNode().getZ()), Bukkit.createBlockData(Material.EMERALD_BLOCK));
         }
@@ -127,9 +131,6 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
             newNode.setDepth(parent.getDepth() + 1);
             newNode.setParent(parent);
             addNodeToOpen(newNode);
-            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                onlinePlayer.sendBlockChange(new Location(getWorld(), newNode.getX(), newNode.getY(), newNode.getZ()), Bukkit.createBlockData(Material.DIAMOND_BLOCK));
-            }
         }
     }
 
@@ -173,9 +174,9 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
                 if (completed) {
                     endNode.setDepth(newNode.getDepth() + 1);
                     endNode.setParent(newNode);
-                    this.lastNode = endNode;
+                    this.finalNode = endNode;
                 } else {
-                    this.lastNode = newNode;
+                    this.finalNode = newNode;
                 }
                 return;
             }
@@ -265,11 +266,11 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
     @Override
     public PathImpl generatePath() {
         //If there is no last node, returns a 0 path.
-        if (lastNode == null)
+        if (finalNode == null)
             return new PathImpl(this, new Location[0]);
-        int d = lastNode.getDepth() + 1;
+        int d = finalNode.getDepth() + 1;
         Location[] points = new Location[d];
-        JPSBaseNode cursor = lastNode;
+        JPSBaseNode cursor = finalNode;
         for (int i = 0; i < d; i++) {
             //This should never happen but if it does, it will throw an error.
             if (cursor == null)

@@ -101,7 +101,7 @@ public final class NMSUtils {
     }
 
     public static BlockPosition getBlockPosition(@NotNull Block block) {
-        return getBlockPosition(block.getLocation());
+        return new BlockPosition(block.getX(), block.getY(), block.getZ());
     }
 
 }

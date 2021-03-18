@@ -2,6 +2,7 @@ package com.acrylic.universalnms.pathfinder;
 
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
 
@@ -29,4 +30,7 @@ public interface PathTraversal extends Iterator<Location> {
         return !hasNext();
     }
 
+    @Nullable
+    @Override
+    Location next();
 }

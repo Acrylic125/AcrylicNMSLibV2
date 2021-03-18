@@ -1,24 +1,21 @@
 package com.acrylic.universalnms.pathfinder;
 
-import com.acrylic.universal.math.MathUtils;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.function.Consumer;
+import org.jetbrains.annotations.Nullable;
 
 public class PathTraversalImpl implements PathTraversal {
 
     private final Path path;
-    private int pointsPerBlock = 1;
     private final Location cursor;
-    private Vector vector = null;
-    private int sectionIndex = 0, sectionMaximumIndex = 0, pathIndex = 0;
+    private int pointsPerBlock = 1;
+    private int pathIndex = 0, sectionIndex = 0, maximumSectionIndex = 0;
+    private final Vector vector = new Vector(0, 0, 0);
 
-    public PathTraversalImpl(@NotNull World world, @NotNull Path path) {
+    public PathTraversalImpl(@NotNull Path path) {
         this.path = path;
-        this.cursor = new Location(world, 0, 0, 0);
+        this.cursor = path.getLocation(0);
     }
 
     @NotNull
@@ -27,23 +24,9 @@ public class PathTraversalImpl implements PathTraversal {
         return path;
     }
 
-    /**
-     * When setting the points per block while this
-     * is traversing from {@link #forEachRemaining(Consumer)}
-     * or others, it will not guarantee the sectionIndex.
-     *
-     * This will be corrected when this moves to the next section.
-     *
-     * @param pointsPerBlock The amount of points per block.
-     */
     @Override
     public void setPointsPerBlock(int pointsPerBlock) {
-        MathUtils.validateNonZero(pointsPerBlock);
-        float p = ((float) pointsPerBlock / this.pointsPerBlock);
-        this.sectionIndex = (int) (this.sectionIndex * p);
-        this.sectionMaximumIndex = (int) (this.sectionMaximumIndex * p);
         this.pointsPerBlock = pointsPerBlock;
-        updateVector();
     }
 
     @Override
@@ -53,38 +36,25 @@ public class PathTraversalImpl implements PathTraversal {
 
     @Override
     public boolean hasNext() {
-        return pathIndex >= (path.getTotalLocations() - 1);
+        return pathIndex < path.getTotalLocations();
     }
 
-    public boolean hasStarted() {
-        return vector != null;
-    }
-
-    private void updateVector() {
-        if (hasStarted())
-            vector.normalize().multiply(1 / pointsPerBlock);
-    }
-
-    private void toSection(int toPathIndex) {
-        this.sectionIndex = 0;
-        this.pathIndex = toPathIndex - 1;
-        Location pathLocation = path.getLocation(toPathIndex);
-        if (pathLocation == null) {
-            this.sectionMaximumIndex = 0;
-            this.vector = new Vector(0, 0, 0);
-        } else {
-            double d = cursor.distance(pathLocation);
-            this.sectionMaximumIndex = (int) d;
-            this.vector = new Vector((cursor.getX() - pathLocation.getX()) / d, (cursor.getY() - pathLocation.getY()) / d, (cursor.getZ() - pathLocation.getZ()) / d);
-        }
-    }
-
+    @Nullable
     @Override
     public Location next() {
-        if (!hasStarted()) {
-            toSection(1);
-        } else if (this.sectionIndex >= (this.sectionMaximumIndex - 1)) {
-            toSection(this.pathIndex + 1);
+        if (sectionIndex >= maximumSectionIndex) {
+            pathIndex++;
+            if (hasEnded())
+                return null;
+            Location next = path.getLocation(pathIndex);
+            if (next == null)
+                return null;
+            double d = cursor.distance(next);
+            sectionIndex = 0;
+            maximumSectionIndex = (int) Math.ceil(d * pointsPerBlock);
+            vector.setX((next.getX() - cursor.getX()) / d)
+                    .setY((next.getY() - cursor.getY()) / d)
+                    .setZ((next.getZ() - cursor.getZ()) / d);
         }
         sectionIndex++;
         return cursor.add(vector).clone();

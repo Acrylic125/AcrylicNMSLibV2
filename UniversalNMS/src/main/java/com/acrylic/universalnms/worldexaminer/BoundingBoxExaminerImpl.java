@@ -1,15 +1,11 @@
-package com.acrylic.version_1_8_nms.worldexaminer;
+package com.acrylic.universalnms.worldexaminer;
 
 import com.acrylic.universalnms.misc.BoundingBoxExaminer;
-import com.acrylic.version_1_8_nms.NMSUtils;
-import net.minecraft.server.v1_8_R3.AxisAlignedBB;
-import net.minecraft.server.v1_8_R3.BlockPosition;
-import net.minecraft.server.v1_8_R3.World;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class BoundingBoxExaminerImpl implements BoundingBoxExaminer {
 
@@ -62,35 +58,29 @@ public class BoundingBoxExaminerImpl implements BoundingBoxExaminer {
 
     @NotNull
     @Override
-    public AxisAlignedBB getBoundingBox(@NotNull Block block) {
-        World world = NMSUtils.convertToNMSWorld(block.getWorld());
-        net.minecraft.server.v1_8_R3.Block nmsBlock = NMSUtils.convertToNMSBlock(block);
-        BlockPosition pos = NMSUtils.getBlockPosition(block);
-        nmsBlock.updateShape(world, pos);
-        return nmsBlock.a(world,
-                pos,
-                nmsBlock.getBlockData());
+    public BoundingBox getBoundingBox(@NotNull Block block) {
+        return block.getBoundingBox();
     }
 
     @NotNull
     @Override
-    public AxisAlignedBB getBoundingBox(@NotNull Location location) {
+    public BoundingBox getBoundingBox(@NotNull Location location) {
         return getBoundingBox(location.getBlock());
     }
 
     @NotNull
     @Override
-    public AxisAlignedBB getBoundingBox(@NotNull Entity entity) {
-        return NMSUtils.convertToNMSEntity(entity).getBoundingBox();
+    public BoundingBox getBoundingBox(@NotNull Entity entity) {
+        return entity.getBoundingBox();
     }
 
-    private void bindWith(AxisAlignedBB bb) {
-        minX = bb.a;
-        minY = bb.b;
-        minZ = bb.c;
-        maxX = bb.d;
-        maxY = bb.e;
-        maxZ = bb.f;
+    private void bindWith(BoundingBox bb) {
+        minX = bb.getMinX();
+        minY = bb.getMinY();
+        minZ = bb.getMinZ();
+        maxX = bb.getMaxX();
+        maxY = bb.getMaxY();
+        maxZ = bb.getMaxZ();
     }
 
 

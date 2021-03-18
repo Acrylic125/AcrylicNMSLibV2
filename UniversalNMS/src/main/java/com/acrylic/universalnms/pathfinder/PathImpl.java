@@ -18,11 +18,6 @@ public class PathImpl implements Path {
     public PathImpl(Pathfinder pathfinder, Location[] points) {
         this.pathfinder = pathfinder;
         this.points = points;
-        for (Location point : points) {
-            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                onlinePlayer.sendBlockChange(point.add(0, 1, 0), Bukkit.createBlockData(Material.ICE));
-            }
-         }
     }
 
     public PathImpl(Pathfinder pathfinder, Collection<Location> points) {
@@ -38,7 +33,7 @@ public class PathImpl implements Path {
     @NotNull
     @Override
     public PathTraversal createTraversal() {
-        return new PathTraversalImpl(pathfinder.getWorld(), this);
+        return new PathTraversalImpl(this);
     }
 
     @Override

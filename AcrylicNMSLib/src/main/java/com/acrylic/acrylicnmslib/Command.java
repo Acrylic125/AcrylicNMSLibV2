@@ -8,6 +8,7 @@ import com.acrylic.universal.entity.ArmorStandInstance;
 import com.acrylic.universal.entity.equipment.EntityEquipmentBuilderImpl;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.threads.Scheduler;
+import com.acrylic.universal.utils.LocationConverter;
 import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.entity.NMSArmorStandInstance;
 import com.acrylic.universalnms.packets.types.BlockCrackPacket;
@@ -18,10 +19,13 @@ import com.acrylic.universalnms.renderer.EntityPlayerCheckableRenderer;
 import com.acrylic.version_1_16_nms.entity.NMSArmorStandInstanceImpl;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
 
 public class Command {
 
@@ -46,11 +50,15 @@ public class Command {
                 .filter(AbstractCommandExecuted::isPlayer)
                 .handle(commandExecuted -> {
                     Player player = (Player) commandExecuted.getSender();
-                    Pathfinder pathfinder =  PathfinderGenerator.JPS_PATHFINDER_GENERATOR.generatePathfinder(player.getLocation(), player.getLocation().add(10, 0, 10));
+                    /**Pathfinder pathfinder =  PathfinderGenerator.JPS_PATHFINDER_GENERATOR.generatePathfinder(player.getLocation(), player.getLocation().add(10, 0, 10));
                     pathfinder.pathfind();
-                    pathfinder.generatePath();
-                    //Bukkit.broadcastMessage(NMSLib.getFactory().getNMSUtilsFactory().getNewBoundingBoxExaminer(player) + "");
-                    //Bukkit.broadcastMessage(NMSLib.getFactory().getNMSUtilsFactory().getNewBoundingBoxExaminer(player.getLocation()) + "");
+                    pathfinder.generatePath().createTraversal().forEachRemaining(location -> {
+                        if (location == null)
+                            return;
+                        player.sendBlockChange(location, Bukkit.createBlockData(Material.RED_STAINED_GLASS));
+                    });**/
+                    Bukkit.broadcastMessage(NMSLib.getFactory().getNMSUtilsFactory().getNewBoundingBoxExaminer(player) + "");
+                    Bukkit.broadcastMessage(NMSLib.getFactory().getNMSUtilsFactory().getNewBoundingBoxExaminer(player.getLocation()) + "");
                 });
     }
 
