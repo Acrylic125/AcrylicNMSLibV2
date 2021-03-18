@@ -13,7 +13,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class BoundingBoxExaminerImpl implements BoundingBoxExaminer {
 
-    private double minX = 0, minY = 0, minZ = 0, maxX = 0, maxY = 0, maxZ = 0;
+    private double minX = 0, minY = 0, minZ = 0,
+            maxX = 0, maxY = 0, maxZ = 0;
 
     @Override
     public double getMinX() {
@@ -93,5 +94,10 @@ public class BoundingBoxExaminerImpl implements BoundingBoxExaminer {
         maxZ = bb.f;
     }
 
-
+    @Override
+    public String toString() {
+        return "Size = {" + getX() + ", " + getY() + ", " + getZ() + "} " +
+                "From = {" + minX + ", " + minY + ", " + minZ + "} " +
+                "To = {" + maxX + ", " + maxY + ", " + maxZ + "}";
+    }
 }
