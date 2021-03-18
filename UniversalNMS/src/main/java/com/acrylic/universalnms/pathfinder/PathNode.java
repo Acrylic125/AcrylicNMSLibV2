@@ -21,11 +21,11 @@ public interface PathNode {
 
     World getWorld();
 
-    int getX();
+    float getX();
 
-    int getY();
+    float getY();
 
-    int getZ();
+    float getZ();
 
     default Location getLocation() {
         return new Location(getWorld(), getX(), getY(), getZ());

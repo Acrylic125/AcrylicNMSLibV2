@@ -72,7 +72,7 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
             throw new IllegalStateException("The pathfinder has already started a searched.");
         searched = true;
         addNodeToClosed(startNode);
-        int sX = startNode.getX(), sY = startNode.getY(), sZ = startNode.getZ();
+        float sX = startNode.getX(), sY = startNode.getY(), sZ = startNode.getZ();
         //Initial scans in all 4 orthogonal directions.
         scanHorizontally(startNode, sX, sY, sZ, 1, 0);
         scanHorizontally(startNode, sX, sY, sZ, -1, 0);
@@ -116,14 +116,15 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
      * @param z The z coordinate of the block.
      * @return The threadsafe block data at the given location.
      */
-    private MCBlockData getBlockDataAt(int x, int y, int z) {
-        Chunk chunk = getWorld().getChunkAt(x >> 4, z >> 4);
+    private MCBlockData getBlockDataAt(float x, float y, float z) {
+        int bX = (int) x, bY = (int) y, bZ = (int) z;
+        Chunk chunk = getWorld().getChunkAt(bX >> 4, bZ >> 4);
         ChunkExaminer chunkExaminer = chunkExaminerMap.get(chunk);
         if (chunkExaminer == null) {
             chunkExaminer = NMSLib.getFactory().getNMSUtilsFactory().getNewChunkExaminer(chunk);
             chunkExaminerMap.put(chunk, chunkExaminer);
         }
-        return chunkExaminer.getBlockDataAt(x, y, z);
+        return chunkExaminer.getBlockDataAt(bX, bY, bZ);
     }
 
     private void addNode(JPSBaseNode newNode, JPSBaseNode parent) {
@@ -134,7 +135,7 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
         }
     }
 
-    private synchronized void scanHorizontally(JPSBaseNode parent, int x, int y, int z, final int facingX, final int facingZ) {
+    private synchronized void scanHorizontally(JPSBaseNode parent, float x, float y, float z, final int facingX, final int facingZ) {
         //Ensure the facing is not 0.
         if (facingX == 0 && facingZ == 0)
             throw new IllegalStateException("The direction is 0 in both X and Z.");
@@ -188,13 +189,13 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
     }
 
     //Assumes that the following cell is free.
-    private boolean interestingCheck_horizontalX(int x, int y, int z, int facingX) {
-        int nX = x + facingX;
+    private boolean interestingCheck_horizontalX(float x, float y, float z, int facingX) {
+        float nX = x + facingX;
         return (!canPass(x, y, z - 1) && canPass(nX, y, z - 1)) ||
                 (!canPass(x, y, z + 1) && canPass(nX, y, z + 1));
     }
 
-    private boolean isNodeInteresting_horizontalX(int x, int y, int z, int facingX) {
+    private boolean isNodeInteresting_horizontalX(float x, float y, float z, int facingX) {
         int n = 0;
         double rangeSquared = pathfinderGenerator.getMaximumSearchRange(); rangeSquared *= rangeSquared; //Squared
         while (n < pathfinderGenerator.getMaximumSearchRange() &&
@@ -214,13 +215,13 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
     }
 
     //Assumes that the following cell is free.
-    private boolean interestingCheck_horizontalZ(int x, int y, int z, int facingZ) {
-        int nZ = z + facingZ;
+    private boolean interestingCheck_horizontalZ(float x, float y, float z, int facingZ) {
+        float nZ = z + facingZ;
         return (!canPass(x - 1, y, z) && canPass(x - 1, y, nZ)) ||
                 (!canPass(x + 1, y, z) && canPass(x + 1, y, nZ));
     }
 
-    private boolean isNodeInteresting_horizontalZ(int x, int y, int z, final int facingZ) {
+    private boolean isNodeInteresting_horizontalZ(float x, float y, float z, final int facingZ) {
         int n = 0;
         double rangeSquared = pathfinderGenerator.getMaximumSearchRange(); rangeSquared *= rangeSquared; //Squared
         while (n < pathfinderGenerator.getMaximumSearchRange() &&
@@ -239,7 +240,7 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
         return false;
     }
 
-    private boolean canPass(int x, int y, int z) {
+    private boolean canPass(float x, float y, float z) {
         return ItemUtils.isAir(getBlockDataAt(x, y, z).getMaterial());
     }
 

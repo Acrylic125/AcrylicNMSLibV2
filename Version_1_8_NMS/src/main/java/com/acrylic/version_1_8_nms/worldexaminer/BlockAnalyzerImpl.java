@@ -1,6 +1,5 @@
 package com.acrylic.version_1_8_nms.worldexaminer;
 
-import com.acrylic.universalnms.misc.BoundingBoxExaminer;
 import com.acrylic.universalnms.worldexaminer.BlockAnalyzer;
 import com.acrylic.version_1_8_nms.NMSUtils;
 import org.bukkit.block.Block;

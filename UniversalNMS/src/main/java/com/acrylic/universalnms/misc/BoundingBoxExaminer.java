@@ -1,6 +1,7 @@
 package com.acrylic.universalnms.misc;
 
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;
@@ -50,6 +51,10 @@ public interface BoundingBoxExaminer {
      */
     void examine(@NotNull Entity entity);
 
+    void examine(World world, int x, int y, int z);
+
+    void examine(World world, float x, float y, float z);
+
     @NotNull
     Object getBoundingBox(@NotNull Block block);
 
@@ -59,5 +64,10 @@ public interface BoundingBoxExaminer {
     @NotNull
     Object getBoundingBox(@NotNull Entity entity);
 
+    @NotNull
+    Object getBoundingBox(World world, int x, int y, int z);
+
+    @NotNull
+    Object getBoundingBox(World world, float x, float y, float z);
 
 }

@@ -8,13 +8,11 @@ import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-
 public class JPSBaseNode implements AStarPathNode {
 
     private final JPSPathfinder pathfinder;
     private JPSBaseNode parent;
-    private final int x, y, z;
+    private final float x, y, z;
     private final double gCost, hCost;
     //The depth of the node is how layered this node is in base on it's parent(s).
     //The depth of the first node (start) is 0.
@@ -36,7 +34,7 @@ public class JPSBaseNode implements AStarPathNode {
         return new JPSBaseNode(jpsPathfinder, parent, block.getX(), block.getY(), block.getZ(), jpsPathfinder.getDistanceFromStartToEnd(), 0, -1);
     }
 
-    protected JPSBaseNode(JPSPathfinder jpsPathfinder, @Nullable JPSBaseNode parent, int x, int y, int z, double gCost, double hCost, int depth) {
+    protected JPSBaseNode(JPSPathfinder jpsPathfinder, @Nullable JPSBaseNode parent, float x, float y, float z, double gCost, double hCost, int depth) {
         this.pathfinder = jpsPathfinder;
         this.parent = parent;
         this.x = x;
@@ -47,7 +45,7 @@ public class JPSBaseNode implements AStarPathNode {
         this.depth = depth;
     }
 
-    protected JPSBaseNode(JPSPathfinder jpsPathfinder, @Nullable JPSBaseNode parent, int x, int y, int z) {
+    protected JPSBaseNode(JPSPathfinder jpsPathfinder, @Nullable JPSBaseNode parent, float x, float y, float z) {
         this.pathfinder = jpsPathfinder;
         this.parent = parent;
        this.x = x;
@@ -94,21 +92,21 @@ public class JPSBaseNode implements AStarPathNode {
     }
 
     @Override
-    public int getX() {
+    public float getX() {
         return x;
     }
 
     @Override
-    public int getY() {
+    public float getY() {
         return y;
     }
 
     @Override
-    public int getZ() {
+    public float getZ() {
         return z;
     }
 
-    public boolean equals(int x, int y, int z) {
+    public boolean equals(float x, float y, float z) {
         return this.x == x && this.y == y && this.z == z;
     }
 

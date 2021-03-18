@@ -2,6 +2,7 @@ package com.acrylic.universalnms.worldexaminer;
 
 import com.acrylic.universalnms.misc.BoundingBoxExaminer;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.BoundingBox;
@@ -57,6 +58,16 @@ public class BoundingBoxExaminerImpl implements BoundingBoxExaminer {
         bindWith(getBoundingBox(entity));
     }
 
+    @Override
+    public void examine(World world, int x, int y, int z) {
+        bindWith(getBoundingBox(world, x, y, z));
+    }
+
+    @Override
+    public void examine(World world, float x, float y, float z) {
+        bindWith(getBoundingBox(world, x, y, z));
+    }
+
     @NotNull
     @Override
     public BoundingBox getBoundingBox(@NotNull Block block) {
@@ -75,7 +86,19 @@ public class BoundingBoxExaminerImpl implements BoundingBoxExaminer {
         return entity.getBoundingBox();
     }
 
-    private void bindWith(BoundingBox bb) {
+    @NotNull
+    @Override
+    public BoundingBox getBoundingBox(World world, int x, int y, int z) {
+        return getBoundingBox(world.getBlockAt(x, y, z));
+    }
+
+    @NotNull
+    @Override
+    public BoundingBox getBoundingBox(World world, float x, float y, float z) {
+        return getBoundingBox(world.getBlockAt((int) x, (int) y, (int) z));
+    }
+
+    public void bindWith(BoundingBox bb) {
         minX = bb.getMinX();
         minY = bb.getMinY();
         minZ = bb.getMinZ();

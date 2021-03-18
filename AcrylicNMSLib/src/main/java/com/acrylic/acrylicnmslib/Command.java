@@ -24,6 +24,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.util.BoundingBox;
 
 import java.util.ArrayList;
 
@@ -50,15 +51,15 @@ public class Command {
                 .filter(AbstractCommandExecuted::isPlayer)
                 .handle(commandExecuted -> {
                     Player player = (Player) commandExecuted.getSender();
-                    /**Pathfinder pathfinder =  PathfinderGenerator.JPS_PATHFINDER_GENERATOR.generatePathfinder(player.getLocation(), player.getLocation().add(10, 0, 10));
+                    Pathfinder pathfinder =  PathfinderGenerator.JPS_PATHFINDER_GENERATOR.generatePathfinder(player.getLocation(), player.getLocation().add(10, 0, 10));
                     pathfinder.pathfind();
                     pathfinder.generatePath().createTraversal().forEachRemaining(location -> {
                         if (location == null)
                             return;
                         player.sendBlockChange(location, Bukkit.createBlockData(Material.RED_STAINED_GLASS));
-                    });**/
-                    Bukkit.broadcastMessage(NMSLib.getFactory().getNMSUtilsFactory().getNewBoundingBoxExaminer(player) + "");
-                    Bukkit.broadcastMessage(NMSLib.getFactory().getNMSUtilsFactory().getNewBoundingBoxExaminer(player.getLocation()) + "");
+                    });
+                    //Bukkit.broadcastMessage(NMSLib.getFactory().getNMSUtilsFactory().getNewBoundingBoxExaminer(player) + "");
+                    //Bukkit.broadcastMessage(NMSLib.getFactory().getNMSUtilsFactory().getNewBoundingBoxExaminer(player.getLocation()) + "");
                 });
     }
 

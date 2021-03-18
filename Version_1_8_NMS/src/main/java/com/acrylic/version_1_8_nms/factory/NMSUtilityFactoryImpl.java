@@ -21,7 +21,6 @@ import com.acrylic.version_1_8_nms.worldexaminer.BoundingBoxExaminerImpl;
 import com.acrylic.version_1_8_nms.worldexaminer.ChunkExaminerImpl;
 import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
