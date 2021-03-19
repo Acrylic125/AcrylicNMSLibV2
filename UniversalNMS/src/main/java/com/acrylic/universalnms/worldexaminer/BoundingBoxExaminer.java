@@ -1,6 +1,5 @@
-package com.acrylic.universalnms.misc;
+package com.acrylic.universalnms.worldexaminer;
 
-import com.acrylic.universal.blocks.MCBlockData;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;

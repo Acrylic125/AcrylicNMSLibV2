@@ -1,6 +1,6 @@
 package com.acrylic.version_1_8_nms.worldexaminer;
 
-import com.acrylic.universalnms.misc.BoundingBoxExaminer;
+import com.acrylic.universalnms.worldexaminer.BoundingBoxExaminer;
 import com.acrylic.version_1_8_nms.NMSUtils;
 import net.minecraft.server.v1_8_R3.AxisAlignedBB;
 import net.minecraft.server.v1_8_R3.BlockPosition;

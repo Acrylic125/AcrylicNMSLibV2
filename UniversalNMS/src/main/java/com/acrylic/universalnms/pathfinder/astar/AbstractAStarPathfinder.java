@@ -1,9 +1,6 @@
 package com.acrylic.universalnms.pathfinder.astar;
 
-import com.acrylic.universalnms.pathfinder.AStarPathNode;
-import com.acrylic.universalnms.pathfinder.PathNode;
 import com.acrylic.universalnms.pathfinder.Pathfinder;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

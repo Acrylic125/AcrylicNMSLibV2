@@ -1,6 +1,6 @@
 package com.acrylic.universalnms.factory;
 
-import com.acrylic.universalnms.misc.BoundingBoxExaminer;
+import com.acrylic.universalnms.worldexaminer.BoundingBoxExaminer;
 import com.acrylic.universalnms.nbt.NBTEntity;
 import com.acrylic.universalnms.nbt.NBTItem;
 import com.acrylic.universalnms.nbt.NBTTileEntity;

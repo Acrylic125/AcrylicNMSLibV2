@@ -3,7 +3,7 @@ package com.acrylic.universalnms.pathfinder;
 import com.acrylic.universal.Universal;
 import com.acrylic.universal.blocks.MCBlockData;
 import com.acrylic.universalnms.NMSLib;
-import com.acrylic.universalnms.misc.BoundingBoxExaminer;
+import com.acrylic.universalnms.worldexaminer.BoundingBoxExaminer;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;

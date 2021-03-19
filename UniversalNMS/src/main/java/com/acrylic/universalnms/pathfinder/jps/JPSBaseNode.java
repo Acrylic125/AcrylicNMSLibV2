@@ -1,6 +1,6 @@
 package com.acrylic.universalnms.pathfinder.jps;
 
-import com.acrylic.universalnms.pathfinder.AStarPathNode;
+import com.acrylic.universalnms.pathfinder.astar.AStarPathNode;
 import com.acrylic.universalnms.pathfinder.PathNode;
 import org.bukkit.Location;
 import org.bukkit.World;

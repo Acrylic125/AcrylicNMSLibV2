@@ -1,6 +1,5 @@
 package com.acrylic.universalnms.worldexaminer;
 
-import com.acrylic.universalnms.misc.BoundingBoxExaminer;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;

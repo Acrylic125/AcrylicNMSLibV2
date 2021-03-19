@@ -1,5 +1,6 @@
-package com.acrylic.universalnms.pathfinder;
+package com.acrylic.universalnms.pathfinder.astar;
 
+import com.acrylic.universalnms.pathfinder.PathNode;
 import com.acrylic.universalnms.pathfinder.astar.AbstractAStarPathfinder;
 import org.jetbrains.annotations.NotNull;
 
