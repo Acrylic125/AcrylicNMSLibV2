@@ -8,15 +8,14 @@ import com.acrylic.universalnms.nbt.NBTTileEntity;
 import com.acrylic.universalnms.particles.ColorParticles;
 import com.acrylic.universalnms.particles.ItemParticles;
 import com.acrylic.universalnms.particles.Particles;
-import com.acrylic.universalnms.worldexaminer.BlockAnalyzer;
 import com.acrylic.universalnms.worldexaminer.ChunkExaminer;
+import com.acrylic.version_1_8_nms.NMSUtils;
 import com.acrylic.version_1_8_nms.nbt.NBTEntityImpl;
 import com.acrylic.version_1_8_nms.nbt.NBTItemImpl;
 import com.acrylic.version_1_8_nms.nbt.NBTTileEntityImpl;
 import com.acrylic.version_1_8_nms.partivles.ColorParticlesImpl;
 import com.acrylic.version_1_8_nms.partivles.ItemParticlesImpl;
 import com.acrylic.version_1_8_nms.partivles.ParticlesImpl;
-import com.acrylic.version_1_8_nms.worldexaminer.BlockAnalyzerImpl;
 import com.acrylic.version_1_8_nms.worldexaminer.BoundingBoxExaminerImpl;
 import com.acrylic.version_1_8_nms.worldexaminer.ChunkExaminerImpl;
 import org.bukkit.Chunk;
@@ -69,13 +68,23 @@ public final class NMSUtilityFactoryImpl implements NMSUtilityFactory {
     }
 
     @Override
-    public BlockAnalyzer getNewBlockAnalyzer(@NotNull Block block) {
-         return new BlockAnalyzerImpl(block);
+    public BoundingBoxExaminer getNewBoundingBoxExaminer() {
+        return new BoundingBoxExaminerImpl();
     }
 
     @Override
-    public BoundingBoxExaminer getNewBoundingBoxExaminer() {
-        return new BoundingBoxExaminerImpl();
+    public Object getBlockStepSound(@NotNull Block block) {
+        return NMSUtils.convertToNMSBlock(block).stepSound.getStepSound();
+    }
+
+    @Override
+    public Object getBlockBreakSound(@NotNull Block block) {
+        return NMSUtils.convertToNMSBlock(block).stepSound.getBreakSound();
+    }
+
+    @Override
+    public Object getBlockPlaceSound(@NotNull Block block) {
+        return NMSUtils.convertToNMSBlock(block).stepSound.getPlaceSound();
     }
 
 

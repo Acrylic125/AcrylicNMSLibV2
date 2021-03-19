@@ -3,7 +3,6 @@ package com.acrylic.universalnms.pathfinder.impl;
 import com.acrylic.universal.utils.keys.BlockKey;
 import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.pathfinder.PathWorldBlockReader;
-import com.acrylic.universalnms.worldexaminer.BlockAnalyzer;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;

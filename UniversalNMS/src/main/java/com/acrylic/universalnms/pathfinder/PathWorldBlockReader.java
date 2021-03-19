@@ -1,6 +1,5 @@
 package com.acrylic.universalnms.pathfinder;
 
-import com.acrylic.universalnms.worldexaminer.BlockAnalyzer;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;

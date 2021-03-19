@@ -7,7 +7,6 @@ import com.acrylic.universalnms.nbt.NBTTileEntity;
 import com.acrylic.universalnms.particles.ColorParticles;
 import com.acrylic.universalnms.particles.ItemParticles;
 import com.acrylic.universalnms.particles.Particles;
-import com.acrylic.universalnms.worldexaminer.BlockAnalyzer;
 import com.acrylic.universalnms.worldexaminer.ChunkExaminer;
 import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
@@ -40,12 +39,6 @@ public interface NMSUtilityFactory {
 
     ItemParticles getNewItemParticles();
 
-    BlockAnalyzer getNewBlockAnalyzer(@NotNull Block block);
-
-    default BlockAnalyzer getNewBlockAnalyzer(@NotNull Location location) {
-        return getNewBlockAnalyzer(location.getBlock());
-    }
-
     default BoundingBoxExaminer getNewBoundingBoxExaminer(@NotNull Entity entity) {
         BoundingBoxExaminer boundingBoxExaminer = getNewBoundingBoxExaminer();
         boundingBoxExaminer.examine(entity);
@@ -77,5 +70,23 @@ public interface NMSUtilityFactory {
     }
 
     BoundingBoxExaminer getNewBoundingBoxExaminer();
+
+    Object getBlockStepSound(@NotNull Block block);
+
+    default Object getBlockStepSound(@NotNull Location location) {
+        return getBlockStepSound(location.getBlock());
+    }
+
+    Object getBlockBreakSound(@NotNull Block block);
+
+    default Object getBlockBreakSound(@NotNull Location location) {
+        return getBlockBreakSound(location.getBlock());
+    }
+
+    Object getBlockPlaceSound(@NotNull Block block);
+
+    default Object getBlockPlaceSound(@NotNull Location location) {
+        return getBlockPlaceSound(location.getBlock());
+    }
 
 }

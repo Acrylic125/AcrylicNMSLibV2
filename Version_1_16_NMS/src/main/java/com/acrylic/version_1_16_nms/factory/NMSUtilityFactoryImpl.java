@@ -8,17 +8,16 @@ import com.acrylic.universalnms.nbt.NBTTileEntity;
 import com.acrylic.universalnms.particles.ColorParticles;
 import com.acrylic.universalnms.particles.ItemParticles;
 import com.acrylic.universalnms.particles.Particles;
-import com.acrylic.universalnms.worldexaminer.BlockAnalyzer;
 import com.acrylic.universalnms.worldexaminer.BukkitBoundingBoxExaminerImpl;
 import com.acrylic.universalnms.worldexaminer.ChunkExaminer;
 import com.acrylic.universalnms.worldexaminer.ChunkExaminerImpl;
+import com.acrylic.version_1_16_nms.NMSUtils;
 import com.acrylic.version_1_16_nms.nbt.NBTEntityImpl;
 import com.acrylic.version_1_16_nms.nbt.NBTItemImpl;
 import com.acrylic.version_1_16_nms.nbt.NBTTileEntityImpl;
 import com.acrylic.version_1_16_nms.partivles.ColorParticlesImpl;
 import com.acrylic.version_1_16_nms.partivles.ItemParticlesImpl;
 import com.acrylic.version_1_16_nms.partivles.ParticlesImpl;
-import com.acrylic.version_1_16_nms.worldexaminer.BlockAnalyzerImpl;
 import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
 import org.bukkit.block.Block;
@@ -69,12 +68,25 @@ public final class NMSUtilityFactoryImpl implements NMSUtilityFactory {
     }
 
     @Override
-    public BlockAnalyzer getNewBlockAnalyzer(@NotNull Block block) {
-        return new BlockAnalyzerImpl(block);
+    public BoundingBoxExaminer getNewBoundingBoxExaminer() {
+        return new BukkitBoundingBoxExaminerImpl();
     }
 
     @Override
-    public BoundingBoxExaminer getNewBoundingBoxExaminer() {
-        return new BukkitBoundingBoxExaminerImpl();
+    public Object getBlockStepSound(@NotNull Block block) {
+        net.minecraft.server.v1_16_R3.Block nmsBlock = NMSUtils.convertToNMSBlock(block);
+        return nmsBlock.getStepSound(nmsBlock.getBlockData()).getStepSound();
+    }
+
+    @Override
+    public Object getBlockBreakSound(@NotNull Block block) {
+        net.minecraft.server.v1_16_R3.Block nmsBlock = NMSUtils.convertToNMSBlock(block);
+        return nmsBlock.getStepSound(nmsBlock.getBlockData()).breakSound;
+    }
+
+    @Override
+    public Object getBlockPlaceSound(@NotNull Block block) {
+        net.minecraft.server.v1_16_R3.Block nmsBlock = NMSUtils.convertToNMSBlock(block);
+        return nmsBlock.getStepSound(nmsBlock.getBlockData()).getStepSound();
     }
 }

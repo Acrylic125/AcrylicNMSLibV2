@@ -3,7 +3,6 @@ package com.acrylic.universalnms.packets.types;
 import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.enums.SoundCategory;
 import com.acrylic.universalnms.packets.SinglePacketWrapper;
-import com.acrylic.universalnms.worldexaminer.BlockAnalyzer;
 import math.ProbabilityKt;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
