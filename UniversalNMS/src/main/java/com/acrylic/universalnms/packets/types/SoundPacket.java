@@ -17,8 +17,7 @@ public interface SoundPacket extends SinglePacketWrapper {
     void apply(@NotNull Object sound, @NotNull SoundCategory soundCategory, @NotNull Location location, float volume, float pitch);
 
     default void applyBreakSound(@NotNull Block block, float volume, float pitch) {
-        BlockAnalyzer blockAnalyzer = NMSLib.getFactory().getNMSUtilsFactory().getNewBlockAnalyzer(block);
-        apply(blockAnalyzer.getBreakSound(), SoundCategory.BLOCKS, block.getLocation(), volume, pitch);
+        apply(NMSLib.getNMSUtilityFactory().getBlockBreakSound(block), SoundCategory.BLOCKS, block.getLocation(), volume, pitch);
     }
 
     default void applyBreakSound(@NotNull Block block, float volume) {
@@ -30,8 +29,7 @@ public interface SoundPacket extends SinglePacketWrapper {
     }
 
     default void applyStepSound(@NotNull Block block, float volume, float pitch) {
-        BlockAnalyzer blockAnalyzer = NMSLib.getFactory().getNMSUtilsFactory().getNewBlockAnalyzer(block);
-        apply(blockAnalyzer.getStepSound(), SoundCategory.PLAYERS, block.getLocation(), volume, pitch);
+        apply(NMSLib.getNMSUtilityFactory().getBlockStepSound(block), SoundCategory.PLAYERS, block.getLocation(), volume, pitch);
     }
 
     default void applyStepSound(@NotNull Block block, float volume) {
@@ -43,8 +41,7 @@ public interface SoundPacket extends SinglePacketWrapper {
     }
 
     default void applyPlaceSound(@NotNull Block block, float volume, float pitch) {
-        BlockAnalyzer blockAnalyzer = NMSLib.getFactory().getNMSUtilsFactory().getNewBlockAnalyzer(block);
-        apply(blockAnalyzer.getPlaceSound(), SoundCategory.BLOCKS, block.getLocation(), volume, pitch);
+        apply(NMSLib.getNMSUtilityFactory().getBlockPlaceSound(block), SoundCategory.BLOCKS, block.getLocation(), volume, pitch);
     }
 
     default void applyPlaceSound(@NotNull Block block, float volume) {
