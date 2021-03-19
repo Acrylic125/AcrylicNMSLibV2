@@ -12,10 +12,10 @@ import com.acrylic.universalnms.worldexaminer.ChunkExaminer;
 import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.NotNull;
 
 public interface NMSUtilityFactory {
@@ -61,6 +61,18 @@ public interface NMSUtilityFactory {
     default BoundingBoxExaminer getNewBoundingBoxExaminer(@NotNull Location location) {
         BoundingBoxExaminer boundingBoxExaminer = getNewBoundingBoxExaminer();
         boundingBoxExaminer.examine(location);
+        return boundingBoxExaminer;
+    }
+
+    default BoundingBoxExaminer getNewBoundingBoxExaminer(@NotNull World world, int x, int y, int z) {
+        BoundingBoxExaminer boundingBoxExaminer = getNewBoundingBoxExaminer();
+        boundingBoxExaminer.examine(world, x, y, z);
+        return boundingBoxExaminer;
+    }
+
+    default BoundingBoxExaminer getNewBoundingBoxExaminer(@NotNull World world, double x, double y, double z) {
+        BoundingBoxExaminer boundingBoxExaminer = getNewBoundingBoxExaminer();
+        boundingBoxExaminer.examine(world, x, y, z);
         return boundingBoxExaminer;
     }
 

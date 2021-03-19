@@ -1,9 +1,8 @@
 package com.acrylic.version_1_8_nms;
 
 import com.acrylic.universal.animations.rotational.HandRotationAnimation;
-import com.acrylic.universal.command.AbstractCommandBuilder;
-import com.acrylic.universal.command.AbstractCommandExecuted;
 import com.acrylic.universal.command.CommandBuilder;
+import com.acrylic.universal.command.CommandExecuted;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universalnms.renderer.EntityPlayerCheckableRenderer;
@@ -19,21 +18,21 @@ public class Command {
 
     public static JavaPlugin plugin;
 
-    public static AbstractCommandBuilder getCommand() {
+    public static CommandBuilder getCommand() {
         return CommandBuilder.create("1.8")
                 .handle(commandExecuted -> {
                     ChatUtils.send(commandExecuted.getSender(),
                             "&6&lAcrylic NMS Lib (1.8)",
                             "&e/acrylicnms 1.8 test"
                             );
-                }).arguments(new AbstractCommandBuilder[] {
+                }).arguments(
                         getTestArgument()
-                });
+                );
     }
 
-    public static AbstractCommandBuilder getTestArgument() {
+    public static CommandBuilder getTestArgument() {
         return CommandBuilder.create("test")
-                .filter(AbstractCommandExecuted::isPlayer)
+                .filter(CommandExecuted::isExecutedByPlayer)
                 .handle(commandExecuted -> {
                     Player player = (Player) commandExecuted.getSender();
                     NMSGiantInstanceImpl armorStandInstance = new NMSGiantInstanceImpl(player.getLocation(), null);
@@ -51,15 +50,15 @@ public class Command {
                                 armorStandInstance.tick();
                                 handRotationAnimation.teleportWithHolograms(location);
                             });
-                }).arguments(new AbstractCommandBuilder[] {
+                }).arguments(
                         CommandBuilder.create("p")
-                                .filter(AbstractCommandExecuted::isPlayer)
-                                .setTimerActive(true)
+                                .filter(CommandExecuted::isExecutedByPlayer)
+                                .timer(true)
                                 .handle(commandExecuted -> {
                                     Player player = (Player) commandExecuted.getSender();
 
                         })
-                });
+                );
     }
 
 }

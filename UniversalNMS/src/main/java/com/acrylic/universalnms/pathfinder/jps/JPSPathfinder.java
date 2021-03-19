@@ -4,7 +4,7 @@ import com.acrylic.universal.blocks.MCBlockData;
 import com.acrylic.universal.items.ItemUtils;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universalnms.NMSLib;
-import com.acrylic.universalnms.pathfinder.PathImpl;
+import com.acrylic.universalnms.pathfinder.impl.PathImpl;
 import com.acrylic.universalnms.pathfinder.PathNode;
 import com.acrylic.universalnms.pathfinder.astar.AbstractAStarPathfinder;
 import com.acrylic.universalnms.worldexaminer.ChunkExaminer;

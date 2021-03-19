@@ -7,11 +7,8 @@ import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.World;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_8_R3.CraftChunk;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class BoundingBoxExaminerImpl implements BoundingBoxExaminer {
 
@@ -65,11 +62,6 @@ public class BoundingBoxExaminerImpl implements BoundingBoxExaminer {
 
     @Override
     public void examine(org.bukkit.World world, int x, int y, int z) {
-        bindWith(getBoundingBox(world, x, y, z));
-    }
-
-    @Override
-    public void examine(org.bukkit.World world, float x, float y, float z) {
         bindWith(getBoundingBox(world, x, y, z));
     }
 

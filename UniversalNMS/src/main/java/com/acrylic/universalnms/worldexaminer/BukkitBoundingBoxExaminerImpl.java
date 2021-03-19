@@ -8,7 +8,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.NotNull;
 
-public class BoundingBoxExaminerImpl implements BoundingBoxExaminer {
+public class BukkitBoundingBoxExaminerImpl implements BoundingBoxExaminer {
 
     private double minX = 0, minY = 0, minZ = 0,
             maxX = 0, maxY = 0, maxZ = 0;
@@ -63,11 +63,6 @@ public class BoundingBoxExaminerImpl implements BoundingBoxExaminer {
         bindWith(getBoundingBox(world, x, y, z));
     }
 
-    @Override
-    public void examine(World world, float x, float y, float z) {
-        bindWith(getBoundingBox(world, x, y, z));
-    }
-
     @NotNull
     @Override
     public BoundingBox getBoundingBox(@NotNull Block block) {
@@ -105,6 +100,15 @@ public class BoundingBoxExaminerImpl implements BoundingBoxExaminer {
         maxX = bb.getMaxX();
         maxY = bb.getMaxY();
         maxZ = bb.getMaxZ();
+    }
+
+    public void bindWith(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
+        this.minX = minX;
+        this.minY = minY;
+        this.minZ = minZ;
+        this.maxX = maxX;
+        this.maxY = maxY;
+        this.maxZ = maxZ;
     }
 
     @Override

@@ -1,9 +1,9 @@
 package com.acrylic.acrylicnmslib;
 
+import com.acrylic.universal.Universal;
 import com.acrylic.universal.animations.rotational.HandRotationAnimation;
-import com.acrylic.universal.command.AbstractCommandBuilder;
-import com.acrylic.universal.command.AbstractCommandExecuted;
 import com.acrylic.universal.command.CommandBuilder;
+import com.acrylic.universal.command.CommandExecuted;
 import com.acrylic.universal.entity.ArmorStandInstance;
 import com.acrylic.universal.entity.equipment.EntityEquipmentBuilderImpl;
 import com.acrylic.universal.text.ChatUtils;
@@ -39,27 +39,28 @@ public class Command {
                             "&e&lAcrylic NMS Lib",
                             "&e/acrylicnms <version>"
                     );
-                }).arguments(new AbstractCommandBuilder[] {
+                }).arguments(
                 com.acrylic.version_1_8_nms.Command.getCommand(),
                 com.acrylic.version_1_16_nms.Command.getCommand(),
                 getTestCommand()
-        }).register(NMSLib.getPlugin());
+        ).register(NMSLib.getPlugin());
     }
 
-    public static AbstractCommandBuilder getTestCommand() {
+    public static CommandBuilder getTestCommand() {
         return CommandBuilder.create("test")
-                .filter(AbstractCommandExecuted::isPlayer)
+                .aliases("test2", "test3")
+                .filter(CommandExecuted::isExecutedByPlayer)
                 .handle(commandExecuted -> {
                     Player player = (Player) commandExecuted.getSender();
-                    Pathfinder pathfinder =  PathfinderGenerator.JPS_PATHFINDER_GENERATOR.generatePathfinder(player.getLocation(), player.getLocation().add(10, 0, 10));
+                    /**Pathfinder pathfinder =  PathfinderGenerator.JPS_PATHFINDER_GENERATOR.generatePathfinder(player.getLocation(), player.getLocation().add(10, 0, 10));
                     pathfinder.pathfind();
                     pathfinder.generatePath().createTraversal().forEachRemaining(location -> {
                         if (location == null)
                             return;
                         player.sendBlockChange(location, Bukkit.createBlockData(Material.RED_STAINED_GLASS));
-                    });
-                    //Bukkit.broadcastMessage(NMSLib.getFactory().getNMSUtilsFactory().getNewBoundingBoxExaminer(player) + "");
-                    //Bukkit.broadcastMessage(NMSLib.getFactory().getNMSUtilsFactory().getNewBoundingBoxExaminer(player.getLocation()) + "");
+                    });**/
+                    Location location = player.getLocation();
+                    Bukkit.broadcastMessage(" " + NMSLib.getNMSUtilityFactory().getNewBoundingBoxExaminer(location.getWorld(), location.getX(), location.getY(), location.getZ()));
                 });
     }
 

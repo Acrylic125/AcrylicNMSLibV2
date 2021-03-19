@@ -1,5 +1,7 @@
-package com.acrylic.universalnms.pathfinder;
+package com.acrylic.universalnms.pathfinder.impl;
 
+import com.acrylic.universalnms.pathfinder.Path;
+import com.acrylic.universalnms.pathfinder.PathTraversal;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;

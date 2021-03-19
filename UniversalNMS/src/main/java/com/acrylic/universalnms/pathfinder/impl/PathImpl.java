@@ -1,10 +1,9 @@
-package com.acrylic.universalnms.pathfinder;
+package com.acrylic.universalnms.pathfinder.impl;
 
-import math.MathUtilsKt;
-import org.bukkit.Bukkit;
+import com.acrylic.universalnms.pathfinder.Path;
+import com.acrylic.universalnms.pathfinder.PathTraversal;
+import com.acrylic.universalnms.pathfinder.Pathfinder;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

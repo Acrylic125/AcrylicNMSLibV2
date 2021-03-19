@@ -1,13 +1,17 @@
 package com.acrylic.universalnms.misc;
 
+import com.acrylic.universal.blocks.MCBlockData;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public interface BoundingBoxExaminer {
+
+    default boolean isEmpty() {
+        return getX() == 0 && getY() == 0 && getZ() == 0;
+    }
 
     double getMinX();
 
@@ -53,7 +57,9 @@ public interface BoundingBoxExaminer {
 
     void examine(World world, int x, int y, int z);
 
-    void examine(World world, float x, float y, float z);
+    default void examine(World world, double x, double y, double z) {
+        examine(world, (int) Math.floor(x), (int) Math.floor(y), (int) Math.floor(z));
+    }
 
     @NotNull
     Object getBoundingBox(@NotNull Block block);

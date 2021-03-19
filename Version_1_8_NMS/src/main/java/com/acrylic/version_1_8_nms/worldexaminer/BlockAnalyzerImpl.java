@@ -1,5 +1,6 @@
 package com.acrylic.version_1_8_nms.worldexaminer;
 
+import com.acrylic.universal.blocks.MCBlockData;
 import com.acrylic.universalnms.worldexaminer.BlockAnalyzer;
 import com.acrylic.version_1_8_nms.NMSUtils;
 import org.bukkit.block.Block;
@@ -14,6 +15,11 @@ public class BlockAnalyzerImpl implements BlockAnalyzer {
     public BlockAnalyzerImpl(@NotNull Block block) {
         this.block = block;
         this.nmsBlock = NMSUtils.convertToNMSBlock(block);
+    }
+
+    @Override
+    public MCBlockData getBlockData() {
+        return null;
     }
 
     @NotNull

@@ -104,4 +104,13 @@ public final class NMSUtils {
         return new BlockPosition(block.getX(), block.getY(), block.getZ());
     }
 
+    public static BlockPosition getBlockPosition(int x, int y, int z) {
+        return new BlockPosition(x, y, z);
+    }
+
+    public static BlockPosition getBlockPosition(float x, float y, float z) {
+        return new BlockPosition(x, y, z);
+    }
+
+
 }

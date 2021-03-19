@@ -9,7 +9,7 @@ import com.acrylic.universalnms.particles.ColorParticles;
 import com.acrylic.universalnms.particles.ItemParticles;
 import com.acrylic.universalnms.particles.Particles;
 import com.acrylic.universalnms.worldexaminer.BlockAnalyzer;
-import com.acrylic.universalnms.worldexaminer.BoundingBoxExaminerImpl;
+import com.acrylic.universalnms.worldexaminer.BukkitBoundingBoxExaminerImpl;
 import com.acrylic.universalnms.worldexaminer.ChunkExaminer;
 import com.acrylic.universalnms.worldexaminer.ChunkExaminerImpl;
 import com.acrylic.version_1_16_nms.nbt.NBTEntityImpl;
@@ -75,6 +75,6 @@ public final class NMSUtilityFactoryImpl implements NMSUtilityFactory {
 
     @Override
     public BoundingBoxExaminer getNewBoundingBoxExaminer() {
-        return new BoundingBoxExaminerImpl();
+        return new BukkitBoundingBoxExaminerImpl();
     }
 }
