@@ -18,6 +18,7 @@ import com.acrylic.universalnms.pathfinder.Pathfinder;
 import com.acrylic.universalnms.pathfinder.PathfinderGenerator;
 import com.acrylic.universalnms.renderer.EntityPlayerCheckableRenderer;
 import com.acrylic.version_1_16_nms.entity.NMSArmorStandInstanceImpl;
+import com.acrylic.version_1_16_nms.worldexaminer.BoundingBoxExaminerImpl;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -61,7 +62,9 @@ public class Command {
                         player.sendBlockChange(location, Bukkit.createBlockData(Material.RED_STAINED_GLASS));
                     });**/
                     Location location = player.getLocation();
-                    Bukkit.broadcastMessage(" " + NMSLib.getNMSUtilityFactory().getNewBoundingBoxExaminer(location.getWorld(), location.getX(), location.getY(), location.getZ()));
+                    BoundingBoxExaminerImpl boundingBoxExaminer = new BoundingBoxExaminerImpl();
+                    boundingBoxExaminer.examineCollisionBox(location);
+                    Bukkit.broadcastMessage(" " + boundingBoxExaminer);
                 });
     }
 

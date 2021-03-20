@@ -65,6 +65,26 @@ public class BoundingBoxExaminerImpl implements BoundingBoxExaminer {
         bindWith(getBoundingBox(world, x, y, z));
     }
 
+    @Override
+    public void examineCollisionBox(@NotNull Block block) {
+        examine(block);
+    }
+
+    @Override
+    public void examineCollisionBox(@NotNull Location location) {
+        examine(location);
+    }
+
+    @Override
+    public void examineCollisionBox(@NotNull Entity entity) {
+        examine(entity);
+    }
+
+    @Override
+    public void examineCollisionBox(org.bukkit.World world, int x, int y, int z) {
+        examine(world, x, y, z);
+    }
+
     @NotNull
     @Override
     public AxisAlignedBB getBoundingBox(@NotNull Block block) {

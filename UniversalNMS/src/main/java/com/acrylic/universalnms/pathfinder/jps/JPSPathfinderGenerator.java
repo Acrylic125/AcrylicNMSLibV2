@@ -11,7 +11,9 @@ public class JPSPathfinderGenerator implements PathfinderGenerator {
     private int recursionMaximumHorizontal = 12, recursionMaximumDiagonal = 12;
     private float maximumDropHeight = 2,
             maximumHeight = 2,
-            minimumHeightToTraverse = 2
+            minimumXToTraverse = 1,
+            minimumYToTraverse = 2,
+            minimumZToTraverse = 1
     ;
     private int maximumClosestChecks = 100;
     private boolean debugMode = true;
@@ -57,14 +59,34 @@ public class JPSPathfinderGenerator implements PathfinderGenerator {
         return maximumHeight;
     }
 
-    public JPSPathfinderGenerator setMinimumHeightToTraverse(float minimumHeightToTraverse) {
-        this.minimumHeightToTraverse = minimumHeightToTraverse;
+    public JPSPathfinderGenerator setMinimumXToTraverse(float minimumXToTraverse) {
+        this.minimumXToTraverse = minimumXToTraverse;
         return this;
     }
 
     @Override
-    public float getMinimumHeightToTraverse() {
-        return minimumHeightToTraverse;
+    public float getMinimumXToTraverse() {
+        return minimumXToTraverse;
+    }
+
+    public JPSPathfinderGenerator setMinimumYToTraverse(float minimumYToTraverse) {
+        this.minimumYToTraverse = minimumYToTraverse;
+        return this;
+    }
+
+    @Override
+    public float getMinimumYToTraverse() {
+        return minimumYToTraverse;
+    }
+
+    public JPSPathfinderGenerator setMinimumZToTraverse(float minimumZToTraverse) {
+        this.minimumZToTraverse = minimumZToTraverse;
+        return this;
+    }
+
+    @Override
+    public float getMinimumZToTraverse() {
+        return minimumZToTraverse;
     }
 
     public JPSPathfinderGenerator setMaximumHeight(float maximumHeight) {

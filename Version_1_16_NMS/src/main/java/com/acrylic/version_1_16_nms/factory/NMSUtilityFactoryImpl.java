@@ -18,6 +18,7 @@ import com.acrylic.version_1_16_nms.nbt.NBTTileEntityImpl;
 import com.acrylic.version_1_16_nms.partivles.ColorParticlesImpl;
 import com.acrylic.version_1_16_nms.partivles.ItemParticlesImpl;
 import com.acrylic.version_1_16_nms.partivles.ParticlesImpl;
+import com.acrylic.version_1_16_nms.worldexaminer.BoundingBoxExaminerImpl;
 import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
 import org.bukkit.block.Block;
@@ -69,7 +70,7 @@ public final class NMSUtilityFactoryImpl implements NMSUtilityFactory {
 
     @Override
     public BoundingBoxExaminer getNewBoundingBoxExaminer() {
-        return new BukkitBoundingBoxExaminerImpl();
+        return new BoundingBoxExaminerImpl();
     }
 
     @Override

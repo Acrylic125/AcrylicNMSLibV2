@@ -28,6 +28,11 @@ public interface PathfinderGenerator {
 
     float getMaximumHeight();
 
-    float getMinimumHeightToTraverse();
+    float getMinimumXToTraverse();
+
+    float getMinimumYToTraverse();
+
+    float getMinimumZToTraverse();
+
 
 }

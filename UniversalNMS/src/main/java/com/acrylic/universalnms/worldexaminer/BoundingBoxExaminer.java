@@ -60,6 +60,30 @@ public interface BoundingBoxExaminer {
         examine(world, (int) Math.floor(x), (int) Math.floor(y), (int) Math.floor(z));
     }
 
+    /**
+     *
+     * @param block The block to examine.
+     */
+    void examineCollisionBox(@NotNull Block block);
+
+    /**
+     *
+     * @param location The location to examine.
+     */
+    void examineCollisionBox(@NotNull Location location);
+
+    /**
+     *
+     * @param entity The entity to examine.
+     */
+    void examineCollisionBox(@NotNull Entity entity);
+
+    void examineCollisionBox(World world, int x, int y, int z);
+
+    default void examineCollisionBox(World world, double x, double y, double z) {
+        examine(world, (int) Math.floor(x), (int) Math.floor(y), (int) Math.floor(z));
+    }
+
     @NotNull
     Object getBoundingBox(@NotNull Block block);
 
