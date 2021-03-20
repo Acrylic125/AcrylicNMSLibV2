@@ -1,11 +1,26 @@
 package com.acrylic.universalnms.pathfinder;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+/**
+ * The path examiner determines how the path can be
+ * traversed, whether it is walkable, swimmable, or
+ * climbable.
+ */
 public interface PathExaminer {
 
-    boolean isPassableAtBlock(int x, int y, int z);
+    boolean isSwimmable(StaticPathBlock staticPathBlock);
 
-    boolean isClimbableAtBlock(int x, int y, int z);
+    boolean isClimbable(StaticPathBlock staticPathBlock);
 
+    boolean isPassable(StaticPathBlock staticPathBlock);
 
+    @Nullable
+    PathType getPathTypeAt(@NotNull Pathfinder pathfinder, float x, float y, float z);
+
+    default boolean canPassAt(@NotNull Pathfinder pathfinder, float x, float y, float z) {
+        return getPathTypeAt(pathfinder, x, y, z) != null;
+    }
 
 }

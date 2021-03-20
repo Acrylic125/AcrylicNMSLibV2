@@ -4,9 +4,11 @@ import com.acrylic.universal.blocks.MCBlockData;
 import com.acrylic.universal.items.ItemUtils;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universalnms.NMSLib;
+import com.acrylic.universalnms.pathfinder.PathWorldBlockReader;
 import com.acrylic.universalnms.pathfinder.impl.PathImpl;
 import com.acrylic.universalnms.pathfinder.PathNode;
 import com.acrylic.universalnms.pathfinder.astar.AbstractAStarPathfinder;
+import com.acrylic.universalnms.pathfinder.impl.PathWorldBlockReaderImpl;
 import com.acrylic.universalnms.worldexaminer.ChunkExaminer;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -36,6 +38,7 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
     private final World world;
     private final double distanceFromAndTo;
     private boolean searched = false, completed = false;
+    private final PathWorldBlockReader worldBlockReader;
 
     protected JPSPathfinder(JPSPathfinderGenerator pathfinderGenerator, Location start, Location end) {
         this.pathfinderGenerator = pathfinderGenerator;
@@ -43,6 +46,9 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
         this.startNode = JPSBaseNode.createStartNode(this, start);
         this.endNode = JPSBaseNode.createEndNode(this, this.startNode, end);
         this.world = start.getWorld();
+        if (this.world == null)
+            throw new NullPointerException("World cannot be null.");
+        this.worldBlockReader = new PathWorldBlockReaderImpl(this.world);
     }
 
     @Override
@@ -53,6 +59,11 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
     @Override
     public World getWorld() {
         return world;
+    }
+
+    @Override
+    public PathWorldBlockReader getPathWorldBlockReader() {
+        return worldBlockReader;
     }
 
     @Override

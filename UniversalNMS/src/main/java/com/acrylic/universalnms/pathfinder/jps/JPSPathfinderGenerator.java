@@ -1,5 +1,6 @@
 package com.acrylic.universalnms.pathfinder.jps;
 
+import com.acrylic.universalnms.pathfinder.PathExaminer;
 import com.acrylic.universalnms.pathfinder.PathfinderGenerator;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
@@ -75,6 +76,12 @@ public class JPSPathfinderGenerator implements PathfinderGenerator {
     @Override
     public JPSPathfinder generatePathfinder(@NotNull Location start, @NotNull Location end) {
         return new JPSPathfinder(this, start, end);
+    }
+
+    @NotNull
+    @Override
+    public PathExaminer getPathExaminer() {
+        return null;
     }
 
     public int getMaximumClosestChecks() {

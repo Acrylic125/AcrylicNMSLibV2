@@ -43,7 +43,7 @@ public class StaticPathBlock {
         this.boundingBoxExaminer = NMSLib.getNMSUtilityFactory().getNewBoundingBoxExaminer(block);
     }
 
-    public MCBlockData getMcBlockData() {
+    public MCBlockData getMCBlockData() {
         return mcBlockData;
     }
 

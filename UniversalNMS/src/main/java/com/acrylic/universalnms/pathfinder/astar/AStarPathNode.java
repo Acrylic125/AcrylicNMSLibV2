@@ -5,7 +5,7 @@ import com.acrylic.universalnms.pathfinder.astar.AbstractAStarPathfinder;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * g = |c - start|
+ * g = |c - p| + gP
  * h = |c - end|
  * f = g + h
  */
