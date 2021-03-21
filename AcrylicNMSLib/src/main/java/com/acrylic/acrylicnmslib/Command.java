@@ -63,7 +63,7 @@ public class Command {
                         player.sendBlockChange(location, Bukkit.createBlockData(Material.RED_STAINED_GLASS));
                     });**/
                     Location location = player.getLocation();
-                    Bukkit.broadcastMessage(" " + PathExaminerByHeightImpl.TEST.getPathTypeAtTEST(location.getWorld(), 1.8, (float) location.getX(), (float) location.getY(), (float) location.getZ()));
+                    Bukkit.broadcastMessage(" " + PathExaminerByHeightImpl.TEST.getPathTypeAtTEST(location.getWorld(), 3, (float) location.getX(), (float) location.getY(), (float) location.getZ()));
                 });
     }
 

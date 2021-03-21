@@ -25,18 +25,18 @@ public interface PathWorldBlockReader {
         return getBlockAt(block.getX(), block.getY(), block.getZ());
     }
 
-    StaticPathBlock getStaticPathBlockAt(int x, int y, int z);
+    PathBlock getPathBlockAt(int x, int y, int z);
 
-    default StaticPathBlock getStaticPathBlockAt(double x, double y, double z) {
-        return getStaticPathBlockAt((int) Math.floor(x), (int) Math.floor(y), (int) Math.floor(z));
+    default PathBlock getPathBlockAt(double x, double y, double z) {
+        return getPathBlockAt((int) Math.floor(x), (int) Math.floor(y), (int) Math.floor(z));
     }
 
-    default StaticPathBlock getStaticPathBlockAt(@NotNull Location location) {
-        return getStaticPathBlockAt(location.getX(), location.getY(), location.getZ());
+    default PathBlock getPathBlockAt(@NotNull Location location) {
+        return getPathBlockAt(location.getX(), location.getY(), location.getZ());
     }
 
-    default StaticPathBlock getStaticPathBlockAt(@NotNull Block block) {
-        return getStaticPathBlockAt(block.getX(), block.getY(), block.getZ());
+    default PathBlock getPathBlockAt(@NotNull Block block) {
+        return getPathBlockAt(block.getX(), block.getY(), block.getZ());
     }
 
 }

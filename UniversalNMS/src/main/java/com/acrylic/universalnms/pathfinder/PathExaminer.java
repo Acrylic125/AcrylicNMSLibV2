@@ -10,19 +10,9 @@ import org.jetbrains.annotations.Nullable;
  */
 public interface PathExaminer {
 
-    boolean shouldNoClip(StaticPathBlock staticPathBlock);
-
-    boolean isSwimmable(StaticPathBlock staticPathBlock);
-
-    boolean isClimbable(StaticPathBlock staticPathBlock);
-
-    boolean isPassable(StaticPathBlock staticPathBlock);
-
     @Nullable
-    PathType getPathTypeAt(@NotNull Pathfinder pathfinder, float x, float y, float z);
+    PathType getPathTypeOfBlock(PathBlock pathBlock);
 
-    default boolean canPassAt(@NotNull Pathfinder pathfinder, float x, float y, float z) {
-        return getPathTypeAt(pathfinder, x, y, z) != null;
-    }
+    PathTypeResult examineTo(@NotNull PathTypeResult pathTypeResult);
 
 }

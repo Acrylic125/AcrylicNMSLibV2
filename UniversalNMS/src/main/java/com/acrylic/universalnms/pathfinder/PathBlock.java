@@ -7,9 +7,10 @@ import com.acrylic.universalnms.worldexaminer.BoundingBoxExaminer;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
- * A static path block represents a block while pathfinding. It is only
+ * A path block represents a static block while pathfinding. It is only
  * analyzed ONCE and will NOT UPDATE. This is not entirely thread safe
  * as it still has to analyze the block at the given location while the pathfinder
  * is still pathfinding. However, it will provide a static representation of
@@ -29,18 +30,28 @@ import org.jetbrains.annotations.NotNull;
  * analyze the path block itself to determine if nodes should be
  * created at the given location.
  */
-public class StaticPathBlock {
+public class PathBlock {
 
     private final MCBlockData mcBlockData;
     private final BoundingBoxExaminer boundingBoxExaminer;
+    private PathType pathType;
 
-    public StaticPathBlock(@NotNull World world, int x, int y, int z) {
+    public PathBlock(@NotNull World world, int x, int y, int z) {
         this(world.getBlockAt(x, y, z));
     }
 
-    public StaticPathBlock(@NotNull Block block) {
+    public PathBlock(@NotNull Block block) {
         this.mcBlockData = Universal.getAcrylicPlugin().getBlockFactory().getBlockData(block);
         this.boundingBoxExaminer = NMSLib.getNMSUtilityFactory().getNewCollisionBoundingBoxExaminer(block);
+    }
+
+    public void setPathType(@Nullable PathType pathType) {
+        this.pathType = pathType;
+    }
+
+    @Nullable
+    public PathType getPathType() {
+        return pathType;
     }
 
     public MCBlockData getMCBlockData() {
