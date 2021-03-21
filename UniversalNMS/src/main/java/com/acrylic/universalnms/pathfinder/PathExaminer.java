@@ -10,6 +10,8 @@ import org.jetbrains.annotations.Nullable;
  */
 public interface PathExaminer {
 
+    boolean shouldNoClip(StaticPathBlock staticPathBlock);
+
     boolean isSwimmable(StaticPathBlock staticPathBlock);
 
     boolean isClimbable(StaticPathBlock staticPathBlock);

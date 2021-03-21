@@ -4,6 +4,7 @@ public enum PathType {
 
     WALK,
     SWIM,
-    CLIMB
+    CLIMB,
+    NO_CLIP
 
 }

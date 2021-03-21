@@ -1,5 +1,6 @@
 package com.acrylic.universalnms.pathfinder.impl;
 
+import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.pathfinder.*;
 import com.acrylic.universalnms.worldexaminer.BoundingBoxExaminer;
 import org.bukkit.Bukkit;
@@ -22,6 +23,12 @@ import static com.acrylic.universal.items.ItemUtils.isLiquid;
 public class PathExaminerByHeightImpl implements PathExaminer {
 
     public static final PathExaminerByHeightImpl TEST = new PathExaminerByHeightImpl();
+
+    @Override
+    public boolean shouldNoClip(StaticPathBlock staticPathBlock) {
+        Material material = staticPathBlock.getMCBlockData().getMaterial();
+        return NMSLib.getBlockAnalyzer().isAnyDoor(material);
+    }
 
     @Override
     public boolean isSwimmable(StaticPathBlock staticPathBlock) {
@@ -120,17 +127,20 @@ public class PathExaminerByHeightImpl implements PathExaminer {
         //Check for walking.
         else {
             boolean isPassableAt = isPassable(at);
+            float reduceStartFromY = 0;
             //If the block the path finder is at is not 'passable'
             if (!isPassableAt) {
-                y = (float) at.getCollisionBoundingBoxExaminer().getMaxY();
                 //If the block at that location is shorter than 1.
                 //For instance, slabs.
+                y = (float) at.getCollisionBoundingBoxExaminer().getMaxY();
                 if (at.getCollisionBoundingBoxExaminer().getY() < 1)
                     htr++;
+                else
+                    reduceStartFromY = 1;
             }
             double maxY;
             if (htr >= 1) {
-                maxY = iterateHeightUntilNotPassable(worldBlockReader, 1, htr, x, y, z,
+                maxY = iterateHeightUntilNotPassable(worldBlockReader, 1, htr, x, y - reduceStartFromY, z,
                         (nX, nY, nZ, pathBlock) -> isPassable(pathBlock));
             } else {
                 maxY = (!isPassableAt) ? at.getCollisionBoundingBoxExaminer().getMinY() : y + 1;

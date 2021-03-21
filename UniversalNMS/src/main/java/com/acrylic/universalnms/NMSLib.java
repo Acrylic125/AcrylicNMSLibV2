@@ -6,6 +6,7 @@ import com.acrylic.universalnms.factory.NMSUtilityFactory;
 import com.acrylic.universalnms.factory.PacketFactory;
 import com.acrylic.universalnms.nmsentityregistry.AbstractNMSEntityRegistry;
 import com.acrylic.universalnms.plugin.AcrylicNMSPlugin;
+import com.acrylic.universalnms.worldexaminer.BlockAnalyzer;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,6 +17,7 @@ public class NMSLib implements AcrylicNMSPlugin {
 
     private AbstractNMSEntityRegistry entityRegistry;
     private NMSAbstractFactory nmsAbstractFactory;
+    private BlockAnalyzer blockAnalyzer;
 
     public static void setAcrylicNMSPlugin(NMSLib acrylicNMSPlugin) {
         NMSLib.acrylicNMSPlugin = acrylicNMSPlugin;
@@ -38,6 +40,15 @@ public class NMSLib implements AcrylicNMSPlugin {
     @NotNull
     public NMSAbstractFactory getNMSAbstractFactory() {
         return nmsAbstractFactory;
+    }
+
+    public void setBlockAnalyzer(@NotNull BlockAnalyzer blockAnalyzer) {
+        this.blockAnalyzer = blockAnalyzer;
+    }
+
+    @NotNull
+    public BlockAnalyzer getNMSLibBlockAnalyzer() {
+        return blockAnalyzer;
     }
 
     public static NMSAbstractFactory getFactory() {
@@ -68,6 +79,10 @@ public class NMSLib implements AcrylicNMSPlugin {
 
     public static NMSEntityFactory getEntityFactory() {
         return getFactory().getNMSEntityFactory();
+    }
+
+    public static BlockAnalyzer getBlockAnalyzer() {
+        return acrylicNMSPlugin.getNMSLibBlockAnalyzer();
     }
 
 }
