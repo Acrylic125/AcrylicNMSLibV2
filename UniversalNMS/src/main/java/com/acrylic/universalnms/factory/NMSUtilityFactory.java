@@ -71,6 +71,36 @@ public interface NMSUtilityFactory {
 
     BoundingBoxExaminer getNewBoundingBoxExaminer();
 
+    default BoundingBoxExaminer getNewCollisionBoundingBoxExaminer(@NotNull Entity entity) {
+        BoundingBoxExaminer boundingBoxExaminer = getNewBoundingBoxExaminer();
+        boundingBoxExaminer.examineCollisionBox(entity);
+        return boundingBoxExaminer;
+    }
+
+    default BoundingBoxExaminer getNewCollisionBoundingBoxExaminer(@NotNull Block block) {
+        BoundingBoxExaminer boundingBoxExaminer = getNewBoundingBoxExaminer();
+        boundingBoxExaminer.examineCollisionBox(block);
+        return boundingBoxExaminer;
+    }
+
+    default BoundingBoxExaminer getNewCollisionBoundingBoxExaminer(@NotNull Location location) {
+        BoundingBoxExaminer boundingBoxExaminer = getNewBoundingBoxExaminer();
+        boundingBoxExaminer.examineCollisionBox(location);
+        return boundingBoxExaminer;
+    }
+
+    default BoundingBoxExaminer getNewCollisionBoundingBoxExaminer(@NotNull World world, int x, int y, int z) {
+        BoundingBoxExaminer boundingBoxExaminer = getNewBoundingBoxExaminer();
+        boundingBoxExaminer.examineCollisionBox(world, x, y, z);
+        return boundingBoxExaminer;
+    }
+
+    default BoundingBoxExaminer getNewCollisionBoundingBoxExaminer(@NotNull World world, double x, double y, double z) {
+        BoundingBoxExaminer boundingBoxExaminer = getNewBoundingBoxExaminer();
+        boundingBoxExaminer.examineCollisionBox(world, x, y, z);
+        return boundingBoxExaminer;
+    }
+
     Object getBlockStepSound(@NotNull Block block);
 
     default Object getBlockStepSound(@NotNull Location location) {

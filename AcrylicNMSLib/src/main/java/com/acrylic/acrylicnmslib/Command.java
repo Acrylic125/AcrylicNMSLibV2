@@ -16,6 +16,7 @@ import com.acrylic.universalnms.packets.types.BlockCrackPacket;
 import com.acrylic.universalnms.packets.types.SoundPacket;
 import com.acrylic.universalnms.pathfinder.Pathfinder;
 import com.acrylic.universalnms.pathfinder.PathfinderGenerator;
+import com.acrylic.universalnms.pathfinder.impl.PathExaminerByHeightImpl;
 import com.acrylic.universalnms.renderer.EntityPlayerCheckableRenderer;
 import com.acrylic.version_1_16_nms.entity.NMSArmorStandInstanceImpl;
 import com.acrylic.version_1_16_nms.worldexaminer.BoundingBoxExaminerImpl;
@@ -62,9 +63,7 @@ public class Command {
                         player.sendBlockChange(location, Bukkit.createBlockData(Material.RED_STAINED_GLASS));
                     });**/
                     Location location = player.getLocation();
-                    BoundingBoxExaminerImpl boundingBoxExaminer = new BoundingBoxExaminerImpl();
-                    boundingBoxExaminer.examineCollisionBox(location);
-                    Bukkit.broadcastMessage(" " + boundingBoxExaminer);
+                    Bukkit.broadcastMessage(" " + PathExaminerByHeightImpl.TEST.getPathTypeAtTEST(location.getWorld(), 1.8, (float) location.getX(), (float) location.getY(), (float) location.getZ()));
                 });
     }
 

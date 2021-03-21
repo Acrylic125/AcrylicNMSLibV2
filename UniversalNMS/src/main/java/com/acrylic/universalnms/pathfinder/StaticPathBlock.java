@@ -40,14 +40,14 @@ public class StaticPathBlock {
 
     public StaticPathBlock(@NotNull Block block) {
         this.mcBlockData = Universal.getAcrylicPlugin().getBlockFactory().getBlockData(block);
-        this.boundingBoxExaminer = NMSLib.getNMSUtilityFactory().getNewBoundingBoxExaminer(block);
+        this.boundingBoxExaminer = NMSLib.getNMSUtilityFactory().getNewCollisionBoundingBoxExaminer(block);
     }
 
     public MCBlockData getMCBlockData() {
         return mcBlockData;
     }
 
-    public BoundingBoxExaminer getBoundingBoxExaminer() {
+    public BoundingBoxExaminer getCollisionBoundingBoxExaminer() {
         return boundingBoxExaminer;
     }
 }
