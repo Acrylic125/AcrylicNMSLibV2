@@ -2,6 +2,7 @@ package com.acrylic.universalnms.pathfinder;
 
 import com.acrylic.universal.utils.BitMaskUtils;
 import com.acrylic.universalnms.pathfinder.impl.PathWorldBlockReaderImpl;
+import com.acrylic.universalnms.worldexaminer.BoundingBoxExaminer;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -78,25 +79,37 @@ public class PathTypeResultByHeightImpl implements PathTypeResult {
         int floorMinY = (int) Math.floor(minYToScan),
             ceilMaxY = (int) Math.ceil(maxYToScan),
             arrIndex = 0;
-        //Array that will be used to determine which path type.
-        PathType[] pathTypes = new PathType[ceilMaxY - floorMinY + 1];
-        float startingY = minYToScan,
-              checkpointStartY = minYToScan;
-        boolean shouldSetStartingY = true, isFirstSetY = true;
+        if (maxYToScan < minYToScan)
+            throw new IllegalStateException("The max scan must be > than the min scan.");
+        float startingY, endingY,
+              checkpointStartY, checkpointEndY;
         int contains = 0x0;
+        //The check state determines the status of scanning.
+        //0 = Bottom most block, 1 = Seeking for top most block.
+        byte checkState = 0;
         //A counter to count the streak of ladders. This will be used to determine if this is a climbable path type.
         //int climbStreak = 0;
         for (int y = floorMinY; y <= ceilMaxY; y++) {
             PathBlock pathBlock = pathWorldBlockReader.getPathBlockAt(x, y, z);
             PathType pathType = pathExaminer.getPathTypeOfBlock(pathBlock);
             if (pathType == null) {
-                if (shouldSetStartingY) {
-                    startingY = (float) pathBlock.getCollisionBoundingBoxExaminer().getMaxY();
-                    shouldSetStartingY = false;
+                BoundingBoxExaminer collisionBox = pathBlock.getCollisionBoundingBoxExaminer();
+                if (checkState == 0) {
+                    startingY = (float) collisionBox.getMaxY();
+                } else {
+                    endingY = (float) collisionBox.getMinY();
+                }
+            } else {
+                checkState = 1;
+                switch (pathType) {
+                    case BYPASS:
+                        contains |= 0x01;
+                    case SWIM:
+                        contains |= 0x02;
+                    case CLIMB:
+                        contains |= 0x04;
                 }
             }
-            pathTypes[arrIndex] = pathType;
-
             arrIndex++;
         }
     }
