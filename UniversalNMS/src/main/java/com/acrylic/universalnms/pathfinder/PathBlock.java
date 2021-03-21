@@ -34,7 +34,6 @@ public class PathBlock {
 
     private final MCBlockData mcBlockData;
     private final BoundingBoxExaminer boundingBoxExaminer;
-    private PathType pathType;
 
     public PathBlock(@NotNull World world, int x, int y, int z) {
         this(world.getBlockAt(x, y, z));
@@ -43,15 +42,6 @@ public class PathBlock {
     public PathBlock(@NotNull Block block) {
         this.mcBlockData = Universal.getAcrylicPlugin().getBlockFactory().getBlockData(block);
         this.boundingBoxExaminer = NMSLib.getNMSUtilityFactory().getNewCollisionBoundingBoxExaminer(block);
-    }
-
-    public void setPathType(@Nullable PathType pathType) {
-        this.pathType = pathType;
-    }
-
-    @Nullable
-    public PathType getPathType() {
-        return pathType;
     }
 
     public MCBlockData getMCBlockData() {

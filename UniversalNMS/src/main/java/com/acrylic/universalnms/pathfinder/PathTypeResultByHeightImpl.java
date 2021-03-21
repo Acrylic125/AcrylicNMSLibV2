@@ -82,7 +82,7 @@ public class PathTypeResultByHeightImpl implements PathTypeResult {
         PathType[] pathTypes = new PathType[ceilMaxY - floorMinY + 1];
         float startingY = minYToScan,
               checkpointStartY = minYToScan;
-        boolean shouldSetStartingY = true;
+        boolean shouldSetStartingY = true, isFirstSetY = true;
         int contains = 0x0;
         //A counter to count the streak of ladders. This will be used to determine if this is a climbable path type.
         //int climbStreak = 0;
@@ -90,9 +90,10 @@ public class PathTypeResultByHeightImpl implements PathTypeResult {
             PathBlock pathBlock = pathWorldBlockReader.getPathBlockAt(x, y, z);
             PathType pathType = pathExaminer.getPathTypeOfBlock(pathBlock);
             if (pathType == null) {
-                if (shouldSetStartingY)
-                startingY = (float) pathBlock.getCollisionBoundingBoxExaminer().getMaxY();
-                shouldSetStartingY = false;
+                if (shouldSetStartingY) {
+                    startingY = (float) pathBlock.getCollisionBoundingBoxExaminer().getMaxY();
+                    shouldSetStartingY = false;
+                }
             }
             pathTypes[arrIndex] = pathType;
 
