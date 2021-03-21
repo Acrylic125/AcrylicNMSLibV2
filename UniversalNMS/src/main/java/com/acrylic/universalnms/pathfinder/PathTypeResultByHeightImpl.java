@@ -88,7 +88,7 @@ public class PathTypeResultByHeightImpl implements PathTypeResult {
             ceilMaxY = (int) Math.ceil(maxYToScan);
         if (maxYToScan < minYToScan)
             throw new IllegalStateException("The max scan must be > than the min scan.");
-        float startingY = minYToScan, endingY = maxYToScan,
+        float startingY = minYToScan, endingY = maxYToScan + 1,
               checkpointStartY = minYToScan;
         int contains = 0x0, scanner = 0x0;
         //The check state determines the status of scanning.
@@ -99,26 +99,27 @@ public class PathTypeResultByHeightImpl implements PathTypeResult {
         for (int y = floorMinY; y <= ceilMaxY; y++) {
             PathBlock pathBlock = pathWorldBlockReader.getPathBlockAt(x, y, z);
             PathType pathType = pathExaminer.getPathTypeOfBlock(pathBlock);
+            BoundingBoxExaminer collisionBox = pathBlock.getCollisionBoundingBoxExaminer();
             if (pathType == null) {
-                BoundingBoxExaminer collisionBox = pathBlock.getCollisionBoundingBoxExaminer();
+                boolean isEmpty = collisionBox.isEmpty();
                 if (checkState == 0) {
                     if ((scanner & 0x01) == 0x01) {
-                        checkpointStartY = (float) collisionBox.getMaxY();
+                        checkpointStartY = (isEmpty) ? y : (float) collisionBox.getMaxY();
                     } else {
                         scanner |= 0x01;
-                        startingY = (float) collisionBox.getMaxY();
+                        startingY = (isEmpty) ? y : (float) collisionBox.getMaxY();
                         checkpointStartY = startingY;
                     }
                 } else {
                     if ((scanner & 0x02) == 0x02) {
-                        float checkpointEndY = (float) collisionBox.getMinY();
+                        float checkpointEndY = (isEmpty) ? y + 1 : (float) collisionBox.getMinY();
                         if ((checkpointEndY - checkpointStartY) > (endingY - startingY)) {
                             startingY = checkpointStartY;
                             endingY = checkpointEndY;
                         }
                     } else {
                         scanner |= 0x02;
-                        endingY = (float) collisionBox.getMinY();
+                        endingY = (isEmpty) ? y + 1 : (float) collisionBox.getMinY();
                     }
                     checkState = 0;
                 }
@@ -134,8 +135,8 @@ public class PathTypeResultByHeightImpl implements PathTypeResult {
                 }
             }
         }
-        if ((startingY - endingY) < heightRequirement) {
-            Bukkit.broadcastMessage("Invalid! " + heightRequirement + " is greater than " + (startingY - endingY));
+        if ((endingY - startingY) < heightRequirement) {
+            Bukkit.broadcastMessage("Invalid! " + heightRequirement + " is greater than " + (endingY - startingY));
             return;
         }
         if ((contains & 0x01) == 0x01) {
@@ -147,6 +148,7 @@ public class PathTypeResultByHeightImpl implements PathTypeResult {
         } else {
             this.pathType = PathType.WALK;
         }
+        Bukkit.broadcastMessage((endingY - startingY) + " T " + startingY);
     }
 
     @Nullable
@@ -170,4 +172,21 @@ public class PathTypeResultByHeightImpl implements PathTypeResult {
         return passableZ;
     }
 
+    @Override
+    public String toString() {
+        return "PathTypeResultByHeightImpl{" +
+                "heightRequirement=" + heightRequirement +
+                ", x=" + x +
+                ", y=" + y +
+                ", z=" + z +
+                ", minYToScan=" + minYToScan +
+                ", maxYToScan=" + maxYToScan +
+                ", world=" + world +
+                ", passableX=" + passableX +
+                ", passableY=" + passableY +
+                ", passableZ=" + passableZ +
+                ", pathWorldBlockReader=" + pathWorldBlockReader +
+                ", pathType=" + pathType +
+                '}';
+    }
 }

@@ -14,6 +14,7 @@ import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.entity.NMSArmorStandInstance;
 import com.acrylic.universalnms.packets.types.BlockCrackPacket;
 import com.acrylic.universalnms.packets.types.SoundPacket;
+import com.acrylic.universalnms.pathfinder.PathTypeResultByHeightImpl;
 import com.acrylic.universalnms.pathfinder.Pathfinder;
 import com.acrylic.universalnms.pathfinder.PathfinderGenerator;
 import com.acrylic.universalnms.pathfinder.impl.PathExaminerByHeightImpl;
@@ -63,7 +64,10 @@ public class Command {
                         player.sendBlockChange(location, Bukkit.createBlockData(Material.RED_STAINED_GLASS));
                     });**/
                     Location location = player.getLocation();
-                    Bukkit.broadcastMessage(" " + PathExaminerByHeightImpl.TEST.getPathTypeAtTEST(location.getWorld(), 3, (float) location.getX(), (float) location.getY(), (float) location.getZ()));
+                    PathTypeResultByHeightImpl pathTypeResultByHeight = new PathTypeResultByHeightImpl(2, 1, 1,
+                            location.getWorld(), (float) location.getX(), (float) location.getY(), (float) location.getZ());
+                    pathTypeResultByHeight.examineWith(new PathExaminerByHeightImpl());
+                    Bukkit.broadcastMessage(" " + pathTypeResultByHeight);
                 });
     }
 
