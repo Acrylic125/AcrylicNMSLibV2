@@ -103,7 +103,7 @@ public class PathTypeResultByHeightImpl implements PathTypeResult {
             if (pathType == null) {
                 boolean isEmpty = collisionBox.isEmpty();
                 if (checkState == 0) {
-                    if ((scanner & 0x01) == 0x01) {
+                    if ((scanner & 0x03) == 0x03) {
                         checkpointStartY = (isEmpty) ? y : (float) collisionBox.getMaxY();
                     } else {
                         scanner |= 0x01;
@@ -135,10 +135,8 @@ public class PathTypeResultByHeightImpl implements PathTypeResult {
                 }
             }
         }
-        if ((endingY - startingY) < heightRequirement) {
-            Bukkit.broadcastMessage("Invalid! " + heightRequirement + " is greater than " + (endingY - startingY));
+        if ((endingY - startingY) < heightRequirement)
             return;
-        }
         if ((contains & 0x01) == 0x01) {
             this.pathType = PathType.BYPASS;
         } else if ((contains & 0x02) == 0x02) {
@@ -148,7 +146,6 @@ public class PathTypeResultByHeightImpl implements PathTypeResult {
         } else {
             this.pathType = PathType.WALK;
         }
-        Bukkit.broadcastMessage((endingY - startingY) + " T " + startingY);
     }
 
     @Nullable

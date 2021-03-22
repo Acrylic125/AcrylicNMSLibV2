@@ -53,6 +53,7 @@ public class Command {
     public static CommandBuilder getTestCommand() {
         return CommandBuilder.create("test")
                 .aliases("test2", "test3")
+                .timer(true)
                 .filter(CommandExecuted::isExecutedByPlayer)
                 .handle(commandExecuted -> {
                     Player player = (Player) commandExecuted.getSender();
@@ -64,10 +65,10 @@ public class Command {
                         player.sendBlockChange(location, Bukkit.createBlockData(Material.RED_STAINED_GLASS));
                     });**/
                     Location location = player.getLocation();
-                    PathTypeResultByHeightImpl pathTypeResultByHeight = new PathTypeResultByHeightImpl(2, 1, 1,
+                    PathTypeResultByHeightImpl pathTypeResultByHeight = new PathTypeResultByHeightImpl(2, 3, 3,
                             location.getWorld(), (float) location.getX(), (float) location.getY(), (float) location.getZ());
                     pathTypeResultByHeight.examineWith(new PathExaminerByHeightImpl());
-                    Bukkit.broadcastMessage(" " + pathTypeResultByHeight);
+                    Bukkit.broadcastMessage(" " + pathTypeResultByHeight.getPathType());
                 });
     }
 
