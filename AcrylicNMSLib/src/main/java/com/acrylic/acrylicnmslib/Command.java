@@ -1,36 +1,20 @@
 package com.acrylic.acrylicnmslib;
 
-import com.acrylic.universal.Universal;
-import com.acrylic.universal.animations.rotational.HandRotationAnimation;
 import com.acrylic.universal.command.CommandBuilder;
 import com.acrylic.universal.command.CommandExecuted;
-import com.acrylic.universal.command.WrappedBukkitCommand;
-import com.acrylic.universal.entity.ArmorStandInstance;
-import com.acrylic.universal.entity.equipment.EntityEquipmentBuilderImpl;
 import com.acrylic.universal.text.ChatUtils;
-import com.acrylic.universal.threads.Scheduler;
-import com.acrylic.universal.utils.LocationConverter;
 import com.acrylic.universalnms.NMSLib;
-import com.acrylic.universalnms.entity.NMSArmorStandInstance;
-import com.acrylic.universalnms.packets.types.BlockCrackPacket;
-import com.acrylic.universalnms.packets.types.SoundPacket;
-import com.acrylic.universalnms.pathfinder.PathTypeResultByHeightImpl;
+import com.acrylic.universalnms.particles.ParticleBuilder;
 import com.acrylic.universalnms.pathfinder.Pathfinder;
 import com.acrylic.universalnms.pathfinder.PathfinderGenerator;
+import com.acrylic.universalnms.pathfinder.impl.PathTypeResultByHeightImpl;
 import com.acrylic.universalnms.pathfinder.impl.PathExaminerByHeightImpl;
-import com.acrylic.universalnms.renderer.EntityPlayerCheckableRenderer;
-import com.acrylic.version_1_16_nms.entity.NMSArmorStandInstanceImpl;
-import com.acrylic.version_1_16_nms.worldexaminer.BoundingBoxExaminerImpl;
-import com.acrylic.version_1_8.items.ItemBuilder;
+import com.comphenix.protocol.wrappers.EnumWrappers;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.util.BoundingBox;
-
-import java.util.ArrayList;
 
 public class Command {
 
@@ -57,18 +41,21 @@ public class Command {
                 .filter(CommandExecuted::isExecutedByPlayer)
                 .handle(commandExecuted -> {
                     Player player = (Player) commandExecuted.getSender();
-                    /**Pathfinder pathfinder =  PathfinderGenerator.JPS_PATHFINDER_GENERATOR.generatePathfinder(player.getLocation(), player.getLocation().add(10, 0, 10));
+                    Pathfinder pathfinder =  PathfinderGenerator.JPS_PATHFINDER_GENERATOR.generatePathfinder(player.getLocation(), player.getLocation().add(10, 3, 10));
                     pathfinder.pathfind();
                     pathfinder.generatePath().createTraversal().forEachRemaining(location -> {
                         if (location == null)
                             return;
-                        player.sendBlockChange(location, Bukkit.createBlockData(Material.RED_STAINED_GLASS));
-                    });**/
-                    Location location = player.getLocation();
-                    PathTypeResultByHeightImpl pathTypeResultByHeight = new PathTypeResultByHeightImpl(2, 3, 3,
-                            location.getWorld(), (float) location.getX(), (float) location.getY(), (float) location.getZ());
-                    pathTypeResultByHeight.examineWith(new PathExaminerByHeightImpl());
-                    Bukkit.broadcastMessage(" " + pathTypeResultByHeight.getPathType());
+                        player.sendBlockChange(location, Bukkit.createBlockData(Material.REDSTONE_BLOCK));
+                        ParticleBuilder.builder(EnumWrappers.Particle.FLAME).amount(1).speed(0)
+                                .location(location)
+                                .build().getSender().sendTo(player);
+                    });
+                    //Location location = player.getLocation();
+                    //PathTypeResultByHeightImpl pathTypeResultByHeight = new PathTypeResultByHeightImpl(2, 2, 2, location.getWorld(),
+                    //        (float) location.getX(), (float) location.getY(), (float) location.getZ());
+                    //pathTypeResultByHeight.examineWith(new PathExaminerByHeightImpl());
+                    //Bukkit.broadcastMessage(pathTypeResultByHeight.getPathType() + " " + pathTypeResultByHeight.getResultY());
                 });
     }
 

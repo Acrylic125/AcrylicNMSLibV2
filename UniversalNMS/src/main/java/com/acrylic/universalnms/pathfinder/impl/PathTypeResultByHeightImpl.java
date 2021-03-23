@@ -1,6 +1,7 @@
-package com.acrylic.universalnms.pathfinder;
+package com.acrylic.universalnms.pathfinder.impl;
 
 import com.acrylic.universal.utils.BitMaskUtils;
+import com.acrylic.universalnms.pathfinder.*;
 import com.acrylic.universalnms.pathfinder.impl.PathWorldBlockReaderImpl;
 import com.acrylic.universalnms.worldexaminer.BoundingBoxExaminer;
 import org.bukkit.Bukkit;
@@ -100,13 +101,15 @@ public class PathTypeResultByHeightImpl implements PathTypeResult {
             PathBlock pathBlock = pathWorldBlockReader.getPathBlockAt(x, y, z);
             PathType pathType = pathExaminer.getPathTypeOfBlock(pathBlock);
             BoundingBoxExaminer collisionBox = pathBlock.getCollisionBoundingBoxExaminer();
+            boolean isEmpty = collisionBox.isEmpty();
             if (pathType == null) {
-                boolean isEmpty = collisionBox.isEmpty();
                 if (checkState == 0) {
                     if ((scanner & 0x03) == 0x03) {
+                       // Bukkit.broadcastMessage("Set checkpoint at y= " + y);
                         checkpointStartY = (isEmpty) ? y : (float) collisionBox.getMaxY();
                     } else {
                         scanner |= 0x01;
+                       // Bukkit.broadcastMessage("isEMpty " + isEmpty + " " + collisionBox.getMaxY());
                         startingY = (isEmpty) ? y : (float) collisionBox.getMaxY();
                         checkpointStartY = startingY;
                     }
@@ -124,7 +127,8 @@ public class PathTypeResultByHeightImpl implements PathTypeResult {
                     checkState = 0;
                 }
             } else {
-                checkState = 1;
+                if ((scanner & 0x01) == 0x01)
+                    checkState = 1;
                 switch (pathType) {
                     case BYPASS:
                         contains |= 0x01;
@@ -135,8 +139,14 @@ public class PathTypeResultByHeightImpl implements PathTypeResult {
                 }
             }
         }
-        if ((endingY - startingY) < heightRequirement)
+        //To check if the end to start difference meets the height requirement.
+        //Also checks if there is a base by checking if the scanner found any base.
+        if (((endingY - startingY) < heightRequirement) || (scanner & 0x01) != 0x01)
             return;
+        float floorX = (float) Math.floor(x), floorZ = (float) Math.floor(z);
+        this.passableX = (floorX + (floorX + 1)) / 2;
+        this.passableZ = (floorZ + (floorZ + 1)) / 2;
+        this.passableY = startingY;
         if ((contains & 0x01) == 0x01) {
             this.pathType = PathType.BYPASS;
         } else if ((contains & 0x02) == 0x02) {

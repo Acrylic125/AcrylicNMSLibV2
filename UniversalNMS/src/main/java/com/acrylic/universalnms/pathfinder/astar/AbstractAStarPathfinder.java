@@ -29,6 +29,21 @@ public abstract class AbstractAStarPathfinder<N extends AStarPathNode>
     }
 
     @Nullable
+    public N getCheapestNodeFromOpenAndClosed() {
+        N cheapestOpen = getCheapestNodeFromOpen(), cheapestClosed = getCheapestNodeFromClosed();
+        boolean openNull = cheapestOpen == null,
+                closedNull = cheapestClosed == null;
+        if (openNull && closedNull)
+            return null;
+        if (openNull)
+            return cheapestClosed;
+        else if (closedNull)
+            return cheapestOpen;
+        else
+            return (cheapestClosed.getFCost() < cheapestOpen.getFCost()) ? cheapestClosed : cheapestOpen;
+    }
+
+    @Nullable
     public N getCheapestNodeFromOpen() {
         return getCheapestNodeFromCollection(open.values());
     }

@@ -48,7 +48,7 @@ public class JPSBaseNode implements AStarPathNode {
     protected JPSBaseNode(JPSPathfinder jpsPathfinder, @Nullable JPSBaseNode parent, float x, float y, float z) {
         this.pathfinder = jpsPathfinder;
         this.parent = parent;
-       this.x = x;
+        this.x = x;
         this.y = y;
         this.z = z;
         if (parent != null) {
@@ -106,8 +106,18 @@ public class JPSBaseNode implements AStarPathNode {
         return z;
     }
 
+    public boolean equals(float x, float z) {
+        return this.x == x && this.z == z;
+    }
+
     public boolean equals(float x, float y, float z) {
         return this.x == x && this.y == y && this.z == z;
+    }
+
+    public boolean equals(JPSBaseNode jpsBaseNode, boolean includeY) {
+        if (includeY && jpsBaseNode.getY() != y)
+            return false;
+        return jpsBaseNode.getX() == x && jpsBaseNode.getZ() == z;
     }
 
     @Override
@@ -115,7 +125,7 @@ public class JPSBaseNode implements AStarPathNode {
         if (!(obj instanceof JPSBaseNode))
             return false;
         JPSBaseNode jpsBaseNode = (JPSBaseNode) obj;
-        return jpsBaseNode.getX() == x && jpsBaseNode.getY() == y && jpsBaseNode.getZ() == z;
+        return equals(jpsBaseNode, true);
     }
 
     @Override

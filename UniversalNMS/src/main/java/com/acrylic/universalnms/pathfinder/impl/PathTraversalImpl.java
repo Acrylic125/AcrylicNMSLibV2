@@ -2,7 +2,10 @@ package com.acrylic.universalnms.pathfinder.impl;
 
 import com.acrylic.universalnms.pathfinder.Path;
 import com.acrylic.universalnms.pathfinder.PathTraversal;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -12,6 +15,7 @@ public class PathTraversalImpl implements PathTraversal {
     private final Path path;
     private final Location cursor;
     private int pointsPerBlock = 1;
+    private double sectionDistance = 0;
     private int pathIndex = 0, sectionIndex = 0, maximumSectionIndex = 0;
     private final Vector vector = new Vector(0, 0, 0);
 
@@ -51,12 +55,12 @@ public class PathTraversalImpl implements PathTraversal {
             Location next = path.getLocation(pathIndex);
             if (next == null)
                 return null;
-            double d = cursor.distance(next);
+            sectionDistance = cursor.distance(next);
             sectionIndex = 0;
-            maximumSectionIndex = (int) Math.ceil(d * pointsPerBlock);
-            vector.setX((next.getX() - cursor.getX()) / d)
-                    .setY((next.getY() - cursor.getY()) / d)
-                    .setZ((next.getZ() - cursor.getZ()) / d);
+            maximumSectionIndex = (int) Math.ceil(sectionDistance * pointsPerBlock);
+            vector.setX((next.getX() - cursor.getX()) / sectionDistance)
+                    .setY((next.getY() - cursor.getY()) / sectionDistance)
+                    .setZ((next.getZ() - cursor.getZ()) / sectionDistance);
         }
         sectionIndex++;
         return cursor.add(vector).clone();

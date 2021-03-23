@@ -3,11 +3,15 @@ package com.acrylic.universalnms.pathfinder.jps;
 import com.acrylic.universal.blocks.MCBlockData;
 import com.acrylic.universal.items.ItemUtils;
 import com.acrylic.universal.text.ChatUtils;
+import com.acrylic.universal.utils.keys.LocationKey;
+import com.acrylic.universal.utils.keys.RawLocationKey;
 import com.acrylic.universalnms.NMSLib;
+import com.acrylic.universalnms.pathfinder.PathTypeResult;
 import com.acrylic.universalnms.pathfinder.PathWorldBlockReader;
 import com.acrylic.universalnms.pathfinder.impl.PathImpl;
 import com.acrylic.universalnms.pathfinder.PathNode;
 import com.acrylic.universalnms.pathfinder.astar.AbstractAStarPathfinder;
+import com.acrylic.universalnms.pathfinder.impl.PathTypeResultByHeightImpl;
 import com.acrylic.universalnms.pathfinder.impl.PathWorldBlockReaderImpl;
 import com.acrylic.universalnms.worldexaminer.ChunkExaminer;
 import org.bukkit.*;
@@ -32,7 +36,7 @@ import java.util.Map;
 public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
 
     private final JPSPathfinderGenerator pathfinderGenerator;
-    private final Map<Chunk, ChunkExaminer> chunkExaminerMap = new HashMap<>();
+    private final Map<RawLocationKey, PathTypeResult> pathTypeResultMap = new HashMap<>();
     private final JPSBaseNode startNode, endNode;
     private JPSBaseNode finalNode;
     private final World world;
@@ -99,7 +103,7 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
             } else {
                 removeNodeFromOpen(currentNode);
                 addNodeToClosed(currentNode);
-                if (currentNode.equals(getEndNode())) {
+                if (currentNode.equals(getEndNode(), false)) {
                     break;
                 } else if (currentNode instanceof JPSPathNode) {
                     JPSPathNode jpsPathNode = (JPSPathNode) currentNode;
@@ -110,8 +114,8 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
             }
         }
         completed = true;
-        if (!endNode.equals(finalNode)) {
-            finalNode = getCheapestNodeFromClosed();
+        if (!endNode.equals(finalNode, false)) {
+            finalNode = getCheapestNodeFromOpenAndClosed();
             Bukkit.broadcastMessage("Unsucessful!");
         }
         Bukkit.broadcastMessage(ChatUtils.get("&a&lJPS Pathfinding complete with " + i + " CCs of depth " + finalNode.getDepth() + "."));
@@ -120,29 +124,14 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
         }
     }
 
-    /**
-     *
-     * @param x The x coordinate of the block.
-     * @param y The y coordinate of the block.
-     * @param z The z coordinate of the block.
-     * @return The threadsafe block data at the given location.
-     */
-    private MCBlockData getBlockDataAt(float x, float y, float z) {
-        int bX = (int) x, bY = (int) y, bZ = (int) z;
-        Chunk chunk = getWorld().getChunkAt(bX >> 4, bZ >> 4);
-        ChunkExaminer chunkExaminer = chunkExaminerMap.get(chunk);
-        if (chunkExaminer == null) {
-            chunkExaminer = NMSLib.getFactory().getNMSUtilsFactory().getNewChunkExaminer(chunk);
-            chunkExaminerMap.put(chunk, chunkExaminer);
-        }
-        return chunkExaminer.getBlockDataAt(bX, bY, bZ);
-    }
-
     private void addNode(JPSBaseNode newNode, JPSBaseNode parent) {
         if (!isNodeInClosed(newNode)) {
             newNode.setDepth(parent.getDepth() + 1);
             newNode.setParent(parent);
             addNodeToOpen(newNode);
+            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                onlinePlayer.sendBlockChange(new Location(getWorld(), newNode.getX(), newNode.getY() + 1, newNode.getZ()), Bukkit.createBlockData(Material.YELLOW_STAINED_GLASS));
+            }
         }
     }
 
@@ -166,18 +155,22 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
             if (facingX != 0) {
                 if (isNodeInteresting_horizontalZ(x, y, z, -1) ||
                         isNodeInteresting_horizontalZ(x, y, z, 1)) {
-                    newNode = new JPSPathNode(getStartNode(), x, y, z, facingX, facingZ);
+                    PathTypeResult pathTypeResult = getPathTypeResult(x, y, z);
+                    newNode = new JPSPathNode(getStartNode(), pathTypeResult.getResultX(), pathTypeResult.getResultY(), pathTypeResult.getResultZ(), facingX, facingZ);
                 } else if (interestingCheck_horizontalX(x, y, z, facingX) &&
                         canPass(x + facingX, y, z)) {
-                    newNode = new JPSPathNode(getStartNode(), x + facingX, y, z, facingX, facingZ);
+                    PathTypeResult pathTypeResult = getPathTypeResult(x + facingX, y, z);
+                    newNode = new JPSPathNode(getStartNode(), pathTypeResult.getResultX(), pathTypeResult.getResultY(), pathTypeResult.getResultZ(), facingX, facingZ);
                 }
             } else {
                 if (isNodeInteresting_horizontalX(x, y, z, -1) ||
                         isNodeInteresting_horizontalX(x, y, z, 1)) {
-                    newNode = new JPSPathNode(getStartNode(), x, y, z, facingX, facingZ);
+                    PathTypeResult pathTypeResult = getPathTypeResult(x, y, z);
+                    newNode = new JPSPathNode(getStartNode(), pathTypeResult.getResultX(), pathTypeResult.getResultY(), pathTypeResult.getResultZ(), facingX, facingZ);
                 } else if (interestingCheck_horizontalZ(x, y, z, facingZ) &&
                         canPass(x, y, z + facingZ)) {
-                    newNode = new JPSPathNode(getStartNode(), x, y, z + facingZ, facingX, facingZ);
+                    PathTypeResult pathTypeResult = getPathTypeResult(x, y, z + facingZ);
+                    newNode = new JPSPathNode(getStartNode(), pathTypeResult.getResultX(), pathTypeResult.getResultY(), pathTypeResult.getResultZ(), facingX, facingZ);
                 }
             }
             //Check if there is a new node. If there is, stop this loop and set it as the lastNode.
@@ -214,7 +207,7 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
             x += facingX;
             if (!canPass(x, y, z))
                 return false;
-            if (getEndNode().equals(x, y, z)) {
+            if (getEndNode().equals(x, z)) {
                 completed = true;
                 return true;
             }
@@ -240,7 +233,7 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
             z += facingZ;
             if (!canPass(x, y, z))
                 return false;
-            if (getEndNode().equals(x, y, z)) {
+            if (getEndNode().equals(x, z)) {
                 completed = true;
                 return true;
             }
@@ -252,11 +245,18 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
     }
 
     private boolean canPass(float x, float y, float z) {
-        return ItemUtils.isAir(getBlockDataAt(x, y, z).getMaterial());
+        return getPathTypeResult(x, y, z).isPassable();
     }
 
-    private boolean canPass(MCBlockData mcBlockData) {
-        return ItemUtils.isAir(mcBlockData.getMaterial());
+    private PathTypeResult getPathTypeResult(float x, float y, float z) {
+        RawLocationKey key = new RawLocationKey(x, y, z);
+        PathTypeResult pathTypeResultByHeight = pathTypeResultMap.get(key);
+        if (pathTypeResultByHeight == null) {
+            pathTypeResultByHeight = new PathTypeResultByHeightImpl(this, x, y, z);
+            pathTypeResultByHeight.examineWith(pathfinderGenerator.getPathExaminer());
+            pathTypeResultMap.put(key, pathTypeResultByHeight);
+        }
+        return pathTypeResultByHeight;
     }
 
     @Override
