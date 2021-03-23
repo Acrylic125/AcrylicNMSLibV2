@@ -3,9 +3,12 @@ package com.acrylic.version_1_8_nms.entity;
 import com.acrylic.universalnms.entity.NMSPlayerInstance;
 import com.acrylic.universalnms.entity.wrapper.NMSLivingEntityWrapper;
 import com.acrylic.universalnms.entityai.EntityAI;
+import com.acrylic.universalnms.enums.Gamemode;
 import com.acrylic.universalnms.renderer.PlayerCheckableRenderer;
 import com.acrylic.version_1_8_nms.entity.wrapper.PlayerWrapper;
+import com.mojang.authlib.properties.Property;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
+import net.minecraft.server.v1_8_R3.WorldSettings;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -39,6 +42,28 @@ public class NMSPlayerInstanceImpl
     @Override
     public PlayerPacketHandlerImpl getPacketHandler() {
         return entityPacketHandler;
+    }
+
+    @Override
+    public void setGamemode(@NotNull Gamemode gamemode) {
+        switch (gamemode) {
+            case CREATIVE:
+                playerWrapper.a(WorldSettings.EnumGamemode.CREATIVE);
+                return;
+            case SURVIVAL:
+                playerWrapper.a(WorldSettings.EnumGamemode.SURVIVAL);
+                return;
+            case ADVENTURE:
+                playerWrapper.a(WorldSettings.EnumGamemode.ADVENTURE);
+                return;
+            case SPECTATOR:
+                playerWrapper.a(WorldSettings.EnumGamemode.SPECTATOR);
+        }
+    }
+
+    @Override
+    public void setSkin(String signature, String texture) {
+        playerWrapper.getProfile().getProperties().put("textures", new Property("textures", texture, signature));
     }
 
     @Override

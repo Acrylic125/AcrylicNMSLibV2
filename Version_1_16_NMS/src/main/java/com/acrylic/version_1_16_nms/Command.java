@@ -45,12 +45,11 @@ public class Command {
                             setItemInHand(ItemBuilder.of(Material.DIAMOND_PICKAXE))
                     );
                     armorStandInstance.addToWorld();
+                    armorStandInstance.setSkin("Trump");
                     Location location = player.getLocation();
                     Scheduler.sync().runRepeatingTask(1, 1)
                             .plugin(NMSLib.getPlugin())
-                            .handleThenBuild(() -> {
-                                armorStandInstance.tick();
-                            });
+                            .handleThenBuild(armorStandInstance::tick);
                 }).arguments(
                         CommandBuilder.create("p")
                                 .filter(CommandExecuted::isExecutedByPlayer)

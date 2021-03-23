@@ -1,13 +1,14 @@
 package com.acrylic.version_1_16_nms.entity;
 
-import com.acrylic.universal.reflection.ReflectionUtils;
+import com.acrylic.universal.gui.items.GUIClickableItem;
 import com.acrylic.universalnms.entity.NMSPlayerInstance;
 import com.acrylic.universalnms.entity.wrapper.NMSLivingEntityWrapper;
 import com.acrylic.universalnms.entityai.EntityAI;
+import com.acrylic.universalnms.enums.Gamemode;
 import com.acrylic.universalnms.renderer.PlayerCheckableRenderer;
-import com.acrylic.version_1_16_nms.NMSUtils;
+import com.acrylic.universalnms.skins.Skin;
 import com.acrylic.version_1_16_nms.entity.wrapper.PlayerWrapper;
-import net.citizensnpcs.util.NMSBridge;
+import com.mojang.authlib.properties.Property;
 import net.minecraft.server.v1_16_R3.*;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -17,7 +18,6 @@ import org.jetbrains.annotations.Nullable;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
 public class NMSPlayerInstanceImpl
         extends NMSLivingEntityInstanceImpl
@@ -47,6 +47,28 @@ public class NMSPlayerInstanceImpl
     @Override
     public PlayerPacketHandlerImpl getPacketHandler() {
         return entityPacketHandler;
+    }
+
+    @Override
+    public void setGamemode(@NotNull Gamemode gamemode) {
+        switch (gamemode) {
+            case CREATIVE:
+                playerWrapper.a(EnumGamemode.CREATIVE);
+                return;
+            case SURVIVAL:
+                playerWrapper.a(EnumGamemode.SURVIVAL);
+                return;
+            case ADVENTURE:
+                playerWrapper.a(EnumGamemode.ADVENTURE);
+                return;
+            case SPECTATOR:
+                playerWrapper.a(EnumGamemode.SPECTATOR);
+        }
+    }
+
+    @Override
+    public void setSkin(String signature, String texture) {
+        playerWrapper.getProfile().getProperties().put("textures", new Property("textures", texture, signature));
     }
 
     @Override

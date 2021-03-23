@@ -1,9 +1,8 @@
 package com.acrylic.version_1_8_nms.entity;
 
-import com.acrylic.universal.entity.EntityInstance;
 import com.acrylic.universal.text.ChatUtils;
-import com.acrylic.universalnms.entity.EntityPacketHandler;
 import com.acrylic.universalnms.entity.NMSEntityInstance;
+import net.minecraft.server.v1_8_R3.DataWatcher;
 import net.minecraft.server.v1_8_R3.Entity;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -75,5 +74,12 @@ public abstract class NMSEntityInstanceImpl
     @Override
     public void setVelocity(@NotNull Vector vector) {
         setVelocity(vector.getX(), vector.getY(), vector.getZ());
+    }
+
+    @Override
+    public void setAnimationDataWatcher(int mask, boolean b) {
+        DataWatcher dataWatcher = getNMSEntity().getDataWatcher();
+        int fullMask = dataWatcher.getByte(0);
+        dataWatcher.watch(0, (byte) ((b) ? (fullMask | mask) : (fullMask & ~mask)));
     }
 }

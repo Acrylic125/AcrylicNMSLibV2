@@ -5,59 +5,41 @@ import com.acrylic.universalnms.factory.NMSEntityFactory;
 import com.acrylic.universalnms.factory.NMSUtilityFactory;
 import com.acrylic.universalnms.factory.PacketFactory;
 import com.acrylic.universalnms.nmsentityregistry.AbstractNMSEntityRegistry;
-import com.acrylic.universalnms.plugin.AcrylicNMSPlugin;
+import com.acrylic.universalnms.skins.SkinMap;
 import com.acrylic.universalnms.worldexaminer.BlockAnalyzer;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-public class NMSLib implements AcrylicNMSPlugin {
+public class NMSLib {
 
-    private static NMSLib acrylicNMSPlugin;
     private static JavaPlugin plugin;
-
-    private AbstractNMSEntityRegistry entityRegistry;
-    private NMSAbstractFactory nmsAbstractFactory;
-    private BlockAnalyzer blockAnalyzer;
-
-    public static void setAcrylicNMSPlugin(NMSLib acrylicNMSPlugin) {
-        NMSLib.acrylicNMSPlugin = acrylicNMSPlugin;
-    }
+    private static NMSAbstractFactory nmsAbstractFactory;
+    private static BlockAnalyzer blockAnalyzer;
+    private static AbstractNMSEntityRegistry entityRegistry;
+    private static SkinMap skinMap = new SkinMap();
 
     public void setEntityRegistry(@NotNull AbstractNMSEntityRegistry entityRegistry) {
-        this.entityRegistry = entityRegistry;
+        NMSLib.entityRegistry = entityRegistry;
     }
 
-    @NotNull
-    @Override
-    public AbstractNMSEntityRegistry getNMSEntityRegistry() {
+    public static AbstractNMSEntityRegistry getNMSEntityRegistry() {
         return entityRegistry;
     }
 
-    public void setNMSAbstractFactory(@NotNull NMSAbstractFactory nmsAbstractFactory) {
-        this.nmsAbstractFactory = nmsAbstractFactory;
+    public static void setNMSAbstractFactory(@NotNull NMSAbstractFactory nmsAbstractFactory) {
+        NMSLib.nmsAbstractFactory = nmsAbstractFactory;
     }
 
-    @NotNull
-    public NMSAbstractFactory getNMSAbstractFactory() {
+    public static NMSAbstractFactory getNMSAbstractFactory() {
         return nmsAbstractFactory;
     }
 
-    public void setBlockAnalyzer(@NotNull BlockAnalyzer blockAnalyzer) {
-        this.blockAnalyzer = blockAnalyzer;
-    }
-
-    @NotNull
-    public BlockAnalyzer getNMSLibBlockAnalyzer() {
-        return blockAnalyzer;
+    public static void setBlockAnalyzer(@NotNull BlockAnalyzer blockAnalyzer) {
+        NMSLib.blockAnalyzer = blockAnalyzer;
     }
 
     public static NMSAbstractFactory getFactory() {
-        return acrylicNMSPlugin.getNMSAbstractFactory();
-    }
-
-    @NotNull
-    public static NMSLib getNMSPlugin() {
-        return acrylicNMSPlugin;
+        return NMSLib.getNMSAbstractFactory();
     }
 
     public static void setPlugin(@NotNull JavaPlugin plugin) {
@@ -82,7 +64,14 @@ public class NMSLib implements AcrylicNMSPlugin {
     }
 
     public static BlockAnalyzer getBlockAnalyzer() {
-        return acrylicNMSPlugin.getNMSLibBlockAnalyzer();
+        return blockAnalyzer;
     }
 
+    public static SkinMap getSkinMap() {
+        return skinMap;
+    }
+
+    public static void setSkinMap(@NotNull SkinMap skinMap) {
+        NMSLib.skinMap = skinMap;
+    }
 }

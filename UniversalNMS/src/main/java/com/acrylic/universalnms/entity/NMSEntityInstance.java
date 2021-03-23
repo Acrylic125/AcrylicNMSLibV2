@@ -67,4 +67,11 @@ public interface NMSEntityInstance extends EntityInstance {
         destroyPacket.apply(entity);
         destroyPacket.getSender().sendToAllOnline();
     }
+
+    void setAnimationDataWatcher(int mask, boolean b);
+
+    default void setOnFire(boolean b) {
+        setAnimationDataWatcher(0x01, b);
+    }
+
 }

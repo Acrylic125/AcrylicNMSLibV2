@@ -22,9 +22,8 @@ public class PlayerWrapper
     public PlayerWrapper(@NotNull NMSPlayerInstanceImpl nmsPlayerInstance, MinecraftServer minecraftserver, WorldServer worldserver, GameProfile gameprofile, PlayerInteractManager playerinteractmanager) {
         super(minecraftserver, worldserver, gameprofile, playerinteractmanager);
         this.nmsPlayerInstance = nmsPlayerInstance;
-
+        getDataWatcher().set(new DataWatcherObject<>(16, DataWatcherRegistry.a), (byte) 127);
         playerConnection = new PlayerConnection(NMSUtils.getMCServer(), new NetworkManager(EnumProtocolDirection.SERVERBOUND), this);
-
     }
 
     public PlayerWrapper(@NotNull NMSPlayerInstanceImpl nmsPlayerInstance, @NotNull Location location, @Nullable String name) {
@@ -32,6 +31,7 @@ public class PlayerWrapper
                 new GameProfile(UUID.randomUUID(), (name == null) ? null : ChatUtils.get(name)),
                 new PlayerInteractManager(NMSUtils.convertToWorldServer(location.getWorld())));
         this.nmsPlayerInstance = nmsPlayerInstance;
+        getDataWatcher().set(new DataWatcherObject<>(16, DataWatcherRegistry.a), (byte) 127);
         playerConnection = new PlayerConnection(NMSUtils.getMCServer(), new NetworkManager(EnumProtocolDirection.SERVERBOUND), this);
     }
 

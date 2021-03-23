@@ -76,4 +76,9 @@ public abstract class NMSEntityInstanceImpl
     public void setVelocity(@NotNull Vector vector) {
         setVelocity(vector.getX(), vector.getY(), vector.getZ());
     }
+
+    @Override
+    public void setAnimationDataWatcher(int mask, boolean b) {
+        getNMSEntity().setFlag(mask, b);
+    }
 }

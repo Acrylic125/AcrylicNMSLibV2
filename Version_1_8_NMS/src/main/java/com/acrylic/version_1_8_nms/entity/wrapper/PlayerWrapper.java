@@ -22,9 +22,9 @@ public class PlayerWrapper
     public PlayerWrapper(@NotNull NMSPlayerInstanceImpl nmsPlayerInstance, MinecraftServer minecraftserver, WorldServer worldserver, GameProfile gameprofile, PlayerInteractManager playerinteractmanager) {
         super(minecraftserver, worldserver, gameprofile, playerinteractmanager);
         this.nmsPlayerInstance = nmsPlayerInstance;
-
+        DataWatcher dataWatcher = getDataWatcher();
+        dataWatcher.watch(10, (byte) 127); //Displays the skin second layer.
         playerConnection = new PlayerConnection(NMSUtils.getMCServer(), new NetworkManager(EnumProtocolDirection.SERVERBOUND), this);
-
     }
 
     public PlayerWrapper(@NotNull NMSPlayerInstanceImpl nmsPlayerInstance, @NotNull Location location, @Nullable String name) {
@@ -32,6 +32,8 @@ public class PlayerWrapper
                 new GameProfile(UUID.randomUUID(), (name == null) ? null : ChatUtils.get(name)),
                 new PlayerInteractManager(NMSUtils.convertToWorldServer(location.getWorld())));
         this.nmsPlayerInstance = nmsPlayerInstance;
+        DataWatcher dataWatcher = getDataWatcher();
+        dataWatcher.watch(10, (byte) 127); //Displays the skin second layer.
         playerConnection = new PlayerConnection(NMSUtils.getMCServer(), new NetworkManager(EnumProtocolDirection.SERVERBOUND), this);
     }
 
