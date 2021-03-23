@@ -10,6 +10,7 @@ import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.particles.ParticleBuilder;
 import com.acrylic.universalnms.renderer.EntityPlayerCheckableRenderer;
 import com.acrylic.version_1_16_nms.entity.NMSArmorStandInstanceImpl;
+import com.acrylic.version_1_16_nms.entity.NMSPlayerInstanceImpl;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import net.minecraft.server.v1_16_R3.NavigationSpider;
 import net.minecraft.server.v1_16_R3.PathfinderGoalFollowEntity;
@@ -37,19 +38,18 @@ public class Command {
                 .filter(CommandExecuted::isExecutedByPlayer)
                 .handle(commandExecuted -> {
                     Player player = (Player) commandExecuted.getSender();
-                    NMSArmorStandInstanceImpl armorStandInstance = new NMSArmorStandInstanceImpl(player.getLocation(), null);
+                    NMSPlayerInstanceImpl armorStandInstance = new NMSPlayerInstanceImpl(player.getLocation(), null, "Trump");
                     armorStandInstance.getPacketHandler().setRenderer(new EntityPlayerCheckableRenderer(armorStandInstance.getBukkitEntity()));
-                    armorStandInstance.asAnimator();
+                    //armorStandInstance.asAnimator();
                     armorStandInstance.setEquipment(new EntityEquipmentBuilderImpl().
                             setItemInHand(ItemBuilder.of(Material.DIAMOND_PICKAXE))
                     );
+                    armorStandInstance.addToWorld();
                     Location location = player.getLocation();
-                    HandRotationAnimation handRotationAnimation = new HandRotationAnimation(armorStandInstance);
                     Scheduler.sync().runRepeatingTask(1, 1)
                             .plugin(NMSLib.getPlugin())
                             .handleThenBuild(() -> {
                                 armorStandInstance.tick();
-                                handRotationAnimation.teleportWithHolograms(location);
                             });
                 }).arguments(
                         CommandBuilder.create("p")

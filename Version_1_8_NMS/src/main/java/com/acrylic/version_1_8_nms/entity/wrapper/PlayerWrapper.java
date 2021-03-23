@@ -1,12 +1,12 @@
-package com.acrylic.version_1_16_nms.entity.wrapper;
+package com.acrylic.version_1_8_nms.entity.wrapper;
 
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universalnms.entity.NMSLivingEntityInstance;
 import com.acrylic.universalnms.entity.wrapper.NMSLivingEntityWrapper;
-import com.acrylic.version_1_16_nms.NMSUtils;
-import com.acrylic.version_1_16_nms.entity.NMSPlayerInstanceImpl;
+import com.acrylic.version_1_8_nms.NMSUtils;
+import com.acrylic.version_1_8_nms.entity.NMSPlayerInstanceImpl;
 import com.mojang.authlib.GameProfile;
-import net.minecraft.server.v1_16_R3.*;
+import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

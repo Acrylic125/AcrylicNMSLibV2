@@ -3,6 +3,7 @@ package com.acrylic.version_1_8_nms.entity;
 import com.acrylic.universalnms.entity.EntityPacketHandler;
 import com.acrylic.universalnms.entity.LivingEntityPacketHandler;
 import com.acrylic.universalnms.packets.types.EntityDestroyPacket;
+import com.acrylic.universalnms.packets.types.EntityMetadataPacket;
 import com.acrylic.universalnms.packets.types.EntitySpawnPacket;
 import com.acrylic.universalnms.packets.types.TeleportPacket;
 import com.acrylic.universalnms.renderer.PlayerCheckableRenderer;
@@ -77,6 +78,18 @@ public class LivingEntityPacketHandlerImpl implements LivingEntityPacketHandler 
     @Override
     public TeleportPacket getTeleportPacket() {
         return teleportPacket;
+    }
+
+    @NotNull
+    @Override
+    public EntityMetadataPacket getMetadataPacket() {
+        return entityMetadataPacket;
+    }
+
+    @Override
+    public void updateMetadata() {
+        entityMetadataPacket.apply(entityInstance.getNMSEntity());
+        entityMetadataPacket.getSender().sendToAllByRenderer(renderer);
     }
 
     @Override

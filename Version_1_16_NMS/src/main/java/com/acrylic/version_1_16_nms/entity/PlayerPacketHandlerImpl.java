@@ -1,23 +1,23 @@
 package com.acrylic.version_1_16_nms.entity;
 
 import com.acrylic.universalnms.entity.EntityPacketHandler;
-import com.acrylic.universalnms.entity.LivingEntityPacketHandler;
-import com.acrylic.universalnms.packets.types.EntityDestroyPacket;
-import com.acrylic.universalnms.packets.types.EntityMetadataPacket;
-import com.acrylic.universalnms.packets.types.EntitySpawnPacket;
-import com.acrylic.universalnms.packets.types.TeleportPacket;
+import com.acrylic.universalnms.entity.PlayerPacketHandler;
+import com.acrylic.universalnms.packets.types.*;
 import com.acrylic.universalnms.renderer.PlayerCheckableRenderer;
 import com.acrylic.universalnms.send.BatchSender;
 import com.acrylic.version_1_16_nms.packets.types.*;
 import net.minecraft.server.v1_16_R3.EntityLiving;
+import net.minecraft.server.v1_16_R3.EntityPlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class LivingEntityPacketHandlerImpl implements LivingEntityPacketHandler {
+public class PlayerPacketHandlerImpl implements PlayerPacketHandler {
 
-    private final NMSLivingEntityInstanceImpl entityInstance;
-    private final LivingEntitySpawnPacketImpl entitySpawnPacket = new LivingEntitySpawnPacketImpl();
+    private final NMSPlayerInstanceImpl entityInstance;
+    private final PlayerInfoPacketImpl playerInfoPacket = new PlayerInfoPacketImpl();
+    private final EntityHeadRotationPacketImpl headRotationPacket = new EntityHeadRotationPacketImpl();
+    private final NamedPlayerSpawnPacketImpl entitySpawnPacket = new NamedPlayerSpawnPacketImpl();
     private final EntityDestroyPacketImpl entityDestroyPacket = new EntityDestroyPacketImpl();
     private final TeleportPacketImpl teleportPacket = new TeleportPacketImpl();
     private final EntityEquipmentPacketsImpl equipmentPackets = new EntityEquipmentPacketsImpl();
@@ -25,40 +25,45 @@ public class LivingEntityPacketHandlerImpl implements LivingEntityPacketHandler 
     private final BatchSender displaySender = new BatchSender();
     private PlayerCheckableRenderer renderer;
 
-    public LivingEntityPacketHandlerImpl(@NotNull NMSLivingEntityInstanceImpl entityInstance, @Nullable PlayerCheckableRenderer renderer) {
+    public PlayerPacketHandlerImpl(@NotNull NMSPlayerInstanceImpl entityInstance, @Nullable PlayerCheckableRenderer renderer) {
         this.entityInstance = entityInstance;
         this.renderer = renderer;
         if (renderer != null)
             EntityPacketHandler.initializeRenderer(this);
         entityDestroyPacket.apply(entityInstance.getNMSEntity());
         equipmentPackets.apply(entityInstance.getNMSEntity());
+        headRotationPacket.apply(entityInstance.getNMSEntity());
+        playerInfoPacket.apply(PlayerInfoPacket.Info.ADD_PLAYER, entityInstance.getNMSEntity());
+        displaySender.attachSender(playerInfoPacket.getSender());
         displaySender.attachSender(entitySpawnPacket.getSender());
         displaySender.attachSender(entityMetadataPacket.getSender());
         displaySender.attachSender(equipmentPackets.getSender());
+        displaySender.attachSender(headRotationPacket.getSender());
+        displaySender.attachSender(teleportPacket.getSender());
     }
 
     @NotNull
     @Override
-    public NMSLivingEntityInstanceImpl getEntityInstance() {
+    public NMSPlayerInstanceImpl getEntityInstance() {
         return entityInstance;
+    }
+
+    @NotNull
+    @Override
+    public EntityHeadRotationPacket getHeadRotationPacket() {
+        return headRotationPacket;
+    }
+
+    @NotNull
+    @Override
+    public PlayerInfoPacket getPlayerInfoPacket() {
+        return playerInfoPacket;
     }
 
     @NotNull
     @Override
     public EntityEquipmentPacketsImpl getEquipmentPackets() {
         return equipmentPackets;
-    }
-
-    @NotNull
-    @Override
-    public EntityMetadataPacket getMetadataPacket() {
-        return entityMetadataPacket;
-    }
-
-    @Override
-    public void updateMetadata() {
-        entityMetadataPacket.apply(entityInstance.getNMSEntity());
-        entityMetadataPacket.getSender().sendToAllByRenderer(renderer);
     }
 
     @Override
@@ -76,7 +81,7 @@ public class LivingEntityPacketHandlerImpl implements LivingEntityPacketHandler 
 
     @NotNull
     @Override
-    public EntitySpawnPacket getSpawnPacket() {
+    public NamedPlayerSpawnPacket getSpawnPacket() {
         return entitySpawnPacket;
     }
 
@@ -84,6 +89,18 @@ public class LivingEntityPacketHandlerImpl implements LivingEntityPacketHandler 
     @Override
     public TeleportPacket getTeleportPacket() {
         return teleportPacket;
+    }
+
+    @NotNull
+    @Override
+    public EntityMetadataPacket getMetadataPacket() {
+        return entityMetadataPacket;
+    }
+
+    @Override
+    public void updateMetadata() {
+        entityMetadataPacket.apply(entityInstance.getNMSEntity());
+        entityMetadataPacket.getSender().sendToAllByRenderer(renderer);
     }
 
     @Override
@@ -99,9 +116,11 @@ public class LivingEntityPacketHandlerImpl implements LivingEntityPacketHandler 
 
     @Override
     public void updatePackets() {
-        EntityLiving entityLiving = entityInstance.getNMSEntity();
+        EntityPlayer entityLiving = entityInstance.getNMSEntity();
         entitySpawnPacket.apply(entityLiving);
         entityMetadataPacket.apply(entityLiving);
+        headRotationPacket.apply(entityLiving);
+        teleportPacket.apply(entityLiving);
     }
 
     @Override
