@@ -91,7 +91,7 @@ public abstract class AbstractAStarPathfinder<N extends AStarPathNode>
     }
 
     public boolean isNodeInClosed(N node) {
-        return getOpen().get(node.hashCode()) != null;
+        return getClosed().get(node.hashCode()) != null;
     }
 
     public abstract double getDistanceFromStartToEnd();

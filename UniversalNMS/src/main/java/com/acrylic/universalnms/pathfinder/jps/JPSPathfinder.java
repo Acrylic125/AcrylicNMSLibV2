@@ -107,9 +107,10 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
                     break;
                 } else if (currentNode instanceof JPSPathNode) {
                     JPSPathNode jpsPathNode = (JPSPathNode) currentNode;
-                    scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), jpsPathNode.getFacingZ(), jpsPathNode.getFacingX());
-                    scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), jpsPathNode.getFacingZ() * -1, jpsPathNode.getFacingX());
-                    scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), jpsPathNode.getFacingX(), jpsPathNode.getFacingZ());
+                    int facingX = jpsPathNode.getFacingX(), facingZ = jpsPathNode.getFacingZ();
+                    scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), facingZ, facingX);
+                    scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), facingZ * -1, facingX);
+                    scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), facingX, facingZ);
                 }
             }
         }
@@ -207,7 +208,7 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
             x += facingX;
             if (!canPass(x, y, z))
                 return false;
-            if (getEndNode().equals(x, z)) {
+            if (getEndNode().equalsWithEstimatedBounds(x, z, 0.5f)) {
                 completed = true;
                 return true;
             }
@@ -233,7 +234,7 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
             z += facingZ;
             if (!canPass(x, y, z))
                 return false;
-            if (getEndNode().equals(x, z)) {
+            if (getEndNode().equalsWithEstimatedBounds(x, z, 0.5f)) {
                 completed = true;
                 return true;
             }

@@ -2,6 +2,7 @@ package com.acrylic.universalnms.pathfinder.jps;
 
 import com.acrylic.universalnms.pathfinder.astar.AStarPathNode;
 import com.acrylic.universalnms.pathfinder.PathNode;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -23,7 +24,7 @@ public class JPSBaseNode implements AStarPathNode {
     }
 
     protected static JPSBaseNode createStartNode(@NotNull JPSPathfinder jpsPathfinder, @NotNull Block block) {
-        return new JPSBaseNode(jpsPathfinder, null, block.getX(), block.getY(), block.getZ(), 0, jpsPathfinder.getDistanceFromStartToEnd(), 0);
+        return new JPSBaseNode(jpsPathfinder, null, block.getX() + 0.5f, block.getY() + 0.5f, block.getZ() + 0.5f, 0, jpsPathfinder.getDistanceFromStartToEnd(), 0);
     }
 
     protected static JPSBaseNode createEndNode(@NotNull JPSPathfinder jpsPathfinder, @NotNull JPSBaseNode parent, @NotNull Location location) {
@@ -31,7 +32,7 @@ public class JPSBaseNode implements AStarPathNode {
     }
 
     protected static JPSBaseNode createEndNode(@NotNull JPSPathfinder jpsPathfinder, @NotNull JPSBaseNode parent, @NotNull Block block) {
-        return new JPSBaseNode(jpsPathfinder, parent, block.getX(), block.getY(), block.getZ(), jpsPathfinder.getDistanceFromStartToEnd(), 0, -1);
+        return new JPSBaseNode(jpsPathfinder, parent, block.getX() + 0.5f, block.getY() + 0.5f, block.getZ() + 0.5f, jpsPathfinder.getDistanceFromStartToEnd(), 0, -1);
     }
 
     protected JPSBaseNode(JPSPathfinder jpsPathfinder, @Nullable JPSBaseNode parent, float x, float y, float z, double gCost, double hCost, int depth) {
@@ -106,7 +107,14 @@ public class JPSBaseNode implements AStarPathNode {
         return z;
     }
 
+    public boolean equalsWithEstimatedBounds(float x, float z, float bounds) {
+        return (Math.abs(x - this.x) <= bounds && Math.abs(z - this.z) <= bounds);
+    }
+
     public boolean equals(float x, float z) {
+        if (Math.abs(x - this.x) <= 0.5 && Math.abs(z - this.z) <= 0.5) {
+            Bukkit.broadcastMessage("T " + x + " " + this.x + " , " + z + " " + this.z);
+        }
         return this.x == x && this.z == z;
     }
 

@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class JPSPathfinderGenerator implements PathfinderGenerator {
 
-    private double maximumSearchDistance = 32;
+    private double maximumSearchDistance = 48;
     private int recursionMaximumHorizontal = 12, recursionMaximumDiagonal = 12;
     private float maximumDropHeight = 2,
             maximumHeight = 2,

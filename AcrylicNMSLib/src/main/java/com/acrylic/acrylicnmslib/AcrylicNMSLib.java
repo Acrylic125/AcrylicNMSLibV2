@@ -2,6 +2,7 @@ package com.acrylic.acrylicnmslib;
 
 import com.acrylic.time.Time;
 import com.acrylic.universal.Universal;
+import com.acrylic.universal.files.bukkit.Configuration;
 import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.send.GlobalBatchPacketSender;
@@ -25,6 +26,9 @@ public final class AcrylicNMSLib
                                 .plugin(this)
                 )
         );
+        Configuration config = new Configuration("skins.yml", this);
+        config.load();
+        NMSLib.getSkinMap().loadSkinMapFromConfig(config);
         // Plugin startup logic
         Command.createCommand();
         loadByVersion();
@@ -33,6 +37,9 @@ public final class AcrylicNMSLib
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        Configuration config = new Configuration("skins.yml", this);
+        config.load();
+        NMSLib.getSkinMap().saveTo(config);
         NMSLib.getNPCTablistRemover().terminate();
     }
 
