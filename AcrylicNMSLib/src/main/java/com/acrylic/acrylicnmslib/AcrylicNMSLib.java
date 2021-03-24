@@ -1,7 +1,10 @@
 package com.acrylic.acrylicnmslib;
 
+import com.acrylic.time.Time;
 import com.acrylic.universal.Universal;
+import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universalnms.NMSLib;
+import com.acrylic.universalnms.send.GlobalBatchPacketSender;
 import com.acrylic.version_1_8_nms.factory.NMSAbstractFactoryImpl;
 import com.acrylic.version_1_8_nms.nmsentityregistry.NMSEntityRegistryImpl;
 import com.acrylic.version_1_8_nms.worldexaminer.BlockAnalyzerImpl;
@@ -15,6 +18,13 @@ public final class AcrylicNMSLib
     @Override
     public void onEnable() {
         NMSLib.setPlugin(this);
+        NMSLib.setNPCTablistRemover(
+                new GlobalBatchPacketSender<>(
+                        Scheduler.sync().
+                                runRepeatingTask(10, Time.SECONDS, 10, Time.SECONDS)
+                                .plugin(this)
+                )
+        );
         // Plugin startup logic
         Command.createCommand();
         loadByVersion();
@@ -23,6 +33,7 @@ public final class AcrylicNMSLib
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        NMSLib.getNPCTablistRemover().terminate();
     }
 
     private void loadByVersion() {

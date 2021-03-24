@@ -56,8 +56,9 @@ public class Command {
                             .handleThenBuild(armorStandInstance::tick);
                     Scheduler.sync().runDelayedTask(40)
                             .handleThenBuild(() -> {
-                                armorStandInstance.setSkin("Trump");
+                                armorStandInstance.setVelocity(3, 2, 3);
                             });
+
                 }).arguments(
                         CommandBuilder.create("p")
                                 .filter(CommandExecuted::isExecutedByPlayer)

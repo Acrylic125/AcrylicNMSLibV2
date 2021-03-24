@@ -1,10 +1,15 @@
 package com.acrylic.universalnms;
 
+import com.acrylic.time.Time;
+import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universalnms.factory.NMSAbstractFactory;
 import com.acrylic.universalnms.factory.NMSEntityFactory;
 import com.acrylic.universalnms.factory.NMSUtilityFactory;
 import com.acrylic.universalnms.factory.PacketFactory;
 import com.acrylic.universalnms.nmsentityregistry.AbstractNMSEntityRegistry;
+import com.acrylic.universalnms.packets.types.EntityDestroyPacket;
+import com.acrylic.universalnms.packets.types.PlayerInfoPacket;
+import com.acrylic.universalnms.send.GlobalBatchPacketSender;
 import com.acrylic.universalnms.skins.SkinMap;
 import com.acrylic.universalnms.worldexaminer.BlockAnalyzer;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -17,6 +22,7 @@ public class NMSLib {
     private static BlockAnalyzer blockAnalyzer;
     private static AbstractNMSEntityRegistry entityRegistry;
     private static SkinMap skinMap = new SkinMap();
+    private static GlobalBatchPacketSender<PlayerInfoPacket> npcTablistRemover;
 
     public static void setEntityRegistry(@NotNull AbstractNMSEntityRegistry entityRegistry) {
         NMSLib.entityRegistry = entityRegistry;
@@ -73,5 +79,16 @@ public class NMSLib {
 
     public static void setSkinMap(@NotNull SkinMap skinMap) {
         NMSLib.skinMap = skinMap;
+    }
+
+    public static void setNPCTablistRemover(@NotNull GlobalBatchPacketSender<PlayerInfoPacket> npcTablistRemover) {
+        if (NMSLib.npcTablistRemover != null)
+            NMSLib.npcTablistRemover.terminate();
+        NMSLib.npcTablistRemover = npcTablistRemover;
+        npcTablistRemover.start();
+    }
+
+    public static GlobalBatchPacketSender<PlayerInfoPacket> getNPCTablistRemover() {
+        return npcTablistRemover;
     }
 }

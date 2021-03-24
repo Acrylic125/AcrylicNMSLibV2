@@ -1,5 +1,6 @@
 package com.acrylic.universalnms.entity;
 
+import com.acrylic.universal.animations.rotational.HandRotationAnimation;
 import com.acrylic.universal.entity.LivingEntityInstance;
 import com.acrylic.universal.entity.equipment.EntityEquipmentBuilder;
 import com.acrylic.universalnms.entity.wrapper.NMSLivingEntityWrapper;

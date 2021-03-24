@@ -60,7 +60,7 @@ public class RangedPlayerCheckableRenderer implements PlayerCheckableRenderer {
                     if (deinitialize != null && player != null)
                         deinitialize.accept(player);
                     iterator.remove();
-                    Bukkit.broadcastMessage("Removed");
+                    //Bukkit.broadcastMessage("Removed");
                 }
             });
             for (Player player : Bukkit.getOnlinePlayers()) {
@@ -69,7 +69,7 @@ public class RangedPlayerCheckableRenderer implements PlayerCheckableRenderer {
                     if (initialize != null)
                         initialize.accept(player);
                     rendered.add(uuid);
-                    Bukkit.broadcastMessage("Added");
+                    //Bukkit.broadcastMessage("Added");
                 }
             }
         }

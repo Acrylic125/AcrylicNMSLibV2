@@ -1,5 +1,6 @@
 package com.acrylic.version_1_16_nms.entity;
 
+import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.entity.EntityPacketHandler;
 import com.acrylic.universalnms.entity.PlayerPacketHandler;
 import com.acrylic.universalnms.packets.types.*;
@@ -116,6 +117,7 @@ public class PlayerPacketHandlerImpl implements PlayerPacketHandler {
     public void displayEntityToPlayer(Player player) {
         updatePackets();
         displaySender.sendTo(player);
+        NMSLib.getNPCTablistRemover().add(player, playerRemoveInfoPacket);
     }
 
     @Override
