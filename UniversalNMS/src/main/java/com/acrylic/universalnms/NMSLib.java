@@ -18,7 +18,7 @@ public class NMSLib {
     private static AbstractNMSEntityRegistry entityRegistry;
     private static SkinMap skinMap = new SkinMap();
 
-    public void setEntityRegistry(@NotNull AbstractNMSEntityRegistry entityRegistry) {
+    public static void setEntityRegistry(@NotNull AbstractNMSEntityRegistry entityRegistry) {
         NMSLib.entityRegistry = entityRegistry;
     }
 

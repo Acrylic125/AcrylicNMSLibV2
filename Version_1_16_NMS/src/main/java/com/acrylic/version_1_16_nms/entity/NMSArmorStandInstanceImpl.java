@@ -89,6 +89,7 @@ public class NMSArmorStandInstanceImpl
 
     public void setHeadPose(Vector3f vector3f) {
         armorStand.setHeadPose(vector3f);
+        entityPacketHandler.updateMetadata();
     }
 
     @Override
@@ -98,6 +99,7 @@ public class NMSArmorStandInstanceImpl
 
     public void setRightArmPose(Vector3f vector3f) {
         armorStand.setRightArmPose(vector3f);
+        entityPacketHandler.updateMetadata();
     }
 
     @Override
@@ -107,6 +109,7 @@ public class NMSArmorStandInstanceImpl
 
     public void setLeftArmPose(Vector3f vector3f) {
         armorStand.setLeftArmPose(vector3f);
+        entityPacketHandler.updateMetadata();
     }
 
     @Override
@@ -116,6 +119,7 @@ public class NMSArmorStandInstanceImpl
 
     public void setRightLegPose(Vector3f vector3f) {
         armorStand.setRightLegPose(vector3f);
+        entityPacketHandler.updateMetadata();
     }
 
     @Override
@@ -125,6 +129,7 @@ public class NMSArmorStandInstanceImpl
 
     public void setLeftLegPose(Vector3f vector3f) {
         armorStand.setLeftLegPose(vector3f);
+        entityPacketHandler.updateMetadata();
     }
 
     @Override

@@ -60,7 +60,7 @@ public final class NMSUtils {
         return world.getHandle();
     }
 
-    public static WorldServer convertToWorldServer(@NotNull World world) {
+    public static WorldServer convertToWorldServer(World world) {
         return convertToWorldServer(convertToCraftWorld(world));
     }
 

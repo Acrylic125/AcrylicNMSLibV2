@@ -5,11 +5,13 @@ import com.acrylic.universalnms.entity.NMSPlayerInstance;
 import com.acrylic.universalnms.entity.wrapper.NMSLivingEntityWrapper;
 import com.acrylic.universalnms.entityai.EntityAI;
 import com.acrylic.universalnms.enums.Gamemode;
+import com.acrylic.universalnms.packets.types.PlayerInfoPacket;
 import com.acrylic.universalnms.renderer.PlayerCheckableRenderer;
 import com.acrylic.universalnms.skins.Skin;
 import com.acrylic.version_1_16_nms.entity.wrapper.PlayerWrapper;
 import com.mojang.authlib.properties.Property;
 import net.minecraft.server.v1_16_R3.*;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -28,6 +30,7 @@ public class NMSPlayerInstanceImpl
 
     public NMSPlayerInstanceImpl(@NotNull Location location, @Nullable PlayerCheckableRenderer renderer, @Nullable String name) {
         this.playerWrapper = new PlayerWrapper(this, location, name);
+        setSkin("Acrylic123");
         playerWrapper.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
         this.entityPacketHandler = new PlayerPacketHandlerImpl(this, renderer);
     }

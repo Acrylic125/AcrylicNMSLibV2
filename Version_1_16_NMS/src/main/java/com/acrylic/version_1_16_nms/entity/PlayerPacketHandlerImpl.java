@@ -6,8 +6,11 @@ import com.acrylic.universalnms.packets.types.*;
 import com.acrylic.universalnms.renderer.PlayerCheckableRenderer;
 import com.acrylic.universalnms.send.BatchSender;
 import com.acrylic.version_1_16_nms.packets.types.*;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.nms.v1_16_R3.entity.HumanController;
 import net.minecraft.server.v1_16_R3.EntityLiving;
 import net.minecraft.server.v1_16_R3.EntityPlayer;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -40,7 +43,7 @@ public class PlayerPacketHandlerImpl implements PlayerPacketHandler {
         displaySender.attachSender(equipmentPackets.getSender());
         displaySender.attachSender(headRotationPacket.getSender());
         displaySender.attachSender(teleportPacket.getSender());
-    }
+     }
 
     @NotNull
     @Override

@@ -1,6 +1,7 @@
 package com.acrylic.universalnms.skins;
 
 import com.acrylic.universal.threads.Scheduler;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,7 +26,7 @@ public final class SkinMap {
     }
 
     public void asyncGetAndActOnSkin(@NotNull String id, @NotNull Consumer<Skin> action, @Nullable Runnable failed) {
-        Scheduler.async().runTask().handle(() -> {
+        Scheduler.async().runTask().handleThenBuild(() -> {
             Skin skin = getSkin(id);
             if (skin == null) {
                 if (failed != null)

@@ -79,6 +79,8 @@ public abstract class NMSEntityInstanceImpl
 
     @Override
     public void setAnimationDataWatcher(int mask, boolean b) {
-        getNMSEntity().setFlag(mask, b);
+        DataWatcher dataWatcher = getNMSEntity().getDataWatcher();
+        DataWatcherObject<Byte> obj = DataWatcherRegistry.a.a(0);
+        dataWatcher.set(obj, (byte) ((b) ? (dataWatcher.get(obj) | mask) : (dataWatcher.get(obj) & ~mask)));
     }
 }
