@@ -1,17 +1,17 @@
 package com.acrylic.version_1_16_nms.entity;
 
-import com.acrylic.universal.gui.items.GUIClickableItem;
 import com.acrylic.universalnms.entity.NMSPlayerInstance;
 import com.acrylic.universalnms.entity.wrapper.NMSLivingEntityWrapper;
 import com.acrylic.universalnms.entityai.EntityAI;
 import com.acrylic.universalnms.enums.Gamemode;
-import com.acrylic.universalnms.packets.types.PlayerInfoPacket;
 import com.acrylic.universalnms.renderer.PlayerCheckableRenderer;
-import com.acrylic.universalnms.skins.Skin;
 import com.acrylic.version_1_16_nms.entity.wrapper.PlayerWrapper;
 import com.mojang.authlib.properties.Property;
-import net.minecraft.server.v1_16_R3.*;
-import org.bukkit.Bukkit;
+import com.mojang.authlib.properties.PropertyMap;
+import net.minecraft.server.v1_16_R3.ChunkProviderServer;
+import net.minecraft.server.v1_16_R3.EntityPlayer;
+import net.minecraft.server.v1_16_R3.EnumGamemode;
+import net.minecraft.server.v1_16_R3.PlayerChunkMap;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
+import java.util.Collection;
 
 public class NMSPlayerInstanceImpl
         extends NMSLivingEntityInstanceImpl
@@ -30,7 +31,6 @@ public class NMSPlayerInstanceImpl
 
     public NMSPlayerInstanceImpl(@NotNull Location location, @Nullable PlayerCheckableRenderer renderer, @Nullable String name) {
         this.playerWrapper = new PlayerWrapper(this, location, name);
-        setSkin("Acrylic123");
         playerWrapper.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
         this.entityPacketHandler = new PlayerPacketHandlerImpl(this, renderer);
     }
@@ -70,8 +70,12 @@ public class NMSPlayerInstanceImpl
     }
 
     @Override
-    public void setSkin(String signature, String texture) {
-        playerWrapper.getProfile().getProperties().put("textures", new Property("textures", texture, signature));
+    public void setSkinWithoutRefreshing(String signature, String texture) {
+        PropertyMap propertyMap = playerWrapper.getProfile().getProperties();
+        Collection<Property> textures = propertyMap.get("textures");
+        if (textures != null)
+            textures.clear();
+        propertyMap.put("textures", new Property("textures", texture, signature));
     }
 
     @Override

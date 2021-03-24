@@ -51,6 +51,12 @@ public interface EntityPacketHandler {
 
     void updatePackets();
 
+    default void refreshPackets() {
+        getDestroyPacket().getSender().sendToAllByRenderer(getRenderer());
+        updatePackets();
+        resendPackets();
+    }
+
     void resendPackets();
 
     static void throwNoRendererError() {

@@ -7,12 +7,15 @@ import com.acrylic.universalnms.enums.Gamemode;
 import com.acrylic.universalnms.renderer.PlayerCheckableRenderer;
 import com.acrylic.version_1_8_nms.entity.wrapper.PlayerWrapper;
 import com.mojang.authlib.properties.Property;
+import com.mojang.authlib.properties.PropertyMap;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.WorldSettings;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Collection;
 
 public class NMSPlayerInstanceImpl
         extends NMSLivingEntityInstanceImpl
@@ -62,8 +65,12 @@ public class NMSPlayerInstanceImpl
     }
 
     @Override
-    public void setSkin(String signature, String texture) {
-        playerWrapper.getProfile().getProperties().put("textures", new Property("textures", texture, signature));
+    public void setSkinWithoutRefreshing(String signature, String texture) {
+        PropertyMap propertyMap = playerWrapper.getProfile().getProperties();
+        Collection<Property> textures = propertyMap.get("textures");
+        if (textures != null)
+            textures.clear();
+        propertyMap.put("textures", new Property("textures", texture, signature));
     }
 
     @Override

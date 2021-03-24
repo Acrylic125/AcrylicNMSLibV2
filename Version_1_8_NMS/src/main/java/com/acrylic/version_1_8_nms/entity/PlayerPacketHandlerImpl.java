@@ -14,8 +14,10 @@ import org.jetbrains.annotations.Nullable;
 public class PlayerPacketHandlerImpl implements PlayerPacketHandler {
 
     private final NMSPlayerInstanceImpl entityInstance;
-    private final PlayerInfoPacketImpl playerInfoPacket = new PlayerInfoPacketImpl();
-    private final EntityHeadRotationPacketImpl headRotationPacket = new EntityHeadRotationPacketImpl();
+    private final PlayerInfoPacketImpl
+            playerAddInfoPacket = new PlayerInfoPacketImpl(),
+            playerRemoveInfoPacket = new PlayerInfoPacketImpl();
+    private final EntityOrientationPacketsImpl headRotationPacket = new EntityOrientationPacketsImpl();
     private final NamedPlayerSpawnPacketImpl entitySpawnPacket = new NamedPlayerSpawnPacketImpl();
     private final EntityDestroyPacketImpl entityDestroyPacket = new EntityDestroyPacketImpl();
     private final TeleportPacketImpl teleportPacket = new TeleportPacketImpl();
@@ -29,11 +31,13 @@ public class PlayerPacketHandlerImpl implements PlayerPacketHandler {
         this.renderer = renderer;
         if (renderer != null)
             EntityPacketHandler.initializeRenderer(this);
-        entityDestroyPacket.apply(entityInstance.getNMSEntity());
-        equipmentPackets.apply(entityInstance.getNMSEntity());
-        headRotationPacket.apply(entityInstance.getNMSEntity());
-        playerInfoPacket.apply(PlayerInfoPacket.Info.ADD_PLAYER, entityInstance.getNMSEntity());
-        displaySender.attachSender(playerInfoPacket.getSender());
+        EntityPlayer entityPlayer = entityInstance.getNMSEntity();
+        entityDestroyPacket.apply(entityPlayer);
+        equipmentPackets.apply(entityPlayer);
+        headRotationPacket.apply(entityPlayer);
+        playerAddInfoPacket.apply(PlayerInfoPacket.Info.ADD_PLAYER, entityPlayer);
+        playerRemoveInfoPacket.apply(PlayerInfoPacket.Info.REMOVE_PLAYER, entityPlayer);
+        displaySender.attachSender(playerAddInfoPacket.getSender());
         displaySender.attachSender(entitySpawnPacket.getSender());
         displaySender.attachSender(entityMetadataPacket.getSender());
         displaySender.attachSender(equipmentPackets.getSender());
@@ -49,14 +53,20 @@ public class PlayerPacketHandlerImpl implements PlayerPacketHandler {
 
     @NotNull
     @Override
-    public EntityHeadRotationPacket getHeadRotationPacket() {
+    public EntityOrientationPackets getHeadRotationPacket() {
         return headRotationPacket;
     }
 
     @NotNull
     @Override
-    public PlayerInfoPacket getPlayerInfoPacket() {
-        return playerInfoPacket;
+    public PlayerInfoPacket getAddPlayerInfoPacket() {
+        return playerAddInfoPacket;
+    }
+
+    @NotNull
+    @Override
+    public PlayerInfoPacket getRemovePlayerInfoPacket() {
+        return playerRemoveInfoPacket;
     }
 
     @NotNull

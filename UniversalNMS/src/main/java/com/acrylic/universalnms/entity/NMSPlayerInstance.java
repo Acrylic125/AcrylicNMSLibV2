@@ -2,6 +2,7 @@ package com.acrylic.universalnms.entity;
 
 import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.enums.Gamemode;
+import com.acrylic.universalnms.packets.types.PlayerInfoPacket;
 import com.acrylic.universalnms.skins.Skin;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +20,17 @@ public interface NMSPlayerInstance
 
     void setGamemode(@NotNull Gamemode gamemode);
 
-    void setSkin(String signature, String texture);
+    void setSkinWithoutRefreshing(String signature, String texture);
+
+    default void setSkin(String signature, String texture) {
+        PlayerPacketHandler entityPacketHandler = getPacketHandler();
+        setSkinWithoutRefreshing(signature, texture);
+        Player player = getBukkitEntity();
+        entityPacketHandler.getAddPlayerInfoPacket().apply(PlayerInfoPacket.Info.ADD_PLAYER, player);
+        entityPacketHandler.getMetadataPacket().apply(player);
+        entityPacketHandler.getSpawnPacket().apply(player);
+        entityPacketHandler.resendPackets();
+    }
 
     default void setSkin(@Nullable Skin skin) {
         if (skin == null)

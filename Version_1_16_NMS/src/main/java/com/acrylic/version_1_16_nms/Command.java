@@ -54,6 +54,10 @@ public class Command {
                     Scheduler.sync().runRepeatingTask(1, 1)
                             .plugin(NMSLib.getPlugin())
                             .handleThenBuild(armorStandInstance::tick);
+                    Scheduler.sync().runDelayedTask(40)
+                            .handleThenBuild(() -> {
+                                armorStandInstance.setSkin("Trump");
+                            });
                 }).arguments(
                         CommandBuilder.create("p")
                                 .filter(CommandExecuted::isExecutedByPlayer)

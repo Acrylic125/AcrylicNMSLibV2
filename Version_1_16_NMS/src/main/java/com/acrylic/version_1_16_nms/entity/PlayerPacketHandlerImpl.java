@@ -6,11 +6,7 @@ import com.acrylic.universalnms.packets.types.*;
 import com.acrylic.universalnms.renderer.PlayerCheckableRenderer;
 import com.acrylic.universalnms.send.BatchSender;
 import com.acrylic.version_1_16_nms.packets.types.*;
-import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.nms.v1_16_R3.entity.HumanController;
-import net.minecraft.server.v1_16_R3.EntityLiving;
 import net.minecraft.server.v1_16_R3.EntityPlayer;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -18,8 +14,10 @@ import org.jetbrains.annotations.Nullable;
 public class PlayerPacketHandlerImpl implements PlayerPacketHandler {
 
     private final NMSPlayerInstanceImpl entityInstance;
-    private final PlayerInfoPacketImpl playerInfoPacket = new PlayerInfoPacketImpl();
-    private final EntityHeadRotationPacketImpl headRotationPacket = new EntityHeadRotationPacketImpl();
+    private final PlayerInfoPacketImpl
+            playerAddInfoPacket = new PlayerInfoPacketImpl(),
+            playerRemoveInfoPacket = new PlayerInfoPacketImpl();
+    private final EntityOrientationPacketsImpl headRotationPacket = new EntityOrientationPacketsImpl();
     private final NamedPlayerSpawnPacketImpl entitySpawnPacket = new NamedPlayerSpawnPacketImpl();
     private final EntityDestroyPacketImpl entityDestroyPacket = new EntityDestroyPacketImpl();
     private final TeleportPacketImpl teleportPacket = new TeleportPacketImpl();
@@ -33,13 +31,15 @@ public class PlayerPacketHandlerImpl implements PlayerPacketHandler {
         this.renderer = renderer;
         if (renderer != null)
             EntityPacketHandler.initializeRenderer(this);
-        entityDestroyPacket.apply(entityInstance.getNMSEntity());
-        equipmentPackets.apply(entityInstance.getNMSEntity());
-        headRotationPacket.apply(entityInstance.getNMSEntity());
-        playerInfoPacket.apply(PlayerInfoPacket.Info.ADD_PLAYER, entityInstance.getNMSEntity());
-        displaySender.attachSender(playerInfoPacket.getSender());
-        displaySender.attachSender(entitySpawnPacket.getSender());
+        EntityPlayer entityPlayer = entityInstance.getNMSEntity();
+        entityDestroyPacket.apply(entityPlayer);
+        equipmentPackets.apply(entityPlayer);
+        headRotationPacket.apply(entityPlayer);
+        playerAddInfoPacket.apply(PlayerInfoPacket.Info.ADD_PLAYER, entityPlayer);
+        playerRemoveInfoPacket.apply(PlayerInfoPacket.Info.REMOVE_PLAYER, entityPlayer);
+        displaySender.attachSender(playerAddInfoPacket.getSender());
         displaySender.attachSender(entityMetadataPacket.getSender());
+        displaySender.attachSender(entitySpawnPacket.getSender());
         displaySender.attachSender(equipmentPackets.getSender());
         displaySender.attachSender(headRotationPacket.getSender());
         displaySender.attachSender(teleportPacket.getSender());
@@ -53,14 +53,20 @@ public class PlayerPacketHandlerImpl implements PlayerPacketHandler {
 
     @NotNull
     @Override
-    public EntityHeadRotationPacket getHeadRotationPacket() {
+    public EntityOrientationPackets getHeadRotationPacket() {
         return headRotationPacket;
     }
 
     @NotNull
     @Override
-    public PlayerInfoPacket getPlayerInfoPacket() {
-        return playerInfoPacket;
+    public PlayerInfoPacket getAddPlayerInfoPacket() {
+        return playerAddInfoPacket;
+    }
+
+    @NotNull
+    @Override
+    public PlayerInfoPacket getRemovePlayerInfoPacket() {
+        return playerRemoveInfoPacket;
     }
 
     @NotNull
