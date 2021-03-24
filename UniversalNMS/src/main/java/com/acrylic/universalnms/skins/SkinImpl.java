@@ -1,10 +1,6 @@
 package com.acrylic.universalnms.skins;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,13 +10,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.UUID;
 import java.util.logging.Level;
 
-public class NameSkin implements Skin {
+public class SkinImpl implements Skin {
 
     @Nullable
-    public static NameSkin create(@NotNull String name) {
+    public static SkinImpl create(@NotNull String name) {
         try {
             HttpsURLConnection connection = (HttpsURLConnection) new URL(String.format("https://api.ashcon.app/mojang/v2/user/%s", name)).openConnection();
             if (connection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
@@ -35,7 +30,7 @@ public class NameSkin implements Skin {
                 String signature = reply.substring(indexOfSignature + 14, reply.indexOf("\"", indexOfSignature + 14));
 
                 Bukkit.getLogger().log(Level.ALL, "Skin querying " + name + " succeeded!");
-                return new NameSkin(name, signature, skin);
+                return new SkinImpl(name, signature, skin);
             }
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -47,7 +42,7 @@ public class NameSkin implements Skin {
     private final String name;
     private final String signature, texture;
 
-    public NameSkin(@NotNull String name, @NotNull String signature, @NotNull String texture) {
+    public SkinImpl(@NotNull String name, @NotNull String signature, @NotNull String texture) {
         this.name = name;
         this.signature = signature;
         this.texture = texture;
