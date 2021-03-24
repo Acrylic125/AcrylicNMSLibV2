@@ -34,7 +34,7 @@ public class PlayerPacketHandlerImpl implements PlayerPacketHandler {
         EntityPlayer entityPlayer = entityInstance.getNMSEntity();
         entityDestroyPacket.apply(entityPlayer);
         equipmentPackets.apply(entityPlayer);
-        headRotationPacket.apply(entityPlayer);
+        headRotationPacket.apply(entityPlayer, entityPlayer.yaw, entityPlayer.pitch);
         playerAddInfoPacket.apply(PlayerInfoPacket.Info.ADD_PLAYER, entityPlayer);
         playerRemoveInfoPacket.apply(PlayerInfoPacket.Info.REMOVE_PLAYER, entityPlayer);
         displaySender.attachSender(playerAddInfoPacket.getSender());
@@ -128,7 +128,7 @@ public class PlayerPacketHandlerImpl implements PlayerPacketHandler {
         EntityPlayer entityLiving = entityInstance.getNMSEntity();
         entitySpawnPacket.apply(entityLiving);
         entityMetadataPacket.apply(entityLiving);
-        headRotationPacket.apply(entityLiving);
+        headRotationPacket.apply(entityLiving, entityLiving.yaw, entityLiving.pitch);
         teleportPacket.apply(entityLiving);
     }
 
