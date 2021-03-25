@@ -89,6 +89,24 @@ public class NMSPlayerInstanceImpl
     }
 
     @Override
+    public void setYaw(float yaw) {
+        super.setYaw(yaw);
+        getPacketHandler().getEntityOrientationPackets().apply(getNMSEntity(), getYaw(), getPitch());
+    }
+
+    @Override
+    public void setPitch(float pitch) {
+        super.setPitch(pitch);
+        getPacketHandler().getEntityOrientationPackets().apply(getNMSEntity(), getYaw(), getPitch());
+    }
+
+    @Override
+    public void setYawAndPitch(float yaw, float pitch) {
+        super.setYawAndPitch(yaw, pitch);
+        getPacketHandler().getEntityOrientationPackets().apply(getNMSEntity(), getYaw(), getPitch());
+    }
+
+    @Override
     public void addToWorld() {
         int viewDistance = -1;
         PlayerChunkMap chunkMap = null;

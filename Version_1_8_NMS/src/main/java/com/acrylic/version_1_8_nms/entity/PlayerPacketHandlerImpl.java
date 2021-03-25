@@ -54,7 +54,7 @@ public class PlayerPacketHandlerImpl implements PlayerPacketHandler {
 
     @NotNull
     @Override
-    public EntityOrientationPackets getHeadRotationPacket() {
+    public EntityOrientationPacketsImpl getEntityOrientationPackets() {
         return headRotationPacket;
     }
 

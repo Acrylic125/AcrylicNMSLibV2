@@ -42,6 +42,16 @@ public interface NMSEntityInstance extends EntityInstance {
 
     void addToWorld();
 
+    float getYaw();
+
+    void setYaw(float yaw);
+
+    float getPitch();
+
+    void setPitch(float pitch);
+
+    void setYawAndPitch(float yaw, float pitch);
+
     default void tick() {
         if (getTicksLived() % 20 == 0) {
             getPacketHandler().getRenderer().doChecks();

@@ -78,6 +78,33 @@ public abstract class NMSEntityInstanceImpl
     }
 
     @Override
+    public float getYaw() {
+        return getNMSEntity().yaw;
+    }
+
+    @Override
+    public void setYaw(float yaw) {
+        getNMSEntity().yaw = yaw;
+    }
+
+    @Override
+    public float getPitch() {
+        return getNMSEntity().pitch;
+    }
+
+    @Override
+    public void setPitch(float pitch) {
+        getNMSEntity().pitch = pitch;
+    }
+
+    @Override
+    public void setYawAndPitch(float yaw, float pitch) {
+        Entity entity = getNMSEntity();
+        entity.yaw = yaw;
+        entity.pitch = pitch;
+    }
+
+    @Override
     public void setAnimationDataWatcher(int mask, boolean b) {
         DataWatcher dataWatcher = getNMSEntity().getDataWatcher();
         DataWatcherObject<Byte> obj = DataWatcherRegistry.a.a(0);

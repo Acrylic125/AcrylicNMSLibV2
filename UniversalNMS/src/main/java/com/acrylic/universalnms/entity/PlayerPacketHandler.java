@@ -16,7 +16,7 @@ public interface PlayerPacketHandler extends LivingEntityPacketHandler {
     NamedPlayerSpawnPacket getSpawnPacket();
 
     @NotNull
-    EntityOrientationPackets getHeadRotationPacket();
+    EntityOrientationPackets getEntityOrientationPackets();
 
     @NotNull
     PlayerInfoPacket getAddPlayerInfoPacket();
