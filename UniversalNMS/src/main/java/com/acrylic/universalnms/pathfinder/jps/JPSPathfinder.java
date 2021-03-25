@@ -135,14 +135,14 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
             }
         }
         completed = true;
-        if (!endNode.equals(finalNode, false)) {
-            finalNode = getCheapestNodeFromOpenAndClosed();
-            Bukkit.broadcastMessage("Unsucessful!");
-        }
-        Bukkit.broadcastMessage(ChatUtils.get("&a&lJPS Pathfinding complete with " + i + " CCs of depth " + finalNode.getDepth() + "."));
-        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            onlinePlayer.sendBlockChange(new Location(getWorld(), getEndNode().getX(), getEndNode().getY() + 2, getEndNode().getZ()), Bukkit.createBlockData(Material.EMERALD_BLOCK));
-        }
+//        if (!endNode.equals(finalNode, false)) {
+//            finalNode = getCheapestNodeFromOpenAndClosed();
+//            Bukkit.broadcastMessage("Unsucessful!");
+//        }
+//        Bukkit.broadcastMessage(ChatUtils.get("&a&lJPS Pathfinding complete with " + i + " CCs of depth " + finalNode.getDepth() + "."));
+//        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+//            onlinePlayer.sendBlockChange(new Location(getWorld(), getEndNode().getX(), getEndNode().getY() + 2, getEndNode().getZ()), Bukkit.createBlockData(Material.EMERALD_BLOCK));
+//        }
     }
 
     private void addNode(JPSBaseNode newNode, JPSBaseNode parent) {
@@ -150,9 +150,9 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
             newNode.setDepth(parent.getDepth() + 1);
             newNode.setParent(parent);
             addNodeToOpen(newNode);
-            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                onlinePlayer.sendBlockChange(new Location(getWorld(), newNode.getX(), newNode.getY() + 1, newNode.getZ()), Bukkit.createBlockData(Material.YELLOW_STAINED_GLASS));
-            }
+//            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+//                onlinePlayer.sendBlockChange(new Location(getWorld(), newNode.getX(), newNode.getY() + 1, newNode.getZ()), Bukkit.createBlockData(Material.YELLOW_STAINED_GLASS));
+//            }
         }
     }
 
@@ -220,10 +220,8 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
                 return;
             }
             //If the following node is not passable, stop while loop.
-            if (!isFollowingCellPassable) {
-                Bukkit.broadcastMessage("P " + n);
+            if (!isFollowingCellPassable)
                 return;
-            }
             n++;
         }
     }
@@ -365,9 +363,9 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
             if (cursor == null)
                 throw new IllegalStateException("Something went terribly wrong. The cursor node is null while having a for loop index of " + i + ". This should never happen?");
             points[d - i - 1] = cursor.getLocation();
-            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                onlinePlayer.sendBlockChange(points[d - i - 1].clone().add(0, 3, 0), Bukkit.createBlockData(Material.DIAMOND_BLOCK));
-            }
+//            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+//                onlinePlayer.sendBlockChange(points[d - i - 1].clone().add(0, 3, 0), Bukkit.createBlockData(Material.DIAMOND_BLOCK));
+//            }
             cursor = cursor.getParent();
         }
         return new PathImpl(this, points);
