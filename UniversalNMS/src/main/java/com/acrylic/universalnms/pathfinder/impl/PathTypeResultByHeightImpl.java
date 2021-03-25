@@ -101,18 +101,11 @@ public class PathTypeResultByHeightImpl implements PathTypeResult {
             PathBlock pathBlock = pathWorldBlockReader.getPathBlockAt(x, y, z);
             PathType pathType = pathExaminer.getPathTypeOfBlock(pathBlock);
             BoundingBoxExaminer collisionBox = pathBlock.getCollisionBoundingBoxExaminer();
-            boolean isEmpty = collisionBox.isEmpty();
+            boolean isEmpty = collisionBox.isEmpty(),
+                    shouldInitializeNewStart = false;
             if (pathType == null) {
                 if (checkState == 0) {
-                    if ((scanner & 0x03) == 0x03) {
-                       // Bukkit.broadcastMessage("Set checkpoint at y= " + y);
-                        checkpointStartY = (isEmpty) ? y : (float) collisionBox.getMaxY();
-                    } else {
-                        scanner |= 0x01;
-                       // Bukkit.broadcastMessage("isEMpty " + isEmpty + " " + collisionBox.getMaxY());
-                        startingY = (isEmpty) ? y : (float) collisionBox.getMaxY();
-                        checkpointStartY = startingY;
-                    }
+                    shouldInitializeNewStart = true;
                 } else {
                     if ((scanner & 0x02) == 0x02) {
                         float checkpointEndY = (isEmpty) ? y + 1 : (float) collisionBox.getMinY();
@@ -134,15 +127,36 @@ public class PathTypeResultByHeightImpl implements PathTypeResult {
                         contains |= 0x01;
                     case SWIM:
                         contains |= 0x02;
+                        if (checkState == 0) {
+                            checkState = 1;
+                            shouldInitializeNewStart = true;
+                        }
                     case CLIMB:
                         contains |= 0x04;
+                        if (checkState == 0) {
+                            checkState = 1;
+                            shouldInitializeNewStart = true;
+                        }
+                }
+            }
+            if (shouldInitializeNewStart) {
+                if ((scanner & 0x03) == 0x03) {
+                    // Bukkit.broadcastMessage("Set checkpoint at y= " + y);
+                    checkpointStartY = (isEmpty) ? y : (float) collisionBox.getMaxY();
+                } else {
+                    scanner |= 0x01;
+                    // Bukkit.broadcastMessage("isEMpty " + isEmpty + " " + collisionBox.getMaxY());
+                    startingY = (isEmpty) ? y : (float) collisionBox.getMaxY();
+                    checkpointStartY = startingY;
                 }
             }
         }
         //To check if the end to start difference meets the height requirement.
         //Also checks if there is a base by checking if the scanner found any base.
-        if (((endingY - startingY) < heightRequirement) || (scanner & 0x01) != 0x01)
+        if (((endingY - startingY) < heightRequirement) || (scanner & 0x01) != 0x01) {
+            //Bukkit.broadcastMessage(" " + x + " " + startingY + " " + z + " " + startingY + " p " + endingY + " " + ((endingY - startingY) < heightRequirement) + " vs " + ((scanner & 0x01) != 0x01));
             return;
+        }
         float floorX = (float) Math.floor(x), floorZ = (float) Math.floor(z);
         this.passableX = (floorX + (floorX + 1)) / 2;
         this.passableZ = (floorZ + (floorZ + 1)) / 2;

@@ -56,7 +56,7 @@ public class PathTraversalImpl implements PathTraversal {
             if (next == null)
                 return null;
             sectionDistance = cursor.distance(next);
-            sectionIndex = 0;
+            sectionIndex = 1;
             maximumSectionIndex = (int) Math.ceil(sectionDistance * pointsPerBlock);
             vector.setX((next.getX() - cursor.getX()) / sectionDistance)
                     .setY((next.getY() - cursor.getY()) / sectionDistance)

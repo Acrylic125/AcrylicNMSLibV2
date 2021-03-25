@@ -6,16 +6,32 @@ import org.jetbrains.annotations.NotNull;
 
 public class JPSPathNode extends JPSBaseNode {
 
-    private final int facingX, facingZ;
+    private static int scanUpAndDownYValue = Integer.MIN_VALUE;
+    private final int facingX, facingZ, facingY;
 
-    protected JPSPathNode(@NotNull JPSBaseNode start, float x, float y, float z, int facingX, int facingZ) {
+    protected JPSPathNode(@NotNull JPSBaseNode start, float x, float y, float z,
+                          int facingX, int facingY, int facingZ,
+                          boolean scanUpAndDown) {
         super(start.getPathfinder(), start, x, y, z);
         this.facingX = facingX;
+        this.facingY = (scanUpAndDown) ? scanUpAndDownYValue : facingY;
         this.facingZ = facingZ;
+    }
+
+    public boolean shouldScanUpAndDown() {
+        return this.facingY == scanUpAndDownYValue;
+    }
+
+    public boolean isFacingZero() {
+        return facingX == 0 && facingY == 0 && facingZ == 0;
     }
 
     public int getFacingX() {
         return facingX;
+    }
+
+    public int getFacingY() {
+        return facingY;
     }
 
     public int getFacingZ() {

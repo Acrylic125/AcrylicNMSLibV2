@@ -51,11 +51,11 @@ public class Command {
                                 .location(location)
                                 .build().getSender().sendTo(player);
                     });
-                    //Location location = player.getLocation();
-                    //PathTypeResultByHeightImpl pathTypeResultByHeight = new PathTypeResultByHeightImpl(2, 2, 2, location.getWorld(),
-                    //        (float) location.getX(), (float) location.getY(), (float) location.getZ());
-                    //pathTypeResultByHeight.examineWith(new PathExaminerByHeightImpl());
-                    //Bukkit.broadcastMessage(pathTypeResultByHeight.getPathType() + " " + pathTypeResultByHeight.getResultY());
+//                    Location location = player.getLocation();
+//                    PathTypeResultByHeightImpl pathTypeResultByHeight = new PathTypeResultByHeightImpl(2, 2, 2, location.getWorld(),
+//                            (float) location.getX(), (float) location.getY(), (float) location.getZ());
+//                    pathTypeResultByHeight.examineWith(new PathExaminerByHeightImpl());
+//                    Bukkit.broadcastMessage(pathTypeResultByHeight.getPathType() + " " + pathTypeResultByHeight.getResultY());
                 });
     }
 

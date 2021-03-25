@@ -11,6 +11,7 @@ import com.acrylic.version_1_8.items.ItemBuilder;
 import com.acrylic.version_1_8_nms.entity.NMSGiantInstanceImpl;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
