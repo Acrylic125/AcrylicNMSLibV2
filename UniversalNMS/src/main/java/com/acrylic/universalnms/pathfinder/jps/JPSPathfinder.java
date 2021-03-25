@@ -110,23 +110,23 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
                 } else if (currentNode instanceof JPSPathNode) {
                     JPSPathNode jpsPathNode = (JPSPathNode) currentNode;
                     int facingX = jpsPathNode.getFacingX(), facingY = jpsPathNode.getFacingY(), facingZ = jpsPathNode.getFacingZ();
-                    /** if (facingX == 0 && facingZ == 0) {
-                        Bukkit.broadcastMessage("Scan vert");
-                        scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), 0, facingY, 0);
-                        scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), -1, 0, 0);
-                        scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), 1, 0, 0);
-                        scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), 0, 0, -1);
-                        scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), 0, 0, -1);
-                    } else {
-                        scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), facingZ, 0, facingX);
-                        scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), facingZ * -1, 0, facingX);
-                        scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), facingX, 0, facingZ);
-                        if (jpsPathNode.shouldScanUpAndDown()) {
-                            Bukkit.broadcastMessage("SH");
-                            scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), 0, 1, 0);
-                            scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), 0, -1, 0);
-                        }
-                    }**/
+//                    if (facingX == 0 && facingZ == 0) {
+//                        Bukkit.broadcastMessage("Scan vert");
+//                        scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), 0, facingY, 0);
+//                        scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), -1, 0, 0);
+//                        scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), 1, 0, 0);
+//                        scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), 0, 0, -1);
+//                        scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), 0, 0, -1);
+//                    } else {
+//                        scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), facingZ, 0, facingX);
+//                        scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), facingZ * -1, 0, facingX);
+//                        scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), facingX, 0, facingZ);
+//                        if (jpsPathNode.shouldScanUpAndDown()) {
+//                            Bukkit.broadcastMessage("SH");
+//                            scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), 0, 1, 0);
+//                            scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), 0, -1, 0);
+//                        }
+//                    }
                     scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), facingZ, 0, facingX);
                     scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), facingZ * -1, 0, facingX);
                     scanHorizontally(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ(), facingX, 0, facingZ);
@@ -180,11 +180,12 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
         while (!completed && n < maxRecursion &&
                 PathNode.calculateDistance2DSquared(x, z, startNode.getX(), startNode.getZ()) <= rangeSquared) {
             x += facingX; z += facingZ;
-            if (!canPass(x, y, z))
+            PathTypeResult current = getPathTypeResult(x, y, z);
+            if (!canPass(current))
                 return;
+            y = current.getResultY() + (n * facingY);
             //Facing in the X direction.
-            PathTypeResult pathTypeResult = getPathTypeResult(x + facingX, y + facingY, z + facingZ);
-            boolean isFollowingCellPassable = canPass(pathTypeResult);
+            boolean isFollowingCellPassable = canPass(x + facingX, y + facingY, z + facingZ);
             JPSPathNode newNode = null;
             if (facingX != 0) {
                 if (isNodeInteresting_horizontalZ(x, y, z, -1) ||
@@ -219,9 +220,10 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
                 return;
             }
             //If the following node is not passable, stop while loop.
-            if (!isFollowingCellPassable)
+            if (!isFollowingCellPassable) {
+                Bukkit.broadcastMessage("P " + n);
                 return;
-            y = pathTypeResult.getResultY() + (n * facingY);
+            }
             n++;
         }
     }
@@ -244,7 +246,7 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
             if (!canPass(pathTypeResult))
                 return false;
             y = pathTypeResult.getResultY();
-            if (getEndNode().equalsWithEstimatedBounds(x, z, 0.5f)) {
+            if (getEndNode().equalsWithEstimatedBounds(x, z, 1)) {
                 completed = true;
                 return true;
             }
@@ -273,7 +275,7 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
             if (!canPass(pathTypeResult))
                 return false;
             y = pathTypeResult.getResultY();
-            if (getEndNode().equalsWithEstimatedBounds(x, z, 0.5f)) {
+            if (getEndNode().equalsWithEstimatedBounds(x, z, 1)) {
                 completed = true;
                 return true;
             }
@@ -299,7 +301,7 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
             y += facingY;
             if (!isVerticallyPassable(x, y, z))
                 return false;
-            if (getEndNode().equalsWithEstimatedBounds(x, z, 0.5f)) {
+            if (getEndNode().equalsWithEstimatedBounds(x, z, 1)) {
                 completed = true;
                 return true;
             }
