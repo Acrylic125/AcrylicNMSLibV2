@@ -5,8 +5,6 @@ import org.jetbrains.annotations.Nullable;
 
 public interface PathTypeResult {
 
-    void examineWith(@NotNull PathExaminer pathExaminer);
-
     @Nullable
     PathType getPathType();
 

@@ -13,6 +13,6 @@ public interface PathExaminer {
     @Nullable
     PathType getPathTypeOfBlock(PathBlock pathBlock);
 
-    PathTypeResult examineTo(@NotNull PathTypeResult pathTypeResult);
+    PathTypeResult examineTo(Pathfinder pathfinder, float x, float y, float z);
 
 }

@@ -25,6 +25,12 @@ public class PathImpl implements Path {
 
     @NotNull
     @Override
+    public Pathfinder getPathfinder() {
+        return pathfinder;
+    }
+
+    @NotNull
+    @Override
     public Location[] getLocations() {
         return points;
     }

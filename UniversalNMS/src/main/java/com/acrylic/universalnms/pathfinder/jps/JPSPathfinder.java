@@ -1,23 +1,15 @@
 package com.acrylic.universalnms.pathfinder.jps;
 
-import com.acrylic.universal.blocks.MCBlockData;
-import com.acrylic.universal.items.ItemUtils;
-import com.acrylic.universal.text.ChatUtils;
-import com.acrylic.universal.threads.Scheduler;
-import com.acrylic.universal.utils.keys.LocationKey;
 import com.acrylic.universal.utils.keys.RawLocationKey;
-import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.pathfinder.PathType;
 import com.acrylic.universalnms.pathfinder.PathTypeResult;
-import com.acrylic.universalnms.pathfinder.PathWorldBlockReader;
+import com.acrylic.universalnms.pathfinder.PathReader;
 import com.acrylic.universalnms.pathfinder.impl.PathImpl;
 import com.acrylic.universalnms.pathfinder.PathNode;
 import com.acrylic.universalnms.pathfinder.astar.AbstractAStarPathfinder;
-import com.acrylic.universalnms.pathfinder.impl.PathTypeResultByHeightImpl;
-import com.acrylic.universalnms.pathfinder.impl.PathWorldBlockReaderImpl;
-import com.acrylic.universalnms.worldexaminer.ChunkExaminer;
+import com.acrylic.universalnms.pathfinder.impl.PathTypeResultImpl;
+import com.acrylic.universalnms.pathfinder.impl.PathReaderImpl;
 import org.bukkit.*;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -44,7 +36,7 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
     private final World world;
     private final double distanceFromAndTo;
     private boolean searched = false, completed = false;
-    private final PathWorldBlockReader worldBlockReader;
+    private final PathReader worldBlockReader;
 
     protected JPSPathfinder(JPSPathfinderGenerator pathfinderGenerator, Location start, Location end) {
         this.pathfinderGenerator = pathfinderGenerator;
@@ -54,7 +46,7 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
         this.world = start.getWorld();
         if (this.world == null)
             throw new NullPointerException("World cannot be null.");
-        this.worldBlockReader = new PathWorldBlockReaderImpl(this.world);
+        this.worldBlockReader = new PathReaderImpl(this.world);
     }
 
     @Override
@@ -68,7 +60,7 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
     }
 
     @Override
-    public PathWorldBlockReader getPathWorldBlockReader() {
+    public PathReader getPathWorldBlockReader() {
         return worldBlockReader;
     }
 
@@ -327,8 +319,7 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
         RawLocationKey key = new RawLocationKey(x, y, z);
         PathTypeResult pathTypeResultByHeight = pathTypeResultMap.get(key);
         if (pathTypeResultByHeight == null) {
-            pathTypeResultByHeight = new PathTypeResultByHeightImpl(this, x, y, z);
-            pathTypeResultByHeight.examineWith(pathfinderGenerator.getPathExaminer());
+            pathTypeResultByHeight = getPathfinderGenerator().getPathExaminer().examineTo(this, x, y, z);
             pathTypeResultMap.put(key, pathTypeResultByHeight);
         }
         return pathTypeResultByHeight;

@@ -7,6 +7,9 @@ import org.jetbrains.annotations.Nullable;
 public interface Path {
 
     @NotNull
+    Pathfinder getPathfinder();
+
+    @NotNull
     Location[] getLocations();
 
     default int getTotalLocations() {

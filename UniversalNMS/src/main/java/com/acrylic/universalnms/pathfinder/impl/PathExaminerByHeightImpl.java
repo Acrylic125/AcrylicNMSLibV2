@@ -3,25 +3,13 @@ package com.acrylic.universalnms.pathfinder.impl;
 import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.pathfinder.*;
 import com.acrylic.universalnms.worldexaminer.BoundingBoxExaminer;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static com.acrylic.universal.items.ItemUtils.isLiquid;
 
-/**
- * A very simple and not very accurate path examiner
- * to determine if the block is traversable.
- *
- * This only use {@link PathfinderGenerator#getMinimumYToTraverse()}
- * to determine if the can traverse and not the full BB size.
- *
- * This is a lazy implementation.
- */
 public class PathExaminerByHeightImpl implements PathExaminer {
-
-    public static final PathExaminerByHeightImpl TEST = new PathExaminerByHeightImpl();
 
     public boolean shouldBypass(PathBlock pathBlock) {
         Material material = pathBlock.getMCBlockData().getMaterial();
@@ -43,13 +31,6 @@ public class PathExaminerByHeightImpl implements PathExaminer {
         }
     }
 
-    public boolean isPassable(PathBlock pathBlock) {
-        boolean passable = isSwimmable(pathBlock) || shouldBypass(pathBlock) || isClimbable(pathBlock);
-        if (passable)
-            return true;
-        return pathBlock.getCollisionBoundingBoxExaminer().isEmpty();
-    }
-
     @Nullable
     @Override
     public PathType getPathTypeOfBlock(PathBlock pathBlock) {
@@ -65,99 +46,119 @@ public class PathExaminerByHeightImpl implements PathExaminer {
             return null;
     }
 
-    @Override
-    public PathTypeResult examineTo(@NotNull PathTypeResult pathTypeResult) {
-        return null;
-    }
-
-    @Nullable
-    public PathType getPathTypeAt(@NotNull Pathfinder pathfinder, float x, float y, float z) {
-        float height = pathfinder.getPathfinderGenerator().getMinimumYToTraverse();
-        int htr = (int) Math.ceil(height) - 1; //Amount of blocks to check up to.
-        PathWorldBlockReader worldBlockReader = pathfinder.getPathWorldBlockReader();
-        PathBlock at = worldBlockReader.getPathBlockAt(x, y, z);
-        //Check for swimming.
-        if (isSwimmable(at)) {
-            if (htr >= 1) {
-                double maxY = iterateHeightUntilNotPassable(worldBlockReader, 1, htr, x, y, z,
-                        (nX, nY, nZ, pathBlock) -> isPassable(pathBlock));
-                return (maxY - y >= height) ? PathType.SWIM : null;
-            } else return PathType.SWIM;
-        }
-        //Check for climbing.
-        else if (isClimbable(at)) {
-            if (htr >= 1) {
-                double maxY = iterateHeightUntilNotPassable(worldBlockReader, 1, htr, x, y, z,
-                        (nX, nY, nZ, pathBlock) -> isPassable(pathBlock));
-                return (maxY - y >= height) ? PathType.CLIMB : null;
-            } else return PathType.CLIMB;
-        }
-        //Check for bypass.
-        else if (shouldBypass(at)) {
-            if (htr > 1) {
-                double maxY = iterateHeightUntilNotPassable(worldBlockReader, 1, htr, x, y, z,
-                        (nX, nY, nZ, pathBlock) -> isPassable(pathBlock));
-                return (maxY - y >= height) ? PathType.BYPASS : null;
-            } else return PathType.BYPASS;
-        }
-        //Check for walking.
-        else {
-            boolean isPassableAt = isPassable(at);
-            float reduceStartFromY = 0;
-            //If the block the path finder is at is not 'passable'
-            if (!isPassableAt) {
-                //If the block at that location is shorter than 1.
-                //For instance, slabs.
-                y = (float) at.getCollisionBoundingBoxExaminer().getMaxY();
-                if (at.getCollisionBoundingBoxExaminer().getY() < 1)
-                    htr++;
-                else
-                    reduceStartFromY = 1;
-            }
-            double maxY;
-            if (htr >= 1) {
-                maxY = iterateHeightUntilNotPassable(worldBlockReader, 1, htr, x, y - reduceStartFromY, z,
-                        (nX, nY, nZ, pathBlock) -> isPassable(pathBlock));
-            } else {
-                maxY = (!isPassableAt) ? at.getCollisionBoundingBoxExaminer().getMinY() : y + 1;
-            }
-            return (maxY - y >= height) ? PathType.WALK : null;
-        }
-    }
-
-    @Nullable
-    public Location getPathPointAt(@NotNull Pathfinder pathfinder, float x, float y, float z) {
-        return null;
-    }
-
-
     /**
      *
-     * @param reader The reader.
-     * @param addFrom The starting y addition value.
-     * @param addTo The ending y addition value.
-     * @param x The x location.
-     * @param y The y location.
-     * @param z The z location.
-     * @param action The action and return if it is passable.
+     * Contains:
+     * 0x01 - Bypass (HIGHEST PRIORITY)
+     * 0x02 - Swim (HIGH PRIORITY)
+     * 0x04 - Climb (MEDIUM PRIORITY)
+     * ...
+     * 0x0 - None (LOWEST PRIORITY)
+     *
+     * Scanner:
+     * 0x01 - Done start
+     * 0x02 - Done end
+     * 0x0 - None
      */
-    private double iterateHeightUntilNotPassable(PathWorldBlockReader reader, int addFrom, int addTo,
-                                                  float x, float y, float z,
-                                                  PathPointActionAndCheck action) {
-        for (int i = addFrom; i <= addTo; i++) {
-            float iY = i + y;
-            PathBlock upI = reader.getPathBlockAt(x, iY, z);
-            if (!action.isPassable(x, iY, z, upI)) {
-                BoundingBoxExaminer collisionBox = upI.getCollisionBoundingBoxExaminer();
-                return (collisionBox.isEmpty()) ? y + addTo + 1 : collisionBox.getMinY();
+    @Override
+    public PathTypeResult examineTo(Pathfinder pathfinder, float x, float y0, float z) {
+        PathReader pathReader = pathfinder.getPathWorldBlockReader();
+        float heightRequirement = pathfinder.getPathfinderGenerator().getMinimumYToTraverse();
+        PathTypeResultImpl pathTypeResult = new PathTypeResultImpl(pathfinder, x, y0, z);
+        PathfinderGenerator generator = pathfinder.getPathfinderGenerator();
+        float minYToScan = y0 - generator.getMaximumDropHeight(),
+                maxYToScan = y0 + generator.getMaximumHeight();
+        int floorMinY = (int) Math.floor(minYToScan),
+                ceilMaxY = (int) Math.ceil(maxYToScan);
+        if (maxYToScan < minYToScan)
+            throw new IllegalStateException("The max scan must be > than the min scan.");
+        float startingY = minYToScan, endingY = maxYToScan + 1,
+                checkpointStartY = minYToScan;
+        int contains = 0x0, scanner = 0x0;
+        //The check state determines the status of scanning.
+        //0 = Bottom most block, 1 = Seeking for top most block.
+        byte checkState = 0;
+        //A counter to count the streak of ladders. This will be used to determine if this is a climbable path type.
+        //int climbStreak = 0;
+        for (int y = floorMinY; y <= ceilMaxY; y++) {
+            PathBlock pathBlock = pathReader.getPathBlockAt(x, y, z);
+            PathType pathType = getPathTypeOfBlock(pathBlock);
+            BoundingBoxExaminer collisionBox = pathBlock.getCollisionBoundingBoxExaminer();
+            boolean isEmpty = collisionBox.isEmpty(),
+                    shouldInitializeNewStart = false;
+            if (pathType == null) {
+                if (checkState == 0) {
+                    shouldInitializeNewStart = true;
+                } else {
+                    if ((scanner & 0x02) == 0x02) {
+                        float checkpointEndY = (isEmpty) ? y + 1 : (float) collisionBox.getMinY();
+                        if ((checkpointEndY - checkpointStartY) > (endingY - startingY)) {
+                            startingY = checkpointStartY;
+                            endingY = checkpointEndY;
+                        }
+                    } else {
+                        scanner |= 0x02;
+                        endingY = (isEmpty) ? y + 1 : (float) collisionBox.getMinY();
+                    }
+                    checkState = 0;
+                }
+            } else {
+                if ((scanner & 0x01) == 0x01)
+                    checkState = 1;
+                switch (pathType) {
+                    case BYPASS:
+                        contains |= 0x01;
+                    case SWIM:
+                        contains |= 0x02;
+                        if (checkState == 0) {
+                            checkState = 1;
+                            shouldInitializeNewStart = true;
+                        }
+                    case CLIMB:
+                        contains |= 0x04;
+                        if (checkState == 0) {
+                            checkState = 1;
+                            shouldInitializeNewStart = true;
+                        }
+                }
+            }
+            if (shouldInitializeNewStart) {
+                if ((scanner & 0x03) == 0x03) {
+                    // Bukkit.broadcastMessage("Set checkpoint at y= " + y);
+                    checkpointStartY = (isEmpty) ? y : (float) collisionBox.getMaxY();
+                } else {
+                    scanner |= 0x01;
+                    // Bukkit.broadcastMessage("isEMpty " + isEmpty + " " + collisionBox.getMaxY());
+                    startingY = (isEmpty) ? y : (float) collisionBox.getMaxY();
+                    checkpointStartY = startingY;
+                }
             }
         }
-        return y + addTo + 1;
+        //To check if the end to start difference meets the height requirement.
+        //Also checks if there is a base by checking if the scanner found any base.
+        float endToStartDiff = endingY - startingY;
+        if ((endToStartDiff < heightRequirement) || (scanner & 0x01) != 0x01) {
+            //Bukkit.broadcastMessage(" " + x + " " + startingY + " " + z + " " + startingY + " p " + endingY + " " + ((endingY - startingY) < heightRequirement) + " vs " + ((scanner & 0x01) != 0x01));
+            return pathTypeResult;
+        }
+        PathType pathType;
+        float floorX = (float) Math.floor(x), floorZ = (float) Math.floor(z);
+        float passableX = (floorX + (floorX + 1)) / 2, passableZ = (floorZ + (floorZ + 1)) / 2, passableY = startingY;
+        if ((contains & 0x01) == 0x01) {
+            pathType = PathType.BYPASS;
+        } else if ((contains & 0x02) == 0x02) {
+            pathType = PathType.SWIM;
+            if (endToStartDiff - heightRequirement >= 1)
+                passableY++;
+        } else if ((contains & 0x04) == 0x04) {
+            pathType = PathType.CLIMB;
+        } else {
+            pathType = PathType.WALK;
+        }
+        pathTypeResult.setPassable(passableX, passableY, passableZ);
+        pathTypeResult.setPathType(pathType);
+        return pathTypeResult;
     }
 
-    @FunctionalInterface
-    private interface PathPointActionAndCheck {
-        boolean isPassable(float x, float y, float z, PathBlock pathBlock);
-    }
 
 }

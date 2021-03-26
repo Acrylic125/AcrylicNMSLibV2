@@ -55,6 +55,8 @@ public class PathfinderStrategyImpl implements PathfinderStrategy {
                             z = iLocation.getZ() - next.getZ();
                     nmsEntityInstance.setYawAndPitch((float) Math.toDegrees(Math.atan2(z, x) - 90f), (float) ((1f / Math.sqrt(x * x + y * y + z * z)) * y * -90f));
                     nmsEntityInstance.setVelocity(x, y, z);
+                } else {
+                    state = PathfindingState.IDLE;
                 }
             }
         }

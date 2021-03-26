@@ -1,8 +1,10 @@
 package com.acrylic.universalnms.pathfinder.impl;
 
 import com.acrylic.universal.utils.keys.BlockKey;
-import com.acrylic.universalnms.pathfinder.PathWorldBlockReader;
+import com.acrylic.universalnms.pathfinder.PathReader;
 import com.acrylic.universalnms.pathfinder.PathBlock;
+import com.acrylic.universalnms.pathfinder.PathTypeResult;
+import com.acrylic.universalnms.pathfinder.Pathfinder;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
@@ -10,18 +12,24 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PathWorldBlockReaderImpl implements PathWorldBlockReader {
+public class PathReaderImpl implements PathReader {
 
     private final World world;
     private final Map<BlockKey, PathBlock> analyzerMap;
 
-    public PathWorldBlockReaderImpl(@NotNull World world) {
+    public PathReaderImpl(@NotNull World world) {
         this(world, new HashMap<>());
     }
 
-    public PathWorldBlockReaderImpl(@NotNull World world, @NotNull Map<BlockKey, PathBlock> analyzerMap) {
+    public PathReaderImpl(@NotNull World world, @NotNull Map<BlockKey, PathBlock> analyzerMap) {
         this.world = world;
         this.analyzerMap = analyzerMap;
+    }
+
+    @NotNull
+    @Override
+    public Pathfinder getPathfinder() {
+        return null;
     }
 
     @NotNull
@@ -46,5 +54,10 @@ public class PathWorldBlockReaderImpl implements PathWorldBlockReader {
             analyzerMap.put(blockKey, blockAnalyzer);
         }
         return blockAnalyzer;
+    }
+
+    @Override
+    public PathTypeResult getPathTypeResultAt(int x, int y, int z) {
+        return null;
     }
 }
