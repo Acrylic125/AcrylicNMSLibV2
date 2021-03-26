@@ -1,19 +1,14 @@
 package com.acrylic.universalnms.pathfinder.jps;
 
-import com.acrylic.universal.utils.keys.RawLocationKey;
 import com.acrylic.universalnms.pathfinder.PathType;
 import com.acrylic.universalnms.pathfinder.PathTypeResult;
 import com.acrylic.universalnms.pathfinder.PathReader;
 import com.acrylic.universalnms.pathfinder.impl.PathImpl;
 import com.acrylic.universalnms.pathfinder.PathNode;
 import com.acrylic.universalnms.pathfinder.astar.AbstractAStarPathfinder;
-import com.acrylic.universalnms.pathfinder.impl.PathTypeResultImpl;
 import com.acrylic.universalnms.pathfinder.impl.PathReaderImpl;
 import org.bukkit.*;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This implementation is designed for Minecraft Entity pathfinding. It does
@@ -35,7 +30,7 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
     private final World world;
     private final double distanceFromAndTo;
     private boolean searched = false, completed = false;
-    private final PathReader worldBlockReader;
+    private final PathReader pathReader;
 
     protected JPSPathfinder(JPSPathfinderGenerator pathfinderGenerator, Location start, Location end) {
         this.pathfinderGenerator = pathfinderGenerator;
@@ -45,7 +40,7 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
         this.world = start.getWorld();
         if (this.world == null)
             throw new NullPointerException("World cannot be null.");
-        this.worldBlockReader = new PathReaderImpl(this, this.world);
+        this.pathReader = new PathReaderImpl(this);
     }
 
     @Override
@@ -60,7 +55,7 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
 
     @Override
     public PathReader getPathWorldBlockReader() {
-        return worldBlockReader;
+        return pathReader;
     }
 
     @Override
@@ -147,8 +142,7 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
         }
     }
 
-    private JPSPathNode createNode(JPSBaseNode parent,
-                                   float x, float y, float z,
+    private JPSPathNode createNode(float x, float y, float z,
                                    int facingX, int facingY, int facingZ) {
         PathTypeResult pathTypeResult = getPathTypeResult(x, y, z);
         return new JPSPathNode(getStartNode(),
@@ -181,22 +175,22 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
             if (facingX != 0) {
                 if (isNodeInteresting_horizontalZ(x, y, z, -1) ||
                         isNodeInteresting_horizontalZ(x, y, z, 1)) {
-                    newNode = createNode(parent, x, y, z, facingX, facingY, facingZ);
+                    newNode = createNode(x, y, z, facingX, facingY, facingZ);
                 } else if (interestingCheck_horizontalX(x, y, z, facingX) &&
                         canPass(x + facingX, y, z)) {
-                    newNode = createNode(parent, x + facingX, y, z, facingX, facingY, facingZ);
+                    newNode = createNode(x + facingX, y, z, facingX, facingY, facingZ);
                 }
             } else if (facingZ != 0) {
                 if (isNodeInteresting_horizontalX(x, y, z, -1) ||
                         isNodeInteresting_horizontalX(x, y, z, 1)) {
-                    newNode = createNode(parent, x, y, z, facingX, facingY, facingZ);
+                    newNode = createNode(x, y, z, facingX, facingY, facingZ);
                 } else if (interestingCheck_horizontalZ(x, y, z, facingZ) &&
                         canPass(x, y, z + facingZ)) {
-                    newNode = createNode(parent, x, y, z + facingZ, facingX, facingY, facingZ);
+                    newNode = createNode(x, y, z + facingZ, facingX, facingY, facingZ);
                 }
             } else {
                 if (isNodeInteresting_verticalY(x, y, z, facingY))
-                    newNode = createNode(parent, x, y + facingY, z, 0, facingY, 0);
+                    newNode = createNode(x, y + facingY, z, 0, facingY, 0);
             }
             //Check if there is a new node. If there is, stop this loop and set it as the lastNode.
             if (newNode != null) {
@@ -315,7 +309,7 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
     }
 
     private PathTypeResult getPathTypeResult(float x, float y, float z) {
-        return worldBlockReader.getPathTypeResultAt(x, y, z);
+        return pathReader.getPathTypeResultAt(x, y, z);
     }
 
     @Override

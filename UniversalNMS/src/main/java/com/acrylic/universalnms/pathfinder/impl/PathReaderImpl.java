@@ -19,13 +19,13 @@ public class PathReaderImpl implements PathReader {
     private final Map<BlockKey, PathBlock> analyzerMap;
     private final Map<BlockKey, PathTypeResult> pathTypeResultMap;
 
-    public PathReaderImpl(@NotNull Pathfinder pathfinder, @NotNull World world) {
-        this(pathfinder, world, new HashMap<>(), new HashMap<>());
+    public PathReaderImpl(@NotNull Pathfinder pathfinder) {
+        this(pathfinder, new HashMap<>(), new HashMap<>());
     }
 
-    public PathReaderImpl(@NotNull Pathfinder pathfinder, @NotNull World world, @NotNull Map<BlockKey, PathBlock> analyzerMap, @NotNull Map<BlockKey, PathTypeResult> pathTypeResultMap) {
+    public PathReaderImpl(@NotNull Pathfinder pathfinder, @NotNull Map<BlockKey, PathBlock> analyzerMap, @NotNull Map<BlockKey, PathTypeResult> pathTypeResultMap) {
         this.pathfinder = pathfinder;
-        this.world = world;
+        this.world = pathfinder.getWorld();
         this.analyzerMap = analyzerMap;
         this.pathTypeResultMap = pathTypeResultMap;
     }
