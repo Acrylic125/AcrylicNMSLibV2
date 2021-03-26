@@ -14,22 +14,26 @@ import java.util.Map;
 
 public class PathReaderImpl implements PathReader {
 
+    private final Pathfinder pathfinder;
     private final World world;
     private final Map<BlockKey, PathBlock> analyzerMap;
+    private final Map<BlockKey, PathTypeResult> pathTypeResultMap;
 
-    public PathReaderImpl(@NotNull World world) {
-        this(world, new HashMap<>());
+    public PathReaderImpl(@NotNull Pathfinder pathfinder, @NotNull World world) {
+        this(pathfinder, world, new HashMap<>(), new HashMap<>());
     }
 
-    public PathReaderImpl(@NotNull World world, @NotNull Map<BlockKey, PathBlock> analyzerMap) {
+    public PathReaderImpl(@NotNull Pathfinder pathfinder, @NotNull World world, @NotNull Map<BlockKey, PathBlock> analyzerMap, @NotNull Map<BlockKey, PathTypeResult> pathTypeResultMap) {
+        this.pathfinder = pathfinder;
         this.world = world;
         this.analyzerMap = analyzerMap;
+        this.pathTypeResultMap = pathTypeResultMap;
     }
 
     @NotNull
     @Override
     public Pathfinder getPathfinder() {
-        return null;
+        return pathfinder;
     }
 
     @NotNull
@@ -58,6 +62,12 @@ public class PathReaderImpl implements PathReader {
 
     @Override
     public PathTypeResult getPathTypeResultAt(int x, int y, int z) {
-        return null;
+        BlockKey blockKey = new BlockKey(world, x, y, z);
+        PathTypeResult result = pathTypeResultMap.get(blockKey);
+        if (result == null) {
+            result = pathfinder.getPathfinderGenerator().getPathExaminer().examineTo(pathfinder, x, y, z);
+            pathTypeResultMap.put(blockKey, result);
+        }
+        return result;
     }
 }

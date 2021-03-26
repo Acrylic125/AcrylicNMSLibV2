@@ -30,7 +30,6 @@ import java.util.Map;
 public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
 
     private final JPSPathfinderGenerator pathfinderGenerator;
-    private final Map<RawLocationKey, PathTypeResult> pathTypeResultMap = new HashMap<>();
     private final JPSBaseNode startNode, endNode;
     private JPSBaseNode finalNode;
     private final World world;
@@ -46,7 +45,7 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
         this.world = start.getWorld();
         if (this.world == null)
             throw new NullPointerException("World cannot be null.");
-        this.worldBlockReader = new PathReaderImpl(this.world);
+        this.worldBlockReader = new PathReaderImpl(this, this.world);
     }
 
     @Override
@@ -316,13 +315,7 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
     }
 
     private PathTypeResult getPathTypeResult(float x, float y, float z) {
-        RawLocationKey key = new RawLocationKey(x, y, z);
-        PathTypeResult pathTypeResultByHeight = pathTypeResultMap.get(key);
-        if (pathTypeResultByHeight == null) {
-            pathTypeResultByHeight = getPathfinderGenerator().getPathExaminer().examineTo(this, x, y, z);
-            pathTypeResultMap.put(key, pathTypeResultByHeight);
-        }
-        return pathTypeResultByHeight;
+        return worldBlockReader.getPathTypeResultAt(x, y, z);
     }
 
     @Override
