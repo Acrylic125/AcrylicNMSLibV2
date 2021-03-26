@@ -22,6 +22,6 @@ public interface Pathfinder {
     boolean hasCompleted();
 
     @NotNull
-    Path generatePath();
+    Path generatePath(float pointsPerBlock);
 
 }

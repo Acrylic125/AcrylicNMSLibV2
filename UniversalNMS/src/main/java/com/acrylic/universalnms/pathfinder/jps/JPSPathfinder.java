@@ -329,10 +329,10 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
      */
     @NotNull
     @Override
-    public PathImpl generatePath() {
+    public PathImpl generatePath(float pointsPerBlock) {
         //If there is no last node, returns a 0 path.
         if (finalNode == null)
-            return new PathImpl(this, new Location[0]);
+            return new PathImpl(this, new Location[0], pointsPerBlock);
         int d = finalNode.getDepth() + 1;
         Location[] points = new Location[d];
         JPSBaseNode cursor = finalNode;
@@ -346,7 +346,7 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
 //            }
             cursor = cursor.getParent();
         }
-        return new PathImpl(this, points);
+        return new PathImpl(this, points, pointsPerBlock);
     }
 
     @Override

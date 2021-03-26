@@ -112,9 +112,6 @@ public class JPSBaseNode implements AStarPathNode {
     }
 
     public boolean equals(float x, float z) {
-        if (Math.abs(x - this.x) <= 0.5 && Math.abs(z - this.z) <= 0.5) {
-            Bukkit.broadcastMessage("T " + x + " " + this.x + " , " + z + " " + this.z);
-        }
         return this.x == x && this.z == z;
     }
 

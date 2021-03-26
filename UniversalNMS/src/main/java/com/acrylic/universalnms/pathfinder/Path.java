@@ -4,22 +4,20 @@ import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 public interface Path {
 
     @NotNull
     Pathfinder getPathfinder();
 
     @NotNull
-    Location[] getLocations();
-
-    default int getTotalLocations() {
-        return getLocations().length;
-    }
+    Collection<Location> getLocations();
 
     @NotNull
-    PathTraversal createTraversal();
+    Iterator<Location> iterator();
 
-    @Nullable
-    Location getLocation(int index);
+    float getPointsPerBlock();
 
 }

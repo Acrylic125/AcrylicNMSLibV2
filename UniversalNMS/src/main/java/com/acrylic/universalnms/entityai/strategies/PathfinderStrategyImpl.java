@@ -4,15 +4,16 @@ import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.entity.NMSEntityInstance;
 import com.acrylic.universalnms.entityai.PathSeekerAI;
-import com.acrylic.universalnms.pathfinder.PathTraversal;
 import com.acrylic.universalnms.pathfinder.Pathfinder;
 import com.acrylic.universalnms.pathfinder.PathfinderGenerator;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Iterator;
+
 public class PathfinderStrategyImpl implements PathfinderStrategy {
 
-    private PathTraversal focussedPath;
+    private Iterator<Location> focussedPath;
     private float speed = 0.2f;
     private long
             traverseTimeToStop = 0,
@@ -39,7 +40,7 @@ public class PathfinderStrategyImpl implements PathfinderStrategy {
                         .handleThenBuild(() -> {
                             Location iLocation = pathSeekerAI.getInstance().getBukkitEntity().getLocation();
                             Pathfinder pathfinder = pathfinderGenerator.generatePathfinder(iLocation, targetLocation);
-                            focussedPath = pathfinder.generatePath().createTraversal();
+                            focussedPath = pathfinder.generatePath(1 / speed).iterator();
                             state = PathfindingState.TRAVERSING;
                             traverseTimeToStop = System.currentTimeMillis() + maximumTimeToTraverse;
                         });

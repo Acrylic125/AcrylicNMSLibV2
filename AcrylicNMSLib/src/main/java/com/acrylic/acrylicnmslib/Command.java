@@ -40,7 +40,7 @@ public class Command {
                     Player player = (Player) commandExecuted.getSender();
                     Pathfinder pathfinder =  PathfinderGenerator.JPS_PATHFINDER_GENERATOR.generatePathfinder(player.getLocation(), player.getLocation().add(10, 3, 10));
                     pathfinder.pathfind();
-                    pathfinder.generatePath().createTraversal().forEachRemaining(location -> {
+                    pathfinder.generatePath(1).iterator().forEachRemaining(location -> {
                         if (location == null)
                             return;
                         player.sendBlockChange(location, Bukkit.createBlockData(Material.REDSTONE_BLOCK));
