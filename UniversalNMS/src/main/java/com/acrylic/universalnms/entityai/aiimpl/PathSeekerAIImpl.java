@@ -1,4 +1,4 @@
-package com.acrylic.universalnms.entityai.impl;
+package com.acrylic.universalnms.entityai.aiimpl;
 
 import com.acrylic.universalnms.entity.NMSEntityInstance;
 import com.acrylic.universalnms.entityai.PathSeekerAI;
@@ -7,9 +7,6 @@ import com.acrylic.universalnms.entityai.strategies.PathfinderStrategy;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class PathSeekerAIImpl implements PathSeekerAI {
 

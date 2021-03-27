@@ -5,6 +5,7 @@ import com.acrylic.universalnms.entity.wrapper.NMSLivingEntityWrapper;
 import com.acrylic.universalnms.nmsentityregistry.NMSEntity;
 import com.acrylic.version_1_8_nms.entity.NMSArmorStandInstanceImpl;
 import com.acrylic.version_1_8_nms.entity.NMSGiantInstanceImpl;
+import net.minecraft.server.v1_8_R3.DamageSource;
 import net.minecraft.server.v1_8_R3.EntityGiantZombie;
 import net.minecraft.server.v1_8_R3.World;
 import org.bukkit.entity.EntityType;
@@ -32,4 +33,9 @@ public class GiantWrapper
         return null;
     }
 
+    @Override
+    public void die(DamageSource damageSource) {
+        super.die(damageSource);
+        onDeath();
+    }
 }

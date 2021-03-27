@@ -165,7 +165,7 @@ public class NMSArmorStandInstanceImpl
     }
 
     @Override
-    public EntityConfiguration getEntityConfiguration() {
+    public LivingEntityConfiguration getEntityConfiguration() {
         return configuration;
     }
 }

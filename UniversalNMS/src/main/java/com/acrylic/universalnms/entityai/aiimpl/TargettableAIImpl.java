@@ -1,18 +1,23 @@
-package com.acrylic.universalnms.entityai.impl;
+package com.acrylic.universalnms.entityai.aiimpl;
 
 import com.acrylic.universalnms.entity.NMSEntityInstance;
 import com.acrylic.universalnms.entityai.TargettableAI;
+import com.acrylic.universalnms.entityai.strategies.TargetSelectorStrategy;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.ref.WeakReference;
+
 public class TargettableAIImpl
         extends PathSeekerAIImpl
         implements TargettableAI {
 
-    private Entity target;
-    private float dontPathfindRange = 3;
+    private WeakReference<Entity> target;
+    private TargetSelectorStrategy targetSelectorStrategy;
+    private float dontPathfindRange = 3,
+                  untargetRangeBetweenInstanceAndTarget = -1;
 
     public TargettableAIImpl(@NotNull NMSEntityInstance nmsEntityInstance) {
         super(nmsEntityInstance);
@@ -21,16 +26,18 @@ public class TargettableAIImpl
     @Nullable
     @Override
     public Entity getTarget() {
-        return target;
+        return (target == null) ? null : target.get();
     }
 
     @Override
     public void setTarget(@Nullable Entity target) {
-        this.target = target;
+        this.target = (target == null) ? null : new WeakReference<>(target);
     }
 
     @Override
     public void tick() {
+        if (targetSelectorStrategy != null && !targetSelectorStrategy.isLocked())
+            targetSelectorStrategy.tick();
         Entity target = getTarget();
         if (target != null) {
             Location location = target.getLocation();
@@ -50,5 +57,13 @@ public class TargettableAIImpl
 
     public void setDontPathfindRange(float dontPathfindRange) {
         this.dontPathfindRange = dontPathfindRange;
+    }
+
+    public float getUntargetRangeBetweenInstanceAndTarget() {
+        return untargetRangeBetweenInstanceAndTarget;
+    }
+
+    public void setUntargetRangeBetweenInstanceAndTarget(float untargetRangeBetweenInstanceAndTarget) {
+        this.untargetRangeBetweenInstanceAndTarget = untargetRangeBetweenInstanceAndTarget;
     }
 }

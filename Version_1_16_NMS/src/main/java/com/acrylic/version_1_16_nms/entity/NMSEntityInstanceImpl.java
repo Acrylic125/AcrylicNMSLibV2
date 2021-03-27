@@ -18,6 +18,7 @@ public abstract class NMSEntityInstanceImpl
 
     private EntityAI entityAI;
     private int instanceTicks = 0;
+    private int mask = 0;
 
     @Override
     public abstract Entity getNMSEntity();
@@ -64,15 +65,22 @@ public abstract class NMSEntityInstanceImpl
     }
 
     @Override
+    public boolean hasBeenAddedToWorld() {
+        return (mask & 0x01) == 0x01;
+    }
+
+    @Override
     public void removeFromWorld() {
         Entity entity = getNMSEntity();
         ((WorldServer) entity.world).removeEntity(entity);
+        mask &= ~0x01;
     }
 
     @Override
     public void addToWorld() {
         Entity entity = getNMSEntity();
         entity.getWorld().addEntity(entity);
+        mask |= 0x01;
     }
 
     @Override

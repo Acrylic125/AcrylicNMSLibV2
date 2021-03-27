@@ -43,5 +43,9 @@ public class PlayerWrapper
         return nmsPlayerInstance;
     }
 
-
+    @Override
+    public void die(DamageSource damageSource) {
+        super.die(damageSource);
+        onDeath();
+    }
 }

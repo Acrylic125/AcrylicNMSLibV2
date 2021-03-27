@@ -4,13 +4,13 @@ import com.acrylic.universalnms.entity.NMSPlayerInstance;
 import com.acrylic.universalnms.entity.entityconfiguration.EntityConfiguration;
 import com.acrylic.universalnms.entity.entityconfiguration.LivingEntityConfiguration;
 import com.acrylic.universalnms.entity.wrapper.NMSLivingEntityWrapper;
-import com.acrylic.universalnms.entityai.EntityAI;
 import com.acrylic.universalnms.enums.Gamemode;
 import com.acrylic.universalnms.renderer.PlayerCheckableRenderer;
 import com.acrylic.version_1_8_nms.entity.wrapper.PlayerWrapper;
 import com.acrylic.version_1_8_nms.packets.types.EntityOrientationPacketsImpl;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
+import net.minecraft.server.v1_8_R3.DamageSource;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.WorldSettings;
 import org.bukkit.Location;
@@ -113,7 +113,7 @@ public class NMSPlayerInstanceImpl
     }
 
     @Override
-    public EntityConfiguration getEntityConfiguration() {
+    public LivingEntityConfiguration getEntityConfiguration() {
         return configuration;
     }
 

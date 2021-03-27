@@ -75,6 +75,8 @@ public interface NMSEntityInstance extends EntityInstance {
 
     void setNoClip(boolean noClip);
 
+    boolean hasBeenAddedToWorld();
+
     void removeFromWorld();
 
     void addToWorld();
@@ -107,6 +109,12 @@ public interface NMSEntityInstance extends EntityInstance {
         if ((ticks % entityConfiguration.getTicksToCheckRender() == 0) &&
                 (checkRendererIf == null || checkRendererIf.test(this))) {
             renderer.doChecks();
+        }
+        int fireTicks = getFireTicks();
+        if (fireTicks > 0) {
+            fireTicks--;
+            setOnFire(fireTicks > 0);
+            setFireTicks(fireTicks);
         }
         setInstanceTicks(ticks + 1);
     }

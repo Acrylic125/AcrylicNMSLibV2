@@ -3,8 +3,10 @@ package com.acrylic.version_1_16_nms.entity.wrapper;
 import com.acrylic.universalnms.entity.wrapper.NMSLivingEntityWrapper;
 import com.acrylic.universalnms.nmsentityregistry.NMSEntity;
 import com.acrylic.version_1_16_nms.entity.NMSArmorStandInstanceImpl;
+import net.minecraft.server.v1_16_R3.DamageSource;
 import net.minecraft.server.v1_16_R3.EntityArmorStand;
 import net.minecraft.server.v1_16_R3.World;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,5 +34,11 @@ public class ArmorStandWrapper extends EntityArmorStand implements NMSLivingEnti
     @Override
     public NMSArmorStandInstanceImpl getEntityInstance() {
         return armorStandInstance;
+    }
+
+    @Override
+    public void die(DamageSource damageSource) {
+        super.die(damageSource);
+        onDeath();
     }
 }

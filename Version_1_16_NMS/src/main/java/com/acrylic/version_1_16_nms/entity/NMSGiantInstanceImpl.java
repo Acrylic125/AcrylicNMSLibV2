@@ -66,7 +66,7 @@ public class NMSGiantInstanceImpl
     }
 
     @Override
-    public EntityConfiguration getEntityConfiguration() {
+    public LivingEntityConfiguration getEntityConfiguration() {
         return configuration;
     }
 }

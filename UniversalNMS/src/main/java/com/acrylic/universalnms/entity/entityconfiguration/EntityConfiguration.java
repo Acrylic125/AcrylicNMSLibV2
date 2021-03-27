@@ -57,6 +57,4 @@ public interface EntityConfiguration {
      */
     boolean shouldRunAIByNMSEntities();
 
-    boolean shouldDropItemsOnDeath();
-
 }

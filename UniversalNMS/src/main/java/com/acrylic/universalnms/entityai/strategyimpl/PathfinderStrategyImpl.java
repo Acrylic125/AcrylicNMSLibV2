@@ -1,9 +1,10 @@
-package com.acrylic.universalnms.entityai.strategies;
+package com.acrylic.universalnms.entityai.strategyimpl;
 
 import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.entity.NMSEntityInstance;
 import com.acrylic.universalnms.entityai.PathSeekerAI;
+import com.acrylic.universalnms.entityai.strategies.PathfinderStrategy;
 import com.acrylic.universalnms.pathfinder.Path;
 import com.acrylic.universalnms.pathfinder.Pathfinder;
 import com.acrylic.universalnms.pathfinder.PathfinderGenerator;

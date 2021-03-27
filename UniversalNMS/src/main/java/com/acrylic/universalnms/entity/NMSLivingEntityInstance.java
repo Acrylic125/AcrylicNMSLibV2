@@ -2,6 +2,8 @@ package com.acrylic.universalnms.entity;
 
 import com.acrylic.universal.entity.LivingEntityInstance;
 import com.acrylic.universal.entity.equipment.EntityEquipmentBuilder;
+import com.acrylic.universalnms.entity.entityconfiguration.EntityConfiguration;
+import com.acrylic.universalnms.entity.entityconfiguration.LivingEntityConfiguration;
 import com.acrylic.universalnms.entity.wrapper.NMSLivingEntityWrapper;
 import com.acrylic.universalnms.packets.types.EntityEquipmentPackets;
 import org.bukkit.entity.LivingEntity;
@@ -9,6 +11,9 @@ import org.bukkit.inventory.EntityEquipment;
 import org.jetbrains.annotations.NotNull;
 
 public interface NMSLivingEntityInstance extends NMSEntityInstance, LivingEntityInstance {
+
+    @Override
+    LivingEntityConfiguration getEntityConfiguration();
 
     @Override
     LivingEntityPacketHandler getPacketHandler();
@@ -69,4 +74,10 @@ public interface NMSLivingEntityInstance extends NMSEntityInstance, LivingEntity
         setAnimationDataWatcher(0x80, b);
     }
 
+    @Override
+    default void tick(TickSource tickSource) {
+        NMSEntityInstance.super.tick(tickSource);
+        if (getFireTicks() > 0 && !getBukkitEntity().isInvulnerable())
+            damage(0.5f);
+    }
 }

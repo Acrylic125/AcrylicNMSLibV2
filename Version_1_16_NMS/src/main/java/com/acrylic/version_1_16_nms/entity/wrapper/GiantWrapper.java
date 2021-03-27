@@ -1,12 +1,15 @@
 package com.acrylic.version_1_16_nms.entity.wrapper;
 
 import com.acrylic.universalnms.entity.NMSLivingEntityInstance;
+import com.acrylic.universalnms.entity.entityconfiguration.LivingEntityConfiguration;
 import com.acrylic.universalnms.entity.wrapper.NMSLivingEntityWrapper;
 import com.acrylic.universalnms.nmsentityregistry.NMSEntity;
 import com.acrylic.version_1_16_nms.entity.NMSGiantInstanceImpl;
+import net.minecraft.server.v1_16_R3.DamageSource;
 import net.minecraft.server.v1_16_R3.EntityGiantZombie;
 import net.minecraft.server.v1_16_R3.EntityTypes;
 import net.minecraft.server.v1_16_R3.World;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,10 +32,13 @@ public class GiantWrapper
     @NotNull
     @Override
     public NMSLivingEntityInstance getEntityInstance() {
-        return null;
+        return giantInstance;
     }
 
-
-
+    @Override
+    public void die(DamageSource damageSource) {
+        super.die(damageSource);
+        onDeath();
+    }
 
 }
