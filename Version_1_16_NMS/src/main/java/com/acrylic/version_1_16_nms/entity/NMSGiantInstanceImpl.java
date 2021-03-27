@@ -2,6 +2,8 @@ package com.acrylic.version_1_16_nms.entity;
 
 import com.acrylic.universalnms.entity.LivingEntityPacketHandler;
 import com.acrylic.universalnms.entity.NMSGiantInstance;
+import com.acrylic.universalnms.entity.entityconfiguration.EntityConfiguration;
+import com.acrylic.universalnms.entity.entityconfiguration.LivingEntityConfiguration;
 import com.acrylic.universalnms.entity.wrapper.NMSLivingEntityWrapper;
 import com.acrylic.universalnms.entityai.EntityAI;
 import com.acrylic.universalnms.renderer.PlayerCheckableRenderer;
@@ -22,6 +24,7 @@ public class NMSGiantInstanceImpl
 
     private final GiantWrapper giant;
     private final LivingEntityPacketHandlerImpl entityPacketHandler;
+    private LivingEntityConfiguration configuration = LivingEntityConfiguration.DEFAULT_LIVING_ENTITY;
 
     public NMSGiantInstanceImpl(@NotNull Location location, @Nullable PlayerCheckableRenderer renderer) {
         this.giant = new GiantWrapper(this, EntityTypes.GIANT, NMSUtils.convertToNMSWorld(location.getWorld()));
@@ -53,5 +56,17 @@ public class NMSGiantInstanceImpl
     @Override
     public EntityGiantZombie getNMSEntity() {
         return giant;
+    }
+
+    @Override
+    public void setEntityConfiguration(@NotNull EntityConfiguration entityConfiguration) {
+        if (!(entityConfiguration instanceof LivingEntityConfiguration))
+            throw new RuntimeException("Living entities can only accept LivingEntityConfigurations.");
+        this.configuration = (LivingEntityConfiguration) entityConfiguration;
+    }
+
+    @Override
+    public EntityConfiguration getEntityConfiguration() {
+        return configuration;
     }
 }

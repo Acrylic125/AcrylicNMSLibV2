@@ -2,6 +2,7 @@ package com.acrylic.universalnms.entity;
 
 import com.acrylic.universal.entity.EntityInstance;
 import com.acrylic.universal.utils.LocationUtils;
+import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.entity.entityconfiguration.EntityConfiguration;
 import com.acrylic.universalnms.entity.manager.NMSEntities;
 import com.acrylic.universalnms.entity.wrapper.NMSEntityWrapper;
@@ -100,7 +101,7 @@ public interface NMSEntityInstance extends EntityInstance {
         if (ai != null && !ai.isLocked() &&
                 (runAIIf == null || runAIIf.test(this)) &&
                 !(entityConfiguration.silentAIIfNoOneIsRendered() && !renderer.isInUse()) &&
-                !(tickSource == TickSource.NMS_ENTITIES && entityConfiguration.shouldRunAIByNMSEntities())
+                !(tickSource == TickSource.NMS_ENTITIES && !entityConfiguration.shouldRunAIByNMSEntities())
         )
             ai.tick();
         if ((ticks % entityConfiguration.getTicksToCheckRender() == 0) &&
@@ -140,6 +141,22 @@ public interface NMSEntityInstance extends EntityInstance {
 
     default void move(Vector vector) {
         move(vector.getX(), vector.getY(), vector.getZ());
+    }
+
+    default void register() {
+        register(NMSLib.getNMSEntities());
+    }
+
+    default void register(@NotNull NMSEntities nmsEntities) {
+        nmsEntities.getEntityRetriever().register(this);
+    }
+
+    default void unregister() {
+        unregister(NMSLib.getNMSEntities());
+    }
+
+    default void unregister(@NotNull NMSEntities nmsEntities) {
+        nmsEntities.getEntityRetriever().unregister(this);
     }
 
 }

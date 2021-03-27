@@ -14,7 +14,6 @@ public abstract class NMSEntityInstanceImpl
         implements NMSEntityInstance {
 
     private EntityAI entityAI;
-    private EntityConfiguration entityConfiguration = EntityConfiguration.DEFAULT;
     private int instanceTicks = 0;
 
     @Override
@@ -131,16 +130,6 @@ public abstract class NMSEntityInstanceImpl
     @Override
     public void move(double x, double y, double z) {
         getNMSEntity().move(x, y, z);
-    }
-
-    @Override
-    public void setEntityConfiguration(@NotNull EntityConfiguration entityConfiguration) {
-        this.entityConfiguration = entityConfiguration;
-    }
-
-    @Override
-    public EntityConfiguration getEntityConfiguration() {
-        return entityConfiguration;
     }
 
     @Override

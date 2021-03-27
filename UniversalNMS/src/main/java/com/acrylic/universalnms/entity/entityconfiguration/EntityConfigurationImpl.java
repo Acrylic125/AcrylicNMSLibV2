@@ -9,77 +9,78 @@ import java.util.function.Predicate;
 
 public class EntityConfigurationImpl implements EntityConfiguration {
 
-    public static Builder builder() {
-        return builder(new EntityConfigurationImpl());
+    public static EntityBuilder entityBuilder() {
+        return entityBuilder(new EntityConfigurationImpl());
     }
 
-    public static Builder builder(@NotNull EntityConfigurationImpl entityConfiguration) {
-        return new Builder(entityConfiguration);
+    public static EntityBuilder entityBuilder(@NotNull EntityConfigurationImpl entityConfiguration) {
+        return new EntityBuilder(entityConfiguration);
     }
 
-    public static class Builder {
+    public static class EntityBuilder extends AbstractBuilder<EntityBuilder> {
 
         private final EntityConfigurationImpl entityConfiguration;
 
-        private Builder(EntityConfigurationImpl entityConfiguration) {
+        public EntityBuilder(EntityConfigurationImpl entityConfiguration) {
             this.entityConfiguration = entityConfiguration;
         }
 
-        public Builder ticksToCheckRenderer(int ticks) {
-            entityConfiguration.ticksToCheckRenderer = ticks;
-            return this;
-        }
-
-        public Builder checkRendererIf(@Nullable Predicate<NMSEntityInstance> condition) {
-            entityConfiguration.checkRendererIf = condition;
-            return this;
-        }
-
-        public Builder runAIIf(@Nullable Predicate<NMSEntityInstance> condition) {
-            entityConfiguration.runAIIf = condition;
-            return this;
-        }
-
-        public Builder silentAIIfNoOneIsRenderer(boolean b) {
-            entityConfiguration.flags = BitMaskUtils.setBitToMask(entityConfiguration.flags, 0x01, b);
-            return this;
-        }
-
-        public Builder runAIByNMSEntities(boolean b) {
-            entityConfiguration.flags = BitMaskUtils.setBitToMask(entityConfiguration.flags, 0x02, b);
-            return this;
-        }
-
-        public Builder dropItemsOnDeath(boolean b) {
-            entityConfiguration.flags = BitMaskUtils.setBitToMask(entityConfiguration.flags, 0x04, b);
-            return this;
-        }
-
-        public Builder removeFromRetrieverOnDeath(boolean b) {
-            entityConfiguration.flags = BitMaskUtils.setBitToMask(entityConfiguration.flags, 0x08, b);
-            return this;
-        }
-
-        public Builder deleteOnDeath(boolean b) {
-            entityConfiguration.flags = BitMaskUtils.setBitToMask(entityConfiguration.flags, 0x10, b);
-            return this;
-        }
-
-        public EntityConfigurationImpl build() {
+        @Override
+        public EntityConfigurationImpl getBuildFrom() {
             return entityConfiguration;
         }
 
+        @Override
+        public EntityConfigurationImpl build() {
+            return entityConfiguration;
+        }
     }
 
-    private int
+    @SuppressWarnings("unchecked")
+    public static abstract class AbstractBuilder<B extends AbstractBuilder<B>> {
+
+        public B ticksToCheckRenderer(int ticks) {
+            getBuildFrom().ticksToCheckRenderer = ticks;
+            return (B) this;
+        }
+
+        public B checkRendererIf(@Nullable Predicate<NMSEntityInstance> condition) {
+            getBuildFrom().checkRendererIf = condition;
+            return (B) this;
+        }
+
+        public B runAIIf(@Nullable Predicate<NMSEntityInstance> condition) {
+            getBuildFrom().runAIIf = condition;
+            return (B) this;
+        }
+
+        public B silentAIIfNoOneIsRenderer(boolean b) {
+            getBuildFrom().flags = BitMaskUtils.setBitToMask(getBuildFrom().flags, 0x01, b);
+            return (B) this;
+        }
+
+        public B runAIByNMSEntities(boolean b) {
+            getBuildFrom().flags = BitMaskUtils.setBitToMask(getBuildFrom().flags, 0x02, b);
+            return (B) this;
+        }
+
+        public B dropItemsOnDeath(boolean b) {
+            getBuildFrom().flags = BitMaskUtils.setBitToMask(getBuildFrom().flags, 0x04, b);
+            return (B) this;
+        }
+
+        public abstract EntityConfigurationImpl getBuildFrom();
+
+        public abstract EntityConfigurationImpl build();
+    }
+
+    protected int
             /*
             * Default flags:
             * Silent AI if no one is rendered for (0x01),
             * Run AI by NMSEntities (0x02),
-            * Remove from retriever on death (0x08),
-            * Delete on death (0x10).
             */
-            flags = 0x01 | 0x02 | 0x08 | 0x10 ,
+            flags = 0x01 | 0x02,
             ticksToCheckRenderer = 20;
     private Predicate<NMSEntityInstance>
             checkRendererIf,
@@ -120,15 +121,4 @@ public class EntityConfigurationImpl implements EntityConfiguration {
         return (flags & 0x04) == 0x04;
     }
 
-    //0x08
-    @Override
-    public boolean shouldRemoveFromRetrieverOnDeath() {
-        return (flags & 0x08) == 0x08;
-    }
-
-    //0x10
-    @Override
-    public boolean shouldDeleteOnDeath() {
-        return (flags & 0x10) == 0x10;
-    }
 }

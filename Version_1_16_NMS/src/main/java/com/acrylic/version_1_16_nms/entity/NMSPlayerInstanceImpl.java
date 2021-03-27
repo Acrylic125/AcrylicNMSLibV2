@@ -1,6 +1,9 @@
 package com.acrylic.version_1_16_nms.entity;
 
 import com.acrylic.universalnms.entity.NMSPlayerInstance;
+import com.acrylic.universalnms.entity.entityconfiguration.EntityConfiguration;
+import com.acrylic.universalnms.entity.entityconfiguration.LivingEntityConfiguration;
+import com.acrylic.universalnms.entity.entityconfiguration.LivingEntityConfigurationImpl;
 import com.acrylic.universalnms.entity.wrapper.NMSLivingEntityWrapper;
 import com.acrylic.universalnms.entityai.EntityAI;
 import com.acrylic.universalnms.enums.Gamemode;
@@ -29,6 +32,7 @@ public class NMSPlayerInstanceImpl
 
     private final PlayerWrapper playerWrapper;
     private final PlayerPacketHandlerImpl entityPacketHandler;
+    private LivingEntityConfiguration configuration = LivingEntityConfiguration.DEFAULT_LIVING_ENTITY;
 
     public NMSPlayerInstanceImpl(@NotNull Location location, @Nullable PlayerCheckableRenderer renderer, @Nullable String name) {
         this.playerWrapper = new PlayerWrapper(this, location, name);
@@ -127,6 +131,18 @@ public class NMSPlayerInstanceImpl
         } catch (Throwable e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void setEntityConfiguration(@NotNull EntityConfiguration entityConfiguration) {
+        if (!(entityConfiguration instanceof LivingEntityConfiguration))
+            throw new RuntimeException("Living entities can only accept LivingEntityConfigurations.");
+        this.configuration = (LivingEntityConfiguration) entityConfiguration;
+    }
+
+    @Override
+    public EntityConfiguration getEntityConfiguration() {
+        return configuration;
     }
 
     private static final MethodHandle PLAYER_CHUNK_MAP_VIEW_DISTANCE_GETTER = getGetter(PlayerChunkMap.class,

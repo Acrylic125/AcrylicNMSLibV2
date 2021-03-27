@@ -7,6 +7,7 @@ import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.entity.NMSEntityInstance;
+import com.acrylic.universalnms.entity.entityconfiguration.EntityConfiguration;
 import com.acrylic.universalnms.entityai.impl.TargettableAIImpl;
 import com.acrylic.universalnms.entityai.strategies.PathfinderStrategyImpl;
 import com.acrylic.universalnms.particles.ParticleBuilder;
@@ -48,9 +49,8 @@ public class Command {
                             setItemInHand(ItemBuilder.of(Material.DIAMOND_PICKAXE))
                     );
                     armorStandInstance.addToWorld();
-                    Scheduler.sync().runRepeatingTask(1, 1)
-                            .plugin(NMSLib.getPlugin())
-                            .handleThenBuild(() -> armorStandInstance.tick(NMSEntityInstance.TickSource.CUSTOM));
+                    //armorStandInstance.setEntityConfiguration(EntityConfiguration.P);
+                    armorStandInstance.register();
 
                 }).arguments(
                         CommandBuilder.create("p")

@@ -17,7 +17,7 @@ import java.util.function.Predicate;
  */
 public interface EntityConfiguration {
 
-    EntityConfiguration DEFAULT = new EntityConfigurationImpl();
+    EntityConfiguration DEFAULT_ENTITY = new EntityConfigurationImpl();
 
     /**
      * The amount of ticks to recheck the renderer.
@@ -58,21 +58,5 @@ public interface EntityConfiguration {
     boolean shouldRunAIByNMSEntities();
 
     boolean shouldDropItemsOnDeath();
-
-    /**
-     *
-     * @return If the entity instance should be removed
-     * from the retriever on death.
-     */
-    boolean shouldRemoveFromRetrieverOnDeath();
-
-    /**
-     * THIS WILL NOT REMOVE THE ENTITY INSTANCE FROM
-     * THE RETRIEVER UNLESS {@link #shouldRemoveFromRetrieverOnDeath()}
-     * IS TRUE!
-     *
-     * @return Runs the {@link EntityInstance#delete()} method on death.
-     */
-    boolean shouldDeleteOnDeath();
 
 }
