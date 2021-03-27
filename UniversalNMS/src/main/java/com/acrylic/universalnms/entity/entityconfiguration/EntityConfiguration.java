@@ -16,6 +16,8 @@ import java.util.function.Predicate;
  */
 public interface EntityConfiguration {
 
+    EntityConfiguration DEFAULT = new EntityConfigurationImpl();
+
     /**
      * The amount of ticks to recheck the renderer.
      * By default, it is every 20 ticks. It is not recommended

@@ -2,6 +2,7 @@ package com.acrylic.version_1_16_nms.entity;
 
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universalnms.entity.NMSEntityInstance;
+import com.acrylic.universalnms.entity.entityconfiguration.EntityConfiguration;
 import com.acrylic.universalnms.entityai.EntityAI;
 import net.minecraft.server.v1_16_R3.*;
 import org.bukkit.craftbukkit.v1_16_R3.CraftServer;
@@ -16,6 +17,8 @@ public abstract class NMSEntityInstanceImpl
         implements NMSEntityInstance {
 
     private EntityAI entityAI;
+    private EntityConfiguration entityConfiguration = EntityConfiguration.DEFAULT;
+    private int instanceTicks = 0;
 
     @Override
     public abstract Entity getNMSEntity();
@@ -131,5 +134,25 @@ public abstract class NMSEntityInstanceImpl
     @Override
     public void move(double x, double y, double z) {
         getNMSEntity().move(EnumMoveType.SELF, new Vec3D(x, y, z));
+    }
+
+    @Override
+    public void setEntityConfiguration(@NotNull EntityConfiguration entityConfiguration) {
+        this.entityConfiguration = entityConfiguration;
+    }
+
+    @Override
+    public EntityConfiguration getEntityConfiguration() {
+        return entityConfiguration;
+    }
+
+    @Override
+    public int getInstanceTicks() {
+        return instanceTicks;
+    }
+
+    @Override
+    public void setInstanceTicks(int ticks) {
+        this.instanceTicks = ticks;
     }
 }

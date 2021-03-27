@@ -2,6 +2,7 @@ package com.acrylic.universalnms.entity;
 
 import com.acrylic.universal.entity.EntityInstance;
 import com.acrylic.universal.utils.LocationUtils;
+import com.acrylic.universalnms.entity.entityconfiguration.EntityConfiguration;
 import com.acrylic.universalnms.entity.wrapper.NMSEntityWrapper;
 import com.acrylic.universalnms.entityai.EntityAI;
 import com.acrylic.universalnms.packets.types.EntityDestroyPacket;
@@ -13,6 +14,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public interface NMSEntityInstance extends EntityInstance {
+
+    void setEntityConfiguration(@NotNull EntityConfiguration entityConfiguration);
+
+    EntityConfiguration getEntityConfiguration();
 
     int getInstanceTicks();
 
