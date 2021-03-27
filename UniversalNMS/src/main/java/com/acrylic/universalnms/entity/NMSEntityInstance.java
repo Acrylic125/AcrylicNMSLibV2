@@ -3,17 +3,41 @@ package com.acrylic.universalnms.entity;
 import com.acrylic.universal.entity.EntityInstance;
 import com.acrylic.universal.utils.LocationUtils;
 import com.acrylic.universalnms.entity.entityconfiguration.EntityConfiguration;
+import com.acrylic.universalnms.entity.manager.NMSEntities;
 import com.acrylic.universalnms.entity.wrapper.NMSEntityWrapper;
 import com.acrylic.universalnms.entityai.EntityAI;
 import com.acrylic.universalnms.packets.types.EntityDestroyPacket;
 import com.acrylic.universalnms.packets.types.TeleportPacket;
+import com.acrylic.universalnms.renderer.PlayerCheckableRenderer;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.Predicate;
+
 public interface NMSEntityInstance extends EntityInstance {
+
+    enum TickSource {
+        /**
+         * Indicates that the tick source is from
+         * the {@link NMSEntities#run()} method.
+         */
+        NMS_ENTITIES,
+        /**
+         * Indicates that the tick source is from
+         * some other implementation.
+         */
+        CUSTOM,
+        /**
+         * Indicates that the tick source is directly from
+         * this instance or it's wrapper. Currently not
+         * in use.
+         */
+        @Deprecated
+        ROOT
+    }
 
     void setEntityConfiguration(@NotNull EntityConfiguration entityConfiguration);
 
@@ -64,13 +88,24 @@ public interface NMSEntityInstance extends EntityInstance {
 
     void setYawAndPitch(float yaw, float pitch);
 
-    default void tick() {
+    default void tick(TickSource tickSource) {
         EntityAI ai = getAI();
+        EntityPacketHandler packetHandler = getPacketHandler();
+        PlayerCheckableRenderer renderer = packetHandler.getRenderer();;
+        EntityConfiguration entityConfiguration = getEntityConfiguration();
         int ticks = getInstanceTicks();
-        if (ai != null)
+        Predicate<NMSEntityInstance>
+                runAIIf = entityConfiguration.getRunAIIf(),
+                checkRendererIf = entityConfiguration.getCheckRendererIf();
+        if (ai != null && !ai.isLocked() &&
+                (runAIIf == null || runAIIf.test(this)) &&
+                !(entityConfiguration.silentAIIfNoOneIsRendered() && !renderer.isInUse()) &&
+                !(tickSource == TickSource.NMS_ENTITIES && entityConfiguration.shouldRunAIByNMSEntities())
+        )
             ai.tick();
-        if (ticks % 20 == 0) {
-            getPacketHandler().getRenderer().doChecks();
+        if ((ticks % entityConfiguration.getTicksToCheckRender() == 0) &&
+                (checkRendererIf == null || checkRendererIf.test(this))) {
+            renderer.doChecks();
         }
         setInstanceTicks(ticks + 1);
     }

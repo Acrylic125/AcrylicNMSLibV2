@@ -55,6 +55,16 @@ public class EntityConfigurationImpl implements EntityConfiguration {
             return this;
         }
 
+        public Builder removeFromRetrieverOnDeath(boolean b) {
+            entityConfiguration.flags = BitMaskUtils.setBitToMask(entityConfiguration.flags, 0x08, b);
+            return this;
+        }
+
+        public Builder deleteOnDeath(boolean b) {
+            entityConfiguration.flags = BitMaskUtils.setBitToMask(entityConfiguration.flags, 0x10, b);
+            return this;
+        }
+
         public EntityConfigurationImpl build() {
             return entityConfiguration;
         }
@@ -62,7 +72,14 @@ public class EntityConfigurationImpl implements EntityConfiguration {
     }
 
     private int
-            flags = 0x01 | 0x02,
+            /*
+            * Default flags:
+            * Silent AI if no one is rendered for (0x01),
+            * Run AI by NMSEntities (0x02),
+            * Remove from retriever on death (0x08),
+            * Delete on death (0x10).
+            */
+            flags = 0x01 | 0x02 | 0x08 | 0x10 ,
             ticksToCheckRenderer = 20;
     private Predicate<NMSEntityInstance>
             checkRendererIf,
@@ -101,5 +118,17 @@ public class EntityConfigurationImpl implements EntityConfiguration {
     @Override
     public boolean shouldDropItemsOnDeath() {
         return (flags & 0x04) == 0x04;
+    }
+
+    //0x08
+    @Override
+    public boolean shouldRemoveFromRetrieverOnDeath() {
+        return (flags & 0x08) == 0x08;
+    }
+
+    //0x10
+    @Override
+    public boolean shouldDeleteOnDeath() {
+        return (flags & 0x10) == 0x10;
     }
 }

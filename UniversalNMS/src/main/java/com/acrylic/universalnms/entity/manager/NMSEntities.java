@@ -43,7 +43,7 @@ public final class NMSEntities implements Terminable, Runnable {
     public NMSEntityRetriever<NMSEntityInstance> getEntityRetriever() {
         return entityRetriever;
     }
-    
+
     @Override
     public void terminate() {
         entityTicker.cancel();
@@ -52,6 +52,6 @@ public final class NMSEntities implements Terminable, Runnable {
     @Override
     public void run() {
         for (NMSEntityInstance entityInstance : entityRetriever.getCached().values())
-            entityInstance.tick();
+            entityInstance.tick(NMSEntityInstance.TickSource.NMS_ENTITIES);
     }
 }

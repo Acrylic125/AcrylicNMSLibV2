@@ -113,4 +113,9 @@ public class RangedPlayerCheckableRenderer implements PlayerCheckableRenderer {
         return new RangedPlayerCheckableRenderer(rendered);
     }
 
+    @Override
+    public boolean isInUse() {
+        return !rendered.isEmpty();
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.acrylic.universalnms.entity.entityconfiguration;
 
+import com.acrylic.universal.entity.EntityInstance;
 import com.acrylic.universalnms.entity.NMSEntityInstance;
 import org.jetbrains.annotations.Nullable;
 
@@ -57,5 +58,21 @@ public interface EntityConfiguration {
     boolean shouldRunAIByNMSEntities();
 
     boolean shouldDropItemsOnDeath();
+
+    /**
+     *
+     * @return If the entity instance should be removed
+     * from the retriever on death.
+     */
+    boolean shouldRemoveFromRetrieverOnDeath();
+
+    /**
+     * THIS WILL NOT REMOVE THE ENTITY INSTANCE FROM
+     * THE RETRIEVER UNLESS {@link #shouldRemoveFromRetrieverOnDeath()}
+     * IS TRUE!
+     *
+     * @return Runs the {@link EntityInstance#delete()} method on death.
+     */
+    boolean shouldDeleteOnDeath();
 
 }

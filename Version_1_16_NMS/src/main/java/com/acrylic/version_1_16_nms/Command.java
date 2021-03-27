@@ -6,6 +6,7 @@ import com.acrylic.universal.entity.equipment.EntityEquipmentBuilderImpl;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universalnms.NMSLib;
+import com.acrylic.universalnms.entity.NMSEntityInstance;
 import com.acrylic.universalnms.entityai.impl.TargettableAIImpl;
 import com.acrylic.universalnms.entityai.strategies.PathfinderStrategyImpl;
 import com.acrylic.universalnms.particles.ParticleBuilder;
@@ -49,7 +50,7 @@ public class Command {
                     armorStandInstance.addToWorld();
                     Scheduler.sync().runRepeatingTask(1, 1)
                             .plugin(NMSLib.getPlugin())
-                            .handleThenBuild(armorStandInstance::tick);
+                            .handleThenBuild(() -> armorStandInstance.tick(NMSEntityInstance.TickSource.CUSTOM));
 
                 }).arguments(
                         CommandBuilder.create("p")

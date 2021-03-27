@@ -32,10 +32,4 @@ public class GiantWrapper
         return null;
     }
 
-    @Override
-    public void t_() {
-        super.t_();
-        tick();
-    }
-
 }

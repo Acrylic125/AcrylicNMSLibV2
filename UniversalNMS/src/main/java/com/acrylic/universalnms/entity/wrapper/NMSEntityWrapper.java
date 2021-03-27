@@ -8,9 +8,4 @@ public interface NMSEntityWrapper {
     @NotNull
     NMSEntityInstance getEntityInstance();
 
-    default void tick() {
-        NMSEntityInstance nmsEntityInstance = getEntityInstance();
-        nmsEntityInstance.tick();
-    }
-
 }

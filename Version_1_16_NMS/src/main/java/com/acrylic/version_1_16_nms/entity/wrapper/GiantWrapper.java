@@ -32,11 +32,6 @@ public class GiantWrapper
         return null;
     }
 
-    @Override
-    public void tick() {
-        super.tick();
-        NMSLivingEntityWrapper.super.tick();
-    }
 
 
 

@@ -27,12 +27,6 @@ public class ArmorStandWrapper extends EntityArmorStand implements NMSLivingEnti
         this.armorStandInstance = armorStandInstance;
     }
 
-    @Override
-    public void t_() {
-        super.t_();
-        tick();
-    }
-
     @NotNull
     @Override
     public NMSArmorStandInstanceImpl getEntityInstance() {

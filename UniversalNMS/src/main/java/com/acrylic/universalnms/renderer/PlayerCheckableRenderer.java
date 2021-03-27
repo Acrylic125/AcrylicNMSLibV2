@@ -19,4 +19,10 @@ public interface PlayerCheckableRenderer extends Renderer<Player> {
 
     @Override
     PlayerCheckableRenderer clone();
+
+    /**
+     * @return  If someone is being rendered for.
+     */
+    boolean isInUse();
+
 }
