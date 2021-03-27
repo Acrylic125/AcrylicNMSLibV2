@@ -53,7 +53,7 @@ public class PathImpl implements Path {
     private static Collection<Location> map(Pathfinder pathfinder, Location[] points, float pointsPerBlocks) {
         if (points.length <= 0)
             return new LinkedList<>();
-        PathReader pathReader = pathfinder.getPathWorldBlockReader();
+        PathReader pathReader = pathfinder.getPathReader();
         Collection<Location> map = new LinkedList<>();
         Location cursor = points[0];
         Vector direction = new Vector(0, 0, 0),

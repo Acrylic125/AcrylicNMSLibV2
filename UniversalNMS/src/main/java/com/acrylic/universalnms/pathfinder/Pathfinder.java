@@ -7,7 +7,7 @@ public interface Pathfinder {
 
     World getWorld();
 
-    PathReader getPathWorldBlockReader();
+    PathReader getPathReader();
 
     PathfinderGenerator getPathfinderGenerator();
 

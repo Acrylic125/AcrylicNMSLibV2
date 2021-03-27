@@ -4,7 +4,6 @@ import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.pathfinder.*;
 import com.acrylic.universalnms.worldexaminer.BoundingBoxExaminer;
 import org.bukkit.Material;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static com.acrylic.universal.items.ItemUtils.isLiquid;
@@ -62,7 +61,7 @@ public class PathExaminerByHeightImpl implements PathExaminer {
      */
     @Override
     public PathTypeResult examineTo(Pathfinder pathfinder, float x, float y0, float z) {
-        PathReader pathReader = pathfinder.getPathWorldBlockReader();
+        PathReader pathReader = pathfinder.getPathReader();
         float heightRequirement = pathfinder.getPathfinderGenerator().getMinimumYToTraverse();
         PathTypeResultImpl pathTypeResult = new PathTypeResultImpl(pathfinder, x, y0, z);
         PathfinderGenerator generator = pathfinder.getPathfinderGenerator();

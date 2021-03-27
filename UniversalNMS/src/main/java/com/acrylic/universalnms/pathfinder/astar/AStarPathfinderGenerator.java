@@ -1,4 +1,4 @@
-package com.acrylic.universalnms.pathfinder.jps;
+package com.acrylic.universalnms.pathfinder.astar;
 
 import com.acrylic.universalnms.pathfinder.PathExaminer;
 import com.acrylic.universalnms.pathfinder.PathfinderGenerator;
@@ -6,7 +6,7 @@ import com.acrylic.universalnms.pathfinder.impl.PathExaminerByHeightImpl;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
-public class JPSPathfinderGenerator implements PathfinderGenerator {
+public class AStarPathfinderGenerator implements PathfinderGenerator {
 
     private double maximumSearchDistance = 16;
     private int recursionMaximumHorizontal = 8, recursionMaximumDiagonal = 8;
@@ -14,12 +14,11 @@ public class JPSPathfinderGenerator implements PathfinderGenerator {
             maximumHeight = 2,
             minimumXToTraverse = 1,
             minimumYToTraverse = 2,
-            minimumZToTraverse = 1
-    ;
+            minimumZToTraverse = 1;
     private int maximumClosestChecks = 60;
     private boolean debugMode = true;
 
-    public JPSPathfinderGenerator setMaximumSearchDistance(double maximumSearchDistance) {
+    public AStarPathfinderGenerator setMaximumSearchDistance(double maximumSearchDistance) {
         this.maximumSearchDistance = maximumSearchDistance;
         return this;
     }
@@ -33,7 +32,7 @@ public class JPSPathfinderGenerator implements PathfinderGenerator {
         return recursionMaximumHorizontal;
     }
 
-    public JPSPathfinderGenerator setRecursionMaximumHorizontal(int recursionMaximumHorizontal) {
+    public AStarPathfinderGenerator setRecursionMaximumHorizontal(int recursionMaximumHorizontal) {
         this.recursionMaximumHorizontal = recursionMaximumHorizontal;
         return this;
     }
@@ -42,7 +41,7 @@ public class JPSPathfinderGenerator implements PathfinderGenerator {
         return recursionMaximumDiagonal;
     }
 
-    public JPSPathfinderGenerator setRecursionMaximumDiagonal(int recursionMaximumDiagonal) {
+    public AStarPathfinderGenerator setRecursionMaximumDiagonal(int recursionMaximumDiagonal) {
         this.recursionMaximumDiagonal = recursionMaximumDiagonal;
         return this;
     }
@@ -51,7 +50,7 @@ public class JPSPathfinderGenerator implements PathfinderGenerator {
         return maximumDropHeight;
     }
 
-    public JPSPathfinderGenerator setMaximumDropHeight(float maximumDropHeight) {
+    public AStarPathfinderGenerator setMaximumDropHeight(float maximumDropHeight) {
         this.maximumDropHeight = maximumDropHeight;
         return this;
     }
@@ -60,7 +59,7 @@ public class JPSPathfinderGenerator implements PathfinderGenerator {
         return maximumHeight;
     }
 
-    public JPSPathfinderGenerator setMinimumXToTraverse(float minimumXToTraverse) {
+    public AStarPathfinderGenerator setMinimumXToTraverse(float minimumXToTraverse) {
         this.minimumXToTraverse = minimumXToTraverse;
         return this;
     }
@@ -70,7 +69,7 @@ public class JPSPathfinderGenerator implements PathfinderGenerator {
         return minimumXToTraverse;
     }
 
-    public JPSPathfinderGenerator setMinimumYToTraverse(float minimumYToTraverse) {
+    public AStarPathfinderGenerator setMinimumYToTraverse(float minimumYToTraverse) {
         this.minimumYToTraverse = minimumYToTraverse;
         return this;
     }
@@ -80,7 +79,7 @@ public class JPSPathfinderGenerator implements PathfinderGenerator {
         return minimumYToTraverse;
     }
 
-    public JPSPathfinderGenerator setMinimumZToTraverse(float minimumZToTraverse) {
+    public AStarPathfinderGenerator setMinimumZToTraverse(float minimumZToTraverse) {
         this.minimumZToTraverse = minimumZToTraverse;
         return this;
     }
@@ -90,15 +89,15 @@ public class JPSPathfinderGenerator implements PathfinderGenerator {
         return minimumZToTraverse;
     }
 
-    public JPSPathfinderGenerator setMaximumHeight(float maximumHeight) {
+    public AStarPathfinderGenerator setMaximumHeight(float maximumHeight) {
         this.maximumHeight = maximumHeight;
         return this;
     }
 
     @NotNull
     @Override
-    public JPSPathfinder generatePathfinder(@NotNull Location start, @NotNull Location end) {
-        return new JPSPathfinder(this, start, end);
+    public AStarPathfinder generatePathfinder(@NotNull Location start, @NotNull Location end) {
+        return new AStarPathfinder(this, start, end);
     }
 
     @NotNull
@@ -111,7 +110,7 @@ public class JPSPathfinderGenerator implements PathfinderGenerator {
         return maximumClosestChecks;
     }
 
-    public JPSPathfinderGenerator setMaximumClosestChecks(int maximumClosestChecks) {
+    public AStarPathfinderGenerator setMaximumClosestChecks(int maximumClosestChecks) {
         this.maximumClosestChecks = maximumClosestChecks;
         return this;
     }
@@ -120,8 +119,9 @@ public class JPSPathfinderGenerator implements PathfinderGenerator {
         return debugMode;
     }
 
-    public JPSPathfinderGenerator setDebugMode(boolean debugMode) {
+    public AStarPathfinderGenerator setDebugMode(boolean debugMode) {
         this.debugMode = debugMode;
         return this;
     }
+
 }

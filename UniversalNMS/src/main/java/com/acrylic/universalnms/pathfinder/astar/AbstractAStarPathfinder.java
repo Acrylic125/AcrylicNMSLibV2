@@ -1,6 +1,7 @@
 package com.acrylic.universalnms.pathfinder.astar;
 
 import com.acrylic.universalnms.pathfinder.Pathfinder;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -57,9 +58,10 @@ public abstract class AbstractAStarPathfinder<N extends AStarPathNode>
         N cursor = null;
         double fCost = 0;
         for (N node : collection) {
-            if (cursor == null)
+            if (cursor == null) {
                 cursor = node;
-            else {
+                fCost = node.getFCost();
+            } else {
                 double nodeFCost = node.getFCost();
                 if (nodeFCost < fCost) {
                     cursor = node;
@@ -92,6 +94,10 @@ public abstract class AbstractAStarPathfinder<N extends AStarPathNode>
 
     public boolean isNodeInClosed(N node) {
         return getClosed().get(node.hashCode()) != null;
+    }
+
+    public N getSimilarNodeFromOpen(N node) {
+        return getOpen().get(node.hashCode());
     }
 
     public abstract double getDistanceFromStartToEnd();

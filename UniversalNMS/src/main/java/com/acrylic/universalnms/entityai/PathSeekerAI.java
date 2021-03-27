@@ -8,13 +8,13 @@ import org.jetbrains.annotations.Nullable;
 
 public interface PathSeekerAI extends EntityAI {
 
-    @NotNull
-    PathfinderStrategy getPathfinderStrategy();
-
     void setTargetLocation(@Nullable Location location);
 
     @Nullable
     Location getTargetLocation();
+
+    @Nullable
+    PathfinderStrategy getPathfinderStrategy();
 
     @Nullable
     PathQuitterStrategy getPathQuitterStrategy();

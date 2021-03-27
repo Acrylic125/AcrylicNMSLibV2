@@ -6,6 +6,7 @@ import com.acrylic.universalnms.entityai.EntityAI;
 import com.acrylic.universalnms.enums.Gamemode;
 import com.acrylic.universalnms.renderer.PlayerCheckableRenderer;
 import com.acrylic.version_1_16_nms.entity.wrapper.PlayerWrapper;
+import com.acrylic.version_1_16_nms.packets.types.EntityOrientationPacketsImpl;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
 import net.minecraft.server.v1_16_R3.ChunkProviderServer;
@@ -39,12 +40,6 @@ public class NMSPlayerInstanceImpl
     @Override
     public Player getBukkitEntity() {
         return playerWrapper.getBukkitEntity();
-    }
-
-    @Nullable
-    @Override
-    public EntityAI getAI() {
-        return null;
     }
 
     @Override
@@ -91,19 +86,25 @@ public class NMSPlayerInstanceImpl
     @Override
     public void setYaw(float yaw) {
         super.setYaw(yaw);
-        getPacketHandler().getEntityOrientationPackets().apply(getNMSEntity(), getYaw(), getPitch());
+        EntityOrientationPacketsImpl entityOrientationPackets = getPacketHandler().getEntityOrientationPackets();
+        entityOrientationPackets.apply(getNMSEntity(), getYaw(), getPitch());
+        entityOrientationPackets.getSender().sendToAllByRenderer(entityPacketHandler.getRenderer());
     }
 
     @Override
     public void setPitch(float pitch) {
         super.setPitch(pitch);
-        getPacketHandler().getEntityOrientationPackets().apply(getNMSEntity(), getYaw(), getPitch());
+        EntityOrientationPacketsImpl entityOrientationPackets = getPacketHandler().getEntityOrientationPackets();
+        entityOrientationPackets.apply(getNMSEntity(), getYaw(), getPitch());
+        entityOrientationPackets.getSender().sendToAllByRenderer(entityPacketHandler.getRenderer());
     }
 
     @Override
     public void setYawAndPitch(float yaw, float pitch) {
         super.setYawAndPitch(yaw, pitch);
-        getPacketHandler().getEntityOrientationPackets().apply(getNMSEntity(), getYaw(), getPitch());
+        EntityOrientationPacketsImpl entityOrientationPackets = getPacketHandler().getEntityOrientationPackets();
+        entityOrientationPackets.apply(getNMSEntity(), getYaw(), getPitch());
+        entityOrientationPackets.getSender().sendToAllByRenderer(entityPacketHandler.getRenderer());
     }
 
     @Override

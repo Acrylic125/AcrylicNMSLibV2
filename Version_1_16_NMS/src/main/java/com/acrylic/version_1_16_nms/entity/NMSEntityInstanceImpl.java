@@ -2,14 +2,18 @@ package com.acrylic.version_1_16_nms.entity;
 
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universalnms.entity.NMSEntityInstance;
+import com.acrylic.universalnms.entityai.EntityAI;
 import net.minecraft.server.v1_16_R3.*;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_16_R3.util.CraftChatMessage;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class NMSEntityInstanceImpl
         implements NMSEntityInstance {
+
+    private EntityAI entityAI;
 
     @Override
     public abstract Entity getNMSEntity();
@@ -109,5 +113,21 @@ public abstract class NMSEntityInstanceImpl
         DataWatcher dataWatcher = getNMSEntity().getDataWatcher();
         DataWatcherObject<Byte> obj = DataWatcherRegistry.a.a(0);
         dataWatcher.set(obj, (byte) ((b) ? (dataWatcher.get(obj) | mask) : (dataWatcher.get(obj) & ~mask)));
+    }
+
+    @Override
+    public void setAI(@Nullable EntityAI entityAI) {
+        this.entityAI = entityAI;
+    }
+
+    @Nullable
+    @Override
+    public EntityAI getAI() {
+        return entityAI;
+    }
+
+    @Override
+    public void move(double x, double y, double z) {
+        getNMSEntity().move(EnumMoveType.SELF, new Vec3D(x, y, z));
     }
 }

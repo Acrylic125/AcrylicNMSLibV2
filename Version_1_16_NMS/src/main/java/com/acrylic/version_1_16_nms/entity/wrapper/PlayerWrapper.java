@@ -6,6 +6,7 @@ import com.acrylic.universalnms.entity.wrapper.NMSLivingEntityWrapper;
 import com.acrylic.version_1_16_nms.NMSUtils;
 import com.acrylic.version_1_16_nms.entity.NMSPlayerInstanceImpl;
 import com.mojang.authlib.GameProfile;
+import net.citizensnpcs.npc.ai.AStarNavigationStrategy;
 import net.minecraft.server.v1_16_R3.*;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;

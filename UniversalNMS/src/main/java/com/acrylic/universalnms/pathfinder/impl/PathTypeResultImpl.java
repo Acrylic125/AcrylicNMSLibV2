@@ -17,7 +17,7 @@ public class PathTypeResultImpl implements PathTypeResult {
     private PathType pathType;
 
     public PathTypeResultImpl(@NotNull Pathfinder pathfinder, float x, float y, float z) {
-        this.pathReader = pathfinder.getPathWorldBlockReader();
+        this.pathReader = pathfinder.getPathReader();
         this.x = x;
         this.y = y;
         this.z = z;

@@ -2,13 +2,17 @@ package com.acrylic.version_1_8_nms.entity;
 
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universalnms.entity.NMSEntityInstance;
+import com.acrylic.universalnms.entityai.EntityAI;
 import net.minecraft.server.v1_8_R3.DataWatcher;
 import net.minecraft.server.v1_8_R3.Entity;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class NMSEntityInstanceImpl
         implements NMSEntityInstance {
+
+    private EntityAI entityAI;
 
     @Override
     public abstract Entity getNMSEntity();
@@ -108,5 +112,21 @@ public abstract class NMSEntityInstanceImpl
         DataWatcher dataWatcher = getNMSEntity().getDataWatcher();
         int fullMask = dataWatcher.getByte(0);
         dataWatcher.watch(0, (byte) ((b) ? (fullMask | mask) : (fullMask & ~mask)));
+    }
+
+    @Override
+    public void setAI(@Nullable EntityAI entityAI) {
+        this.entityAI = entityAI;
+    }
+
+    @Nullable
+    @Override
+    public EntityAI getAI() {
+        return entityAI;
+    }
+
+    @Override
+    public void move(double x, double y, double z) {
+        getNMSEntity().move(x, y, z);
     }
 }

@@ -137,12 +137,6 @@ public class NMSArmorStandInstanceImpl
         setLeftLegPose(new Vector3f((float) Math.toDegrees(eulerAngle.getX()), (float) Math.toDegrees(eulerAngle.getY()), (float) Math.toDegrees(eulerAngle.getZ())));
     }
 
-    @Nullable
-    @Override
-    public EntityAI getAI() {
-        return null;
-    }
-
     @Override
     public LivingEntityPacketHandlerImpl getPacketHandler() {
         return entityPacketHandler;

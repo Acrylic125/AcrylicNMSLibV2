@@ -40,12 +40,6 @@ public class NMSGiantInstanceImpl
         return (Giant) giant.getBukkitEntity();
     }
 
-    @Nullable
-    @Override
-    public EntityAI getAI() {
-        return null;
-    }
-
     @Override
     public LivingEntityPacketHandler getPacketHandler() {
         return entityPacketHandler;

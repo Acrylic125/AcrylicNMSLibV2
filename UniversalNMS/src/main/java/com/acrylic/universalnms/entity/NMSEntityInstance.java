@@ -8,6 +8,7 @@ import com.acrylic.universalnms.packets.types.EntityDestroyPacket;
 import com.acrylic.universalnms.packets.types.TeleportPacket;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,6 +33,8 @@ public interface NMSEntityInstance extends EntityInstance {
     @Nullable
     EntityAI getAI();
 
+    void setAI(@Nullable EntityAI entityAI);
+
     EntityPacketHandler getPacketHandler();
 
     boolean isNoClip();
@@ -53,6 +56,9 @@ public interface NMSEntityInstance extends EntityInstance {
     void setYawAndPitch(float yaw, float pitch);
 
     default void tick() {
+        EntityAI ai = getAI();
+        if (ai != null)
+            ai.tick();
         if (getTicksLived() % 20 == 0) {
             getPacketHandler().getRenderer().doChecks();
         }
@@ -82,6 +88,12 @@ public interface NMSEntityInstance extends EntityInstance {
 
     default void setOnFire(boolean b) {
         setAnimationDataWatcher(0x01, b);
+    }
+
+    void move(double x, double y, double z);
+
+    default void move(Vector vector) {
+        move(vector.getX(), vector.getY(), vector.getZ());
     }
 
 }

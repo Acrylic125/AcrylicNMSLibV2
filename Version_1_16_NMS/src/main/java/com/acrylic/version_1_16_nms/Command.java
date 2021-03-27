@@ -8,7 +8,12 @@ import com.acrylic.universal.geometry.circular.Spiral;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universalnms.NMSLib;
+import com.acrylic.universalnms.entityai.EntityAI;
+import com.acrylic.universalnms.entityai.PathSeekerAIImpl;
+import com.acrylic.universalnms.entityai.TargettableAIImpl;
+import com.acrylic.universalnms.entityai.strategies.PathfinderStrategyImpl;
 import com.acrylic.universalnms.particles.ParticleBuilder;
+import com.acrylic.universalnms.pathfinder.PathfinderGenerator;
 import com.acrylic.universalnms.renderer.EntityPlayerCheckableRenderer;
 import com.acrylic.universalnms.skins.Skin;
 import com.acrylic.version_1_16_nms.entity.NMSArmorStandInstanceImpl;
@@ -17,6 +22,9 @@ import com.acrylic.version_1_16_nms.packets.SinglePacketWrapperImpl;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.nms.v1_16_R3.entity.EntityHumanNPC;
+import net.citizensnpcs.npc.CitizensNPC;
 import net.minecraft.server.v1_16_R3.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -46,6 +54,10 @@ public class Command {
                     NMSPlayerInstanceImpl armorStandInstance = new NMSPlayerInstanceImpl(player.getLocation(), null, "Trump");
                     armorStandInstance.getPacketHandler().setRenderer(new EntityPlayerCheckableRenderer(armorStandInstance.getBukkitEntity()));
                     //armorStandInstance.asAnimator();
+                    TargettableAIImpl entityAI = new TargettableAIImpl(armorStandInstance);
+                    entityAI.setPathfinderStrategy(new PathfinderStrategyImpl(entityAI, PathfinderGenerator.JPS_PATHFINDER_GENERATOR));
+                    entityAI.setTarget(player);
+                    armorStandInstance.setAI(entityAI);
                     armorStandInstance.setSkin("Acrylic123");
                     armorStandInstance.setEquipment(new EntityEquipmentBuilderImpl().
                             setItemInHand(ItemBuilder.of(Material.DIAMOND_PICKAXE))
@@ -54,10 +66,6 @@ public class Command {
                     Scheduler.sync().runRepeatingTask(1, 1)
                             .plugin(NMSLib.getPlugin())
                             .handleThenBuild(armorStandInstance::tick);
-                    Scheduler.sync().runDelayedTask(40)
-                            .handleThenBuild(() -> {
-                                armorStandInstance.setVelocity(3, 2, 3);
-                            });
 
                 }).arguments(
                         CommandBuilder.create("p")

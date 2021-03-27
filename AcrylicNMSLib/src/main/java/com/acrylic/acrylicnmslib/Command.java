@@ -3,12 +3,14 @@ package com.acrylic.acrylicnmslib;
 import com.acrylic.universal.command.CommandBuilder;
 import com.acrylic.universal.command.CommandExecuted;
 import com.acrylic.universal.text.ChatUtils;
+import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.particles.ParticleBuilder;
 import com.acrylic.universalnms.pathfinder.Pathfinder;
 import com.acrylic.universalnms.pathfinder.PathfinderGenerator;
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -31,6 +33,8 @@ public class Command {
         ).register(NMSLib.getPlugin());
     }
 
+    public static int counter = 0;
+
     public static CommandBuilder getTestCommand() {
         return CommandBuilder.create("test")
                 .aliases("test2", "test3")
@@ -38,7 +42,8 @@ public class Command {
                 .filter(CommandExecuted::isExecutedByPlayer)
                 .handle(commandExecuted -> {
                     Player player = (Player) commandExecuted.getSender();
-                    Pathfinder pathfinder =  PathfinderGenerator.JPS_PATHFINDER_GENERATOR.generatePathfinder(player.getLocation(), player.getLocation().add(10, 3, 10));
+
+                    Pathfinder pathfinder =  PathfinderGenerator.A_STAR_PATHFINDER_GENERATOR.generatePathfinder(player.getLocation(), player.getLocation().add(10, 0, 10));
                     pathfinder.pathfind();
                     pathfinder.generatePath(1).iterator().forEachRemaining(location -> {
                         if (location == null)

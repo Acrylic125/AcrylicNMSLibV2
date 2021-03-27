@@ -4,17 +4,22 @@ import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.entity.NMSEntityInstance;
 import com.acrylic.universalnms.entityai.PathSeekerAI;
+import com.acrylic.universalnms.pathfinder.Path;
 import com.acrylic.universalnms.pathfinder.Pathfinder;
 import com.acrylic.universalnms.pathfinder.PathfinderGenerator;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class PathfinderStrategyImpl implements PathfinderStrategy {
 
+    private static final ExecutorService executorService = Executors.newFixedThreadPool(32);
+
     private Iterator<Location> focussedPath;
-    private float speed = 0.2f;
+    private float speed = 1f;
     private long
             traverseTimeToStop = 0,
             maximumTimeToTraverse = 10000;
@@ -33,14 +38,17 @@ public class PathfinderStrategyImpl implements PathfinderStrategy {
         if (targetLocation == null) {
             state = PathfindingState.IDLE;
         } else {
-            if (focussedPath == null || (maximumTimeToTraverse != -1 && traverseTimeToStop < System.currentTimeMillis())) {
+            if (focussedPath == null || state == PathfindingState.IDLE) {
                 state = PathfindingState.SEARCHING;
-                Scheduler.async().runTask()
+                Scheduler.async().runTask(executorService)
                         .plugin(NMSLib.getPlugin())
                         .handleThenBuild(() -> {
                             Location iLocation = pathSeekerAI.getInstance().getBukkitEntity().getLocation();
                             Pathfinder pathfinder = pathfinderGenerator.generatePathfinder(iLocation, targetLocation);
-                            focussedPath = pathfinder.generatePath(1 / speed).iterator();
+                            pathfinder.pathfind();
+
+                            Path path = pathfinder.generatePath(1 / speed);
+                            focussedPath = path.iterator();
                             state = PathfindingState.TRAVERSING;
                             traverseTimeToStop = System.currentTimeMillis() + maximumTimeToTraverse;
                         });
@@ -51,13 +59,17 @@ public class PathfinderStrategyImpl implements PathfinderStrategy {
                             iLocation = nmsEntityInstance.getBukkitEntity().getLocation();
                     if (next == null)
                         return;
-                    double x = iLocation.getX() - next.getX(),
-                            y = iLocation.getY() - next.getY(),
-                            z = iLocation.getZ() - next.getZ();
+                    double x = next.getX() - iLocation.getX(),
+                            y = next.getY() - iLocation.getY(),
+                            z = next.getZ() - iLocation.getZ();
+                    nmsEntityInstance.move(x, y, z);
+                    if (y == 0)
+                        y = -0.1f;
                     nmsEntityInstance.setYawAndPitch((float) Math.toDegrees(Math.atan2(z, x) - 90f), (float) ((1f / Math.sqrt(x * x + y * y + z * z)) * y * -90f));
-                    nmsEntityInstance.setVelocity(x, y, z);
                 } else {
+                    focussedPath = null;
                     state = PathfindingState.IDLE;
+                    //Bukkit.broadcastMessage("Done traversing.");
                 }
             }
         }

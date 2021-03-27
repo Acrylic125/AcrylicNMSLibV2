@@ -1,5 +1,6 @@
 package com.acrylic.universalnms.pathfinder;
 
+import com.acrylic.universalnms.pathfinder.astar.AStarPathfinderGenerator;
 import com.acrylic.universalnms.pathfinder.jps.JPSPathfinderGenerator;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
@@ -15,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 public interface PathfinderGenerator {
 
     JPSPathfinderGenerator JPS_PATHFINDER_GENERATOR = new JPSPathfinderGenerator();
+    AStarPathfinderGenerator A_STAR_PATHFINDER_GENERATOR = new AStarPathfinderGenerator();
 
     double getMaximumSearchRange();
 
