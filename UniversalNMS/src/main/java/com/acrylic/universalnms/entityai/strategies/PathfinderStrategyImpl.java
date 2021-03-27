@@ -7,6 +7,7 @@ import com.acrylic.universalnms.entityai.PathSeekerAI;
 import com.acrylic.universalnms.pathfinder.Path;
 import com.acrylic.universalnms.pathfinder.Pathfinder;
 import com.acrylic.universalnms.pathfinder.PathfinderGenerator;
+import math.ProbabilityKt;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,6 +25,7 @@ public class PathfinderStrategyImpl implements PathfinderStrategy {
     private long
             traverseTimeToStop = 0,
             maximumTimeToTraverse = 10000;
+    private float minEndGoalVariation = 0, maxEndGoalVariation = 1.25f;
     private final PathSeekerAI pathSeekerAI;
     private volatile PathfindingState state = PathfindingState.IDLE;
     private final PathfinderGenerator pathfinderGenerator;
@@ -45,7 +47,8 @@ public class PathfinderStrategyImpl implements PathfinderStrategy {
                         .plugin(NMSLib.getPlugin())
                         .handleThenBuild(() -> {
                             Location iLocation = pathSeekerAI.getInstance().getBukkitEntity().getLocation();
-                            Pathfinder pathfinder = pathfinderGenerator.generatePathfinder(iLocation, targetLocation);
+                            Pathfinder pathfinder = pathfinderGenerator.generatePathfinder(iLocation, targetLocation.clone()
+                                    .add(ProbabilityKt.getPositiveNegativeRandom(minEndGoalVariation, maxEndGoalVariation), 0, ProbabilityKt.getPositiveNegativeRandom(minEndGoalVariation, maxEndGoalVariation)));
                             pathfinder.pathfind();
 
                             Path path = pathfinder.generatePath(1 / speed);
@@ -118,5 +121,21 @@ public class PathfinderStrategyImpl implements PathfinderStrategy {
     @Override
     public void setLocked(boolean locked) {
         this.locked = locked;
+    }
+
+    public float getMinEndGoalVariation() {
+        return minEndGoalVariation;
+    }
+
+    public void setMinEndGoalVariation(float minEndGoalVariation) {
+        this.minEndGoalVariation = minEndGoalVariation;
+    }
+
+    public float getMaxEndGoalVariation() {
+        return maxEndGoalVariation;
+    }
+
+    public void setMaxEndGoalVariation(float maxEndGoalVariation) {
+        this.maxEndGoalVariation = maxEndGoalVariation;
     }
 }

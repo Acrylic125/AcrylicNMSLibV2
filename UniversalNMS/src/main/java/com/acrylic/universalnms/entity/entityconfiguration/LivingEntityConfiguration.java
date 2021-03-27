@@ -4,7 +4,11 @@ import com.acrylic.universal.entity.EntityInstance;
 
 public interface LivingEntityConfiguration extends EntityConfiguration {
 
-    LivingEntityConfiguration DEFAULT_LIVING_ENTITY = new LivingEntityConfigurationImpl();
+    LivingEntityConfiguration
+            DEFAULT_LIVING_ENTITY = new LivingEntityConfigurationImpl(),
+            PERSISTENT_LIVING_ENTITY = LivingEntityConfigurationImpl.livingBuilder()
+                    .silentAIIfNoOneIsRenderer(false)
+                    .build();
 
     /**
      *

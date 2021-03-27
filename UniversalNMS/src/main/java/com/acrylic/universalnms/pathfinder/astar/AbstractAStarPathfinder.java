@@ -1,7 +1,11 @@
 package com.acrylic.universalnms.pathfinder.astar;
 
 import com.acrylic.universalnms.pathfinder.Pathfinder;
+import com.acrylic.universalnms.pathfinder.impl.PathImpl;
+import com.acrylic.universalnms.pathfinder.jps.JPSBaseNode;
+import math.ProbabilityKt;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -109,4 +113,35 @@ public abstract class AbstractAStarPathfinder<N extends AStarPathNode>
 
     @Override
     public abstract AStarPathNode getEndNode();
+
+    protected abstract N getFinalNode();
+
+    /**
+     * Reverses the last node and maps it into a Location array.
+     *
+     * @return The path based on the last node.
+     */
+    @NotNull
+    @Override
+    @SuppressWarnings("unchecked")
+    public PathImpl generatePath(float pointsPerBlock) {
+        //If there is no last node, returns a 0 path.
+        N finalNode = getFinalNode();
+        if (finalNode == null)
+            return new PathImpl(this, new Location[0], pointsPerBlock);
+        int d = finalNode.getDepth() + 1;
+        Location[] points = new Location[d];
+        N cursor = finalNode;
+        for (int i = 0; i < d; i++) {
+            //This should never happen but if it does, it will throw an error.
+            if (cursor == null)
+                throw new IllegalStateException("Something went terribly wrong. The cursor node is null while having a for loop index of " + i + ". This should never happen?");
+            Location location = cursor.getLocation().clone();
+            //location.setX(location.getX() + ProbabilityKt.getPositiveNegativeRandom(minVariability, maxVariability));
+            //location.setZ(location.getZ() + ProbabilityKt.getPositiveNegativeRandom(minVariability, maxVariability));
+            points[d - i - 1] = location;
+            cursor = (N) cursor.getParent(); //Cast
+        }
+        return new PathImpl(this, points, pointsPerBlock);
+    }
 }

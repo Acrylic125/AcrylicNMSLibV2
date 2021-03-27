@@ -3,6 +3,7 @@ package com.acrylic.universalnms.pathfinder.astar;
 import com.acrylic.universalnms.pathfinder.*;
 import com.acrylic.universalnms.pathfinder.impl.PathImpl;
 import com.acrylic.universalnms.pathfinder.impl.PathReaderImpl;
+import math.ProbabilityKt;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
@@ -109,25 +110,6 @@ public class AStarPathfinder extends AbstractAStarPathfinder<AStarPathNodeImpl> 
         return completed;
     }
 
-    @NotNull
-    @Override
-    public Path generatePath(float pointsPerBlock) {
-        //If there is no last node, returns a 0 path.
-        if (finalNode == null)
-            return new PathImpl(this, new Location[0], pointsPerBlock);
-        int d = finalNode.getDepth() + 1;
-        Location[] points = new Location[d];
-        AStarPathNodeImpl cursor = finalNode;
-        for (int i = 0; i < d; i++) {
-            //This should never happen but if it does, it will throw an error.
-            if (cursor == null)
-                throw new IllegalStateException("Something went terribly wrong. The cursor node is null while having a for loop index of " + i + ". This should never happen?");
-            points[d - i - 1] = cursor.getLocation();
-            cursor = cursor.getParent();
-        }
-        return new PathImpl(this, points, pointsPerBlock);
-    }
-
     @Override
     public double getDistanceFromStartToEnd() {
         return distanceFromAndTo;
@@ -141,5 +123,10 @@ public class AStarPathfinder extends AbstractAStarPathfinder<AStarPathNodeImpl> 
     @Override
     public AStarPathNodeImpl getEndNode() {
         return endNode;
+    }
+
+    @Override
+    protected AStarPathNodeImpl getFinalNode() {
+        return finalNode;
     }
 }

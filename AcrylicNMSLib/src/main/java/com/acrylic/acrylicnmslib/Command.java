@@ -3,15 +3,11 @@ package com.acrylic.acrylicnmslib;
 import com.acrylic.universal.command.CommandBuilder;
 import com.acrylic.universal.command.CommandExecuted;
 import com.acrylic.universal.text.ChatUtils;
-import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.particles.ParticleBuilder;
 import com.acrylic.universalnms.pathfinder.Pathfinder;
 import com.acrylic.universalnms.pathfinder.PathfinderGenerator;
 import com.comphenix.protocol.wrappers.EnumWrappers;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

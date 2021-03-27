@@ -11,6 +11,8 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface AStarPathNode extends PathNode {
 
+    int getDepth();
+
     @NotNull
     @Override
     AbstractAStarPathfinder<?> getPathfinder();

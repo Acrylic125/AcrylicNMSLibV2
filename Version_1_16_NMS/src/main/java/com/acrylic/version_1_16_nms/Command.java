@@ -8,6 +8,7 @@ import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.entity.NMSEntityInstance;
 import com.acrylic.universalnms.entity.entityconfiguration.EntityConfiguration;
+import com.acrylic.universalnms.entity.entityconfiguration.LivingEntityConfiguration;
 import com.acrylic.universalnms.entityai.impl.TargettableAIImpl;
 import com.acrylic.universalnms.entityai.strategies.PathfinderStrategyImpl;
 import com.acrylic.universalnms.particles.ParticleBuilder;
@@ -49,7 +50,7 @@ public class Command {
                             setItemInHand(ItemBuilder.of(Material.DIAMOND_PICKAXE))
                     );
                     armorStandInstance.addToWorld();
-                    //armorStandInstance.setEntityConfiguration(EntityConfiguration.P);
+                    armorStandInstance.setEntityConfiguration(LivingEntityConfiguration.PERSISTENT_LIVING_ENTITY);
                     armorStandInstance.register();
 
                 }).arguments(

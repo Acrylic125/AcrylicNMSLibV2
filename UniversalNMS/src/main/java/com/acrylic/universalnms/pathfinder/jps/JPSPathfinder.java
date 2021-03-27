@@ -3,10 +3,12 @@ package com.acrylic.universalnms.pathfinder.jps;
 import com.acrylic.universalnms.pathfinder.PathType;
 import com.acrylic.universalnms.pathfinder.PathTypeResult;
 import com.acrylic.universalnms.pathfinder.PathReader;
+import com.acrylic.universalnms.pathfinder.astar.AStarPathNodeImpl;
 import com.acrylic.universalnms.pathfinder.impl.PathImpl;
 import com.acrylic.universalnms.pathfinder.PathNode;
 import com.acrylic.universalnms.pathfinder.astar.AbstractAStarPathfinder;
 import com.acrylic.universalnms.pathfinder.impl.PathReaderImpl;
+import math.ProbabilityKt;
 import org.bukkit.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -322,35 +324,13 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
         return completed;
     }
 
-    /**
-     * Reverses the last node and maps it into a Location array.
-     *
-     * @return The path based on the last node.
-     */
-    @NotNull
-    @Override
-    public PathImpl generatePath(float pointsPerBlock) {
-        //If there is no last node, returns a 0 path.
-        if (finalNode == null)
-            return new PathImpl(this, new Location[0], pointsPerBlock);
-        int d = finalNode.getDepth() + 1;
-        Location[] points = new Location[d];
-        JPSBaseNode cursor = finalNode;
-        for (int i = 0; i < d; i++) {
-            //This should never happen but if it does, it will throw an error.
-            if (cursor == null)
-                throw new IllegalStateException("Something went terribly wrong. The cursor node is null while having a for loop index of " + i + ". This should never happen?");
-            points[d - i - 1] = cursor.getLocation();
-//            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-//                onlinePlayer.sendBlockChange(points[d - i - 1].clone().add(0, 3, 0), Bukkit.createBlockData(Material.DIAMOND_BLOCK));
-//            }
-            cursor = cursor.getParent();
-        }
-        return new PathImpl(this, points, pointsPerBlock);
-    }
-
     @Override
     public double getDistanceFromStartToEnd() {
         return distanceFromAndTo;
+    }
+
+    @Override
+    protected JPSBaseNode getFinalNode() {
+        return finalNode;
     }
 }
