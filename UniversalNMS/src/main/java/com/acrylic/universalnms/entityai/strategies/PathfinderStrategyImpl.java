@@ -19,7 +19,7 @@ public class PathfinderStrategyImpl implements PathfinderStrategy {
     private static final ExecutorService executorService = Executors.newFixedThreadPool(32);
 
     private Iterator<Location> focussedPath;
-    private float speed = 1f;
+    private float speed = 0.2f;
     private long
             traverseTimeToStop = 0,
             maximumTimeToTraverse = 10000;
@@ -63,8 +63,7 @@ public class PathfinderStrategyImpl implements PathfinderStrategy {
                             y = next.getY() - iLocation.getY(),
                             z = next.getZ() - iLocation.getZ();
                     nmsEntityInstance.move(x, y, z);
-                    if (y == 0)
-                        y = -0.1f;
+                    y += 1;
                     nmsEntityInstance.setYawAndPitch((float) Math.toDegrees(Math.atan2(z, x) - 90f), (float) ((1f / Math.sqrt(x * x + y * y + z * z)) * y * -90f));
                 } else {
                     focussedPath = null;

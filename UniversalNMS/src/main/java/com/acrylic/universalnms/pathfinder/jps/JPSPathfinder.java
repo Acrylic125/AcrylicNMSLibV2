@@ -74,10 +74,6 @@ public class JPSPathfinder extends AbstractAStarPathfinder<JPSBaseNode> {
         if (searched)
             throw new IllegalStateException("The pathfinder has already started a searched.");
         searched = true;
-        PathTypeResult startResult = pathReader.getPathTypeResultAt(endNode.getX(), endNode.getY(), endNode.getZ()),
-                endResult = pathReader.getPathTypeResultAt(startNode.getX(), startNode.getY(), startNode.getZ());
-        if (!startResult.isPassable() || !endResult.isPassable())
-            return;
         addNodeToClosed(startNode);
         float sX = startNode.getX(), sY = startNode.getY(), sZ = startNode.getZ();
         //Initial scans in all 4 orthogonal directions.

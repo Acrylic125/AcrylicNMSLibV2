@@ -58,6 +58,8 @@ public abstract class AbstractAStarPathfinder<N extends AStarPathNode>
         N cursor = null;
         double fCost = 0;
         for (N node : collection) {
+            if (node.equals(getStartNode()) || node.equals(getEndNode()))
+                continue;
             if (cursor == null) {
                 cursor = node;
                 fCost = node.getFCost();

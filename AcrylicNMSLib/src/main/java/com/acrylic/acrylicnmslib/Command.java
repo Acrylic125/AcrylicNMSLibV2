@@ -45,12 +45,12 @@ public class Command {
 
                     Pathfinder pathfinder =  PathfinderGenerator.A_STAR_PATHFINDER_GENERATOR.generatePathfinder(player.getLocation(), player.getLocation().add(10, 0, 10));
                     pathfinder.pathfind();
-                    pathfinder.generatePath(1).iterator().forEachRemaining(location -> {
+                    pathfinder.generatePath(5).iterator().forEachRemaining(location -> {
                         if (location == null)
                             return;
-                        player.sendBlockChange(location, Bukkit.createBlockData(Material.REDSTONE_BLOCK));
+                     //   player.sendBlockChange(location, Bukkit.createBlockData(Material.REDSTONE_BLOCK));
                         ParticleBuilder.builder(EnumWrappers.Particle.FLAME).amount(1).speed(0)
-                                .location(location)
+                                .location(location.add(0, 1, 0))
                                 .build().getSender().sendTo(player);
                     });
 //                    Location location = player.getLocation();

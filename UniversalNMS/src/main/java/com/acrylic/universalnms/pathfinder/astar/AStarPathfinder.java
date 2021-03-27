@@ -3,14 +3,8 @@ package com.acrylic.universalnms.pathfinder.astar;
 import com.acrylic.universalnms.pathfinder.*;
 import com.acrylic.universalnms.pathfinder.impl.PathImpl;
 import com.acrylic.universalnms.pathfinder.impl.PathReaderImpl;
-import com.acrylic.universalnms.pathfinder.jps.JPSBaseNode;
-import com.acrylic.universalnms.pathfinder.jps.JPSPathNode;
-import com.acrylic.universalnms.pathfinder.jps.JPSPathfinderGenerator;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class AStarPathfinder extends AbstractAStarPathfinder<AStarPathNodeImpl> {
@@ -56,58 +50,52 @@ public class AStarPathfinder extends AbstractAStarPathfinder<AStarPathNodeImpl> 
         if (searched)
             throw new IllegalStateException("The pathfinder has already started a searched.");
         searched = true;
-        boolean completeWithEndNode = false;
-        PathTypeResult startResult = pathReader.getPathTypeResultAt(startNode.getX(), startNode.getY(), startNode.getZ()),
-                endResult = pathReader.getPathTypeResultAt(endNode.getX(), endNode.getY(), endNode.getZ());
-        if (!startResult.isPassable() || !endResult.isPassable())
-            return;
+        boolean completeWithEndNode = false, hasStarted = false;
         addNodeToOpen(startNode);
         int i = 0;
         while (!completed && !getOpen().isEmpty() && i <= pathfinderGenerator.getMaximumClosestChecks()) {
             i++;
-            AStarPathNodeImpl currentNode = getCheapestNodeFromOpen();
+            AStarPathNodeImpl currentNode = (!hasStarted) ? startNode : getCheapestNodeFromOpen();
+            hasStarted = true;
             if (currentNode == null) {
-                Bukkit.broadcastMessage("None");
                 break;
             } else {
-                for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                    onlinePlayer.sendBlockChange(new Location(getWorld(), currentNode.getX(), currentNode.getY() + 1, currentNode.getZ()), Bukkit.createBlockData(Material.GLASS));
-                }
                 removeNodeFromOpen(currentNode);
                 addNodeToClosed(currentNode);
                 if (currentNode.equalsWithEstimatedBounds(endNode.getX(), endNode.getZ(), 1)) {
                     completeWithEndNode = true;
+                    endNode.setDepth(currentNode.getDepth() + 1);
+                    endNode.setParent(currentNode);
                     finalNode = endNode;
                     break;
                 }
                 currentNode.iterateSuccessors((parent, x, y, z, fX, fZ) -> {
                     PathTypeResult pathTypeResult = pathReader.getPathTypeResultAt(x, y, z);
                     if (pathTypeResult.isPassable()) {
-                        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                            onlinePlayer.sendBlockChange(new Location(getWorld(), x, pathTypeResult.getResultY(), z), Bukkit.createBlockData(Material.EMERALD_BLOCK));
-                        }
+//                        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+//                            onlinePlayer.sendBlockChange(new Location(getWorld(), x, y + 1, z), Bukkit.createBlockData(Material.YELLOW_STAINED_GLASS));
+//                        }
                         AStarPathNodeImpl aStarPathNode = new AStarPathNodeImpl(this, parent, pathTypeResult.getResultX(), pathTypeResult.getResultY(), pathTypeResult.getResultZ(), fX, fZ),
                                 similar = getSimilarNodeFromOpen(aStarPathNode);
                         if (similar != null) {
-                            if (aStarPathNode.getGCost() <= similar.getGCost())
+                            if (aStarPathNode.getGCost() <= similar.getGCost()) {
+                                aStarPathNode.setDepth(parent.getDepth() + 1);
                                 addNodeToOpen(aStarPathNode);
+                            }
                         }
                         else if (!isNodeInClosed(aStarPathNode)) {
+                            aStarPathNode.setDepth(parent.getDepth() + 1);
                             addNodeToOpen(aStarPathNode);
                         }
+                        return true;
                     }
+                    return false;
                 });
             }
         }
-        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            onlinePlayer.sendBlockChange(new Location(getWorld(), endNode.getX(), endNode.getY() + 2, endNode.getZ()), Bukkit.createBlockData(Material.GOLD_BLOCK));
-        }
-        for (AStarPathNodeImpl value : getOpen().values()) {
-            Bukkit.broadcastMessage(value.getX() + " " + value.getY() + " " + value.getZ() + " " + value.getFCost() + " " + value.getGCost() + " " + value.getHCost());
-        }
-        Bukkit.broadcastMessage("It " + i);
-        if (!completeWithEndNode)
+        if (!completeWithEndNode) {
             finalNode = getCheapestNodeFromOpenAndClosed();
+        }
         completed = true;
     }
 
@@ -135,9 +123,6 @@ public class AStarPathfinder extends AbstractAStarPathfinder<AStarPathNodeImpl> 
             if (cursor == null)
                 throw new IllegalStateException("Something went terribly wrong. The cursor node is null while having a for loop index of " + i + ". This should never happen?");
             points[d - i - 1] = cursor.getLocation();
-//            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-//                onlinePlayer.sendBlockChange(points[d - i - 1].clone().add(0, 3, 0), Bukkit.createBlockData(Material.DIAMOND_BLOCK));
-//            }
             cursor = cursor.getParent();
         }
         return new PathImpl(this, points, pointsPerBlock);

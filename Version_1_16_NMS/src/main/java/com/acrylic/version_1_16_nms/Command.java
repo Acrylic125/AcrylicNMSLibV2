@@ -55,7 +55,7 @@ public class Command {
                     armorStandInstance.getPacketHandler().setRenderer(new EntityPlayerCheckableRenderer(armorStandInstance.getBukkitEntity()));
                     //armorStandInstance.asAnimator();
                     TargettableAIImpl entityAI = new TargettableAIImpl(armorStandInstance);
-                    entityAI.setPathfinderStrategy(new PathfinderStrategyImpl(entityAI, PathfinderGenerator.JPS_PATHFINDER_GENERATOR));
+                    entityAI.setPathfinderStrategy(new PathfinderStrategyImpl(entityAI, PathfinderGenerator.A_STAR_PATHFINDER_GENERATOR));
                     entityAI.setTarget(player);
                     armorStandInstance.setAI(entityAI);
                     armorStandInstance.setSkin("Acrylic123");

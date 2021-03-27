@@ -1,6 +1,7 @@
 package com.acrylic.universalnms.pathfinder.astar;
 
 import com.acrylic.universalnms.pathfinder.PathNode;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -32,7 +33,7 @@ public class AStarPathNodeImpl implements AStarPathNode {
     private final int facingX, facingZ;
     //The depth of the node is how layered this node is in base on it's parent(s).
     //The depth of the first node (start) is 0.
-    private final int depth;
+    private int depth;
 
     protected AStarPathNodeImpl(AStarPathfinder pathfinder, @Nullable AStarPathNodeImpl parent, float x, float y, float z, double gCost, double hCost, int depth) {
         this.pathfinder = pathfinder;
@@ -55,7 +56,7 @@ public class AStarPathNodeImpl implements AStarPathNode {
         this.z = z;
         if (parent != null) {
             this.depth = parent.depth + 1;
-            this.gCost = 0;//parent.getGCost() + PathNode.calculateDistance2DSquared(this, parent);
+            this.gCost = parent.getGCost() + PathNode.calculateDistance2DSquared(this, parent);
         } else {
             this.depth = 0;
             this.gCost = 0;
@@ -72,52 +73,53 @@ public class AStarPathNodeImpl implements AStarPathNode {
     public void iterateSuccessors(PathNodeAction action) {
         boolean shouldCheckAllNeighbours = isFacingZero(),
                 isDiagonal = (facingX != 0 && facingZ != 0);
-        action.run(this, x + 1, y, z, 0, 0);
-        action.run(this, x - 1, y, z, 0, 0);
-        action.run(this, x + 1, y, z + 1, 0, 0);
-        action.run(this, x - 1, y, z - 1, 0, 0);
-        action.run(this, x + 1, y, z - 1, 0, 0);
-        action.run(this, x - 1, y, z + 1, 0, 0);
-        action.run(this, x, y, z + 1, 0, 0);
-        action.run(this, x, y, z - 1, 0, 0);
-
-//        if (shouldCheckAllNeighbours || isDiagonal) {
-//            boolean posX = facingX == 1, posZ = facingZ == 1;
-//            float nX = x + facingX, nZ = z + facingZ;
-//            if (shouldCheckAllNeighbours || (posX && posZ)) {
-//                action.run(this, nX, y, nZ - 1, 0, -1);
-//                action.run(this, nX, y, nZ, facingX, facingZ);
-//                action.run(this, nX - 1, y, nZ, -1, 0);
-//            }
-//            if (shouldCheckAllNeighbours || (posX && !posZ)) {
-//                action.run(this, nX - 1, y, nZ, -1, 0);
-//                action.run(this, nX, y, nZ, facingX, facingZ);
-//                action.run(this, nX, y, nZ + 1, 0, 1);
-//            }
-//            if (shouldCheckAllNeighbours || (!posX && posZ)) {
-//                action.run(this, nX + 1, y, nZ, 1, 0);
-//                action.run(this, nX, y, nZ, facingX, facingZ);
-//                action.run(this, nX, y, nZ - 1, 0, -1);
-//            }
-//            if (shouldCheckAllNeighbours || (!posX && !posZ)) {
-//                action.run(this, nX + 1, y, nZ, 1, 0);
-//                action.run(this, nX, y, nZ, facingX, facingZ);
-//                action.run(this, nX, y, nZ + 1, 0, 1);
-//            }
-//        }
-//        if (shouldCheckAllNeighbours || !isDiagonal) {
-//            if (facingX != 0) {
-//                float nX = x + facingX;
-//                action.run(this, nX, y, z + 1, facingX, 1);
-//                action.run(this, nX, y, z, facingX, 0);
-//                action.run(this, nX, y, z - 1, facingX, -1);
-//            } else if (facingZ != 0) {
-//                float nZ = x + facingZ;
-//                action.run(this, x + 1, y, nZ, 1, facingZ);
-//                action.run(this, x, y, nZ, 0, facingZ);
-//                action.run(this, x - 1, y, nZ, -1, facingZ);
-//            }
-//        }
+        if (shouldCheckAllNeighbours) {
+            action.runAndIsPassable(this, x + 1, y, z, 0, 0);
+            action.runAndIsPassable(this, x - 1, y, z, 0, 0);
+            action.runAndIsPassable(this, x + 1, y, z + 1, 0, 0);
+            action.runAndIsPassable(this, x - 1, y, z - 1, 0, 0);
+            action.runAndIsPassable(this, x + 1, y, z - 1, 0, 0);
+            action.runAndIsPassable(this, x - 1, y, z + 1, 0, 0);
+            action.runAndIsPassable(this, x, y, z + 1, 0, 0);
+            action.runAndIsPassable(this, x, y, z - 1, 0, 0);
+        } else {
+            if (isDiagonal) {
+                boolean posX = facingX == 1, posZ = facingZ == 1;
+                float nX = x + facingX, nZ = z + facingZ;
+                if ((posX && posZ)) {
+                    if (action.runAndIsPassable(this, nX - 1, y, nZ, -1, 0) ||
+                            action.runAndIsPassable(this, nX, y, nZ - 1, 0, -1))
+                        action.runAndIsPassable(this, nX, y, nZ, facingX, facingZ);
+                }
+                if ((posX && !posZ)) {
+                    if (action.runAndIsPassable(this, nX, y, nZ + 1, 0, 1) ||
+                            action.runAndIsPassable(this, nX - 1, y, nZ, -1, 0))
+                        action.runAndIsPassable(this, nX, y, nZ, facingX, facingZ);
+                }
+                if ((!posX && posZ)) {
+                    if (action.runAndIsPassable(this, nX, y, nZ - 1, 0, -1) ||
+                            action.runAndIsPassable(this, nX + 1, y, nZ, 1, 0))
+                        action.runAndIsPassable(this, nX, y, nZ, facingX, facingZ);
+                }
+                if ((!posX && !posZ)) {
+                    if (action.runAndIsPassable(this, nX + 1, y, nZ, 1, 0) ||
+                            action.runAndIsPassable(this, nX, y, nZ + 1, 0, 1))
+                        action.runAndIsPassable(this, nX, y, nZ, facingX, facingZ);
+                }
+            } else {
+                if (facingX != 0) {
+                    float nX = x + facingX;
+                    action.runAndIsPassable(this, nX, y, z + 1, facingX, 1);
+                    action.runAndIsPassable(this, nX, y, z, facingX, 0);
+                    action.runAndIsPassable(this, nX, y, z - 1, facingX, -1);
+                } else if (facingZ != 0) {
+                    float nZ = x + facingZ;
+                    action.runAndIsPassable(this, x + 1, y, nZ, 1, facingZ);
+                    action.runAndIsPassable(this, x, y, nZ, 0, facingZ);
+                    action.runAndIsPassable(this, x - 1, y, nZ, -1, facingZ);
+                }
+            }
+        }
     }
 
     public int getFacingX() {
@@ -126,6 +128,10 @@ public class AStarPathNodeImpl implements AStarPathNode {
 
     public int getFacingZ() {
         return facingZ;
+    }
+
+    public void setParent(AStarPathNodeImpl parent) {
+        this.parent = parent;
     }
 
     @Nullable
@@ -152,6 +158,10 @@ public class AStarPathNodeImpl implements AStarPathNode {
     @Override
     public float getZ() {
         return z;
+    }
+
+    public void setDepth(int depth) {
+        this.depth = depth;
     }
 
     public int getDepth() {
@@ -223,7 +233,7 @@ public class AStarPathNodeImpl implements AStarPathNode {
 
     public interface PathNodeAction {
 
-        void run(AStarPathNodeImpl parent, float x, float y, float z, int facingX, int facingZ);
+        boolean runAndIsPassable(AStarPathNodeImpl parent, float x, float y, float z, int facingX, int facingZ);
 
     }
 

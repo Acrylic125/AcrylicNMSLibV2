@@ -3,6 +3,7 @@ package com.acrylic.universalnms.pathfinder.impl;
 import com.acrylic.universalnms.pathfinder.Path;
 import com.acrylic.universalnms.pathfinder.PathReader;
 import com.acrylic.universalnms.pathfinder.Pathfinder;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -56,18 +57,15 @@ public class PathImpl implements Path {
         PathReader pathReader = pathfinder.getPathReader();
         Collection<Location> map = new LinkedList<>();
         Location cursor = points[0];
-        Vector direction = new Vector(0, 0, 0),
-                normal = new Vector(0, 0, 0);
+        Vector direction = new Vector(0, 0, 0);
         for (int section = 1; section < points.length; section++) {
             Location endOfSection = points[section];
             double d = cursor.distance(endOfSection);
             if (d <= 0)
                 continue;
-            direction.setX((endOfSection.getX() - cursor.getX()) / d)
-                    .setZ((endOfSection.getZ() - cursor.getZ()) / d);
-            normal.setX(direction.getX() / d)
-                    .setZ(direction.getZ() / d);
             int endSectionIndex = (int) Math.ceil(d * pointsPerBlocks);
+            direction.setX((endOfSection.getX() - cursor.getX()) / endSectionIndex)
+                    .setZ((endOfSection.getZ() - cursor.getZ()) / endSectionIndex);
             for (int j = 0; j < endSectionIndex; j++) {
                 cursor.add(direction);
                 float y = pathReader.getPathTypeResultAt(cursor).getResultY();
