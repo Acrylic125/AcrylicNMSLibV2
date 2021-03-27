@@ -5,6 +5,7 @@ import com.acrylic.universal.Universal;
 import com.acrylic.universal.files.bukkit.Configuration;
 import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universalnms.NMSLib;
+import com.acrylic.universalnms.entity.manager.NMSEntities;
 import com.acrylic.universalnms.send.GlobalBatchPacketSender;
 import com.acrylic.version_1_8_nms.factory.NMSAbstractFactoryImpl;
 import com.acrylic.version_1_8_nms.nmsentityregistry.NMSEntityRegistryImpl;
@@ -19,6 +20,7 @@ public final class AcrylicNMSLib
     @Override
     public void onEnable() {
         NMSLib.setPlugin(this);
+        NMSLib.setNMSEntities(new NMSEntities(this));
         NMSLib.setNPCTablistRemover(
                 new GlobalBatchPacketSender<>(
                         Scheduler.sync().
@@ -39,6 +41,7 @@ public final class AcrylicNMSLib
         // Plugin shutdown logic
         Configuration config = new Configuration("skins.yml", this);
         config.load();
+        NMSLib.getNMSEntities().terminate();
         NMSLib.getSkinMap().saveTo(config);
         NMSLib.getNPCTablistRemover().terminate();
     }

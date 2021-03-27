@@ -2,6 +2,7 @@ package com.acrylic.universalnms;
 
 import com.acrylic.time.Time;
 import com.acrylic.universal.threads.Scheduler;
+import com.acrylic.universalnms.entity.manager.NMSEntities;
 import com.acrylic.universalnms.factory.NMSAbstractFactory;
 import com.acrylic.universalnms.factory.NMSEntityFactory;
 import com.acrylic.universalnms.factory.NMSUtilityFactory;
@@ -22,6 +23,7 @@ public class NMSLib {
     private static BlockAnalyzer blockAnalyzer;
     private static AbstractNMSEntityRegistry entityRegistry;
     private static SkinMap skinMap = new SkinMap();
+    private static NMSEntities nmsEntities;
     private static GlobalBatchPacketSender<PlayerInfoPacket> npcTablistRemover;
 
     public static void setEntityRegistry(@NotNull AbstractNMSEntityRegistry entityRegistry) {
@@ -90,5 +92,13 @@ public class NMSLib {
 
     public static GlobalBatchPacketSender<PlayerInfoPacket> getNPCTablistRemover() {
         return npcTablistRemover;
+    }
+
+    public static NMSEntities getNMSEntities() {
+        return nmsEntities;
+    }
+
+    public static void setNMSEntities(@NotNull NMSEntities nmsEntities) {
+        NMSLib.nmsEntities = nmsEntities;
     }
 }

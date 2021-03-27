@@ -63,8 +63,7 @@ public class PathfinderStrategyImpl implements PathfinderStrategy {
                             y = next.getY() - iLocation.getY(),
                             z = next.getZ() - iLocation.getZ();
                     nmsEntityInstance.move(x, y, z);
-                    y += 1;
-                    nmsEntityInstance.setYawAndPitch((float) Math.toDegrees(Math.atan2(z, x) - 90f), (float) ((1f / Math.sqrt(x * x + y * y + z * z)) * y * -90f));
+                    nmsEntityInstance.setYawAndPitch((float) Math.toDegrees(Math.atan2(z, x) - 90f), (float) ((-90f * y) / Math.sqrt(x * x + y * y + z * z)));
                 } else {
                     focussedPath = null;
                     state = PathfindingState.IDLE;
