@@ -1,6 +1,7 @@
-package com.acrylic.universalnms.entityai;
+package com.acrylic.universalnms.entityai.impl;
 
 import com.acrylic.universalnms.entity.NMSEntityInstance;
+import com.acrylic.universalnms.entityai.PathSeekerAI;
 import com.acrylic.universalnms.entityai.strategies.PathQuitterStrategy;
 import com.acrylic.universalnms.entityai.strategies.PathfinderStrategy;
 import org.bukkit.Location;
@@ -16,6 +17,7 @@ public class PathSeekerAIImpl implements PathSeekerAI {
     private PathfinderStrategy pathfinderStrategy;
     private PathQuitterStrategy pathQuitterStrategy;
     private Location targetLocation;
+    private boolean locked = false;
 
     public PathSeekerAIImpl(@NotNull NMSEntityInstance nmsEntityInstance) {
         this.nmsEntityInstance = nmsEntityInstance;
@@ -28,9 +30,9 @@ public class PathSeekerAIImpl implements PathSeekerAI {
 
     @Override
     public void tick() {
-        if (pathfinderStrategy != null)
+        if (pathfinderStrategy != null && !pathfinderStrategy.isLocked())
             pathfinderStrategy.tick();
-        if (pathfinderStrategy != null)
+        if (pathfinderStrategy != null && !pathfinderStrategy.isLocked())
             pathfinderStrategy.tick();
     }
 
@@ -63,5 +65,15 @@ public class PathSeekerAIImpl implements PathSeekerAI {
     @Override
     public PathQuitterStrategy getPathQuitterStrategy() {
         return pathQuitterStrategy;
+    }
+
+    @Override
+    public boolean isLocked() {
+        return locked;
+    }
+
+    @Override
+    public void setLocked(boolean locked) {
+        this.locked = locked;
     }
 }

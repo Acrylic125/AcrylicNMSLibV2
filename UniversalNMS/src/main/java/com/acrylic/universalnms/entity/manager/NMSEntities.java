@@ -43,8 +43,7 @@ public final class NMSEntities implements Terminable, Runnable {
     public NMSEntityRetriever<NMSEntityInstance> getEntityRetriever() {
         return entityRetriever;
     }
-
-
+    
     @Override
     public void terminate() {
         entityTicker.cancel();

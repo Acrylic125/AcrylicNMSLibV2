@@ -4,6 +4,8 @@ import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universalnms.entity.NMSEntityInstance;
 import com.acrylic.universalnms.entityai.EntityAI;
 import net.minecraft.server.v1_16_R3.*;
+import org.bukkit.craftbukkit.v1_16_R3.CraftServer;
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftCreeper;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_16_R3.util.CraftChatMessage;
 import org.bukkit.util.Vector;
@@ -62,7 +64,7 @@ public abstract class NMSEntityInstanceImpl
     @Override
     public void removeFromWorld() {
         Entity entity = getNMSEntity();
-      //  entity.getWorld().removeEntity(entity);
+        ((WorldServer) entity.world).removeEntity(entity);
     }
 
     @Override

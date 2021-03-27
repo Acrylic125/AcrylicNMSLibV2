@@ -1,6 +1,5 @@
 package com.acrylic.universalnms.entityai;
 
-import com.acrylic.universal.entity.EntityInstance;
 import com.acrylic.universalnms.entity.NMSEntityInstance;
 
 /**
@@ -11,10 +10,15 @@ import com.acrylic.universalnms.entity.NMSEntityInstance;
  * This allows for runtime manipulation of the entity AI.
  *
  */
-public interface EntityAI {
+public interface EntityAI extends Lockable {
 
     NMSEntityInstance getInstance();
 
+    /**
+     * This method will run all it's strategies
+     * and all it's intermediary functions.
+     */
     void tick();
+
 
 }

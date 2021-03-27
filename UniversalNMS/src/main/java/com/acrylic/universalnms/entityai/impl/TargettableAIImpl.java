@@ -1,13 +1,11 @@
-package com.acrylic.universalnms.entityai;
+package com.acrylic.universalnms.entityai.impl;
 
 import com.acrylic.universalnms.entity.NMSEntityInstance;
-import org.bukkit.Bukkit;
+import com.acrylic.universalnms.entityai.TargettableAI;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.lang.ref.WeakReference;
 
 public class TargettableAIImpl
         extends PathSeekerAIImpl
@@ -44,5 +42,13 @@ public class TargettableAIImpl
             setTargetLocation(null);
         }
         super.tick();
+    }
+
+    public float getDontPathfindRange() {
+        return dontPathfindRange;
+    }
+
+    public void setDontPathfindRange(float dontPathfindRange) {
+        this.dontPathfindRange = dontPathfindRange;
     }
 }

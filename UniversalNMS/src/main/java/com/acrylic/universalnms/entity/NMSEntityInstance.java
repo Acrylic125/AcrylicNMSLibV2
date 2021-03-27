@@ -14,6 +14,10 @@ import org.jetbrains.annotations.Nullable;
 
 public interface NMSEntityInstance extends EntityInstance {
 
+    int getInstanceTicks();
+
+    void setInstanceTicks(int ticks);
+
     Object getNMSEntity();
 
     NMSEntityWrapper getEntityWrapper();
@@ -57,21 +61,23 @@ public interface NMSEntityInstance extends EntityInstance {
 
     default void tick() {
         EntityAI ai = getAI();
+        int ticks = getInstanceTicks();
         if (ai != null)
             ai.tick();
-        if (getTicksLived() % 20 == 0) {
+        if (ticks % 20 == 0) {
             getPacketHandler().getRenderer().doChecks();
         }
+        setInstanceTicks(ticks + 1);
     }
 
     @Override
     default void teleport(@NotNull Location location) {
         Entity entity = getBukkitEntity();
         LocationUtils.teleport(entity, location);
-        EntityPacketHandler displayer = getPacketHandler();
-        TeleportPacket teleportPacket = displayer.getTeleportPacket();
+        EntityPacketHandler display = getPacketHandler();
+        TeleportPacket teleportPacket = display.getTeleportPacket();
         teleportPacket.apply(entity, location);
-        teleportPacket.getSender().sendToAllByRenderer(displayer.getRenderer());
+        teleportPacket.getSender().sendToAllByRenderer(display.getRenderer());
     }
 
     @Override

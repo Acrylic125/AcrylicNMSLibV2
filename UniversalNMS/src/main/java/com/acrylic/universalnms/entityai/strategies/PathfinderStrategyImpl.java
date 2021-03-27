@@ -20,6 +20,7 @@ public class PathfinderStrategyImpl implements PathfinderStrategy {
 
     private Iterator<Location> focussedPath;
     private float speed = 0.2f;
+    private boolean locked = false;
     private long
             traverseTimeToStop = 0,
             maximumTimeToTraverse = 10000;
@@ -109,4 +110,13 @@ public class PathfinderStrategyImpl implements PathfinderStrategy {
         return maximumTimeToTraverse;
     }
 
+    @Override
+    public boolean isLocked() {
+        return locked;
+    }
+
+    @Override
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
 }
