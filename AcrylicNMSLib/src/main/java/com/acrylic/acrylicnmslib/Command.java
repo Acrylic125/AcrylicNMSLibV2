@@ -67,7 +67,7 @@ public class Command {
                     entityAI.setAttackCooldown(400);
                     //entityAI.setPathQuitterStrategy(new SimplePathQuitterStrategyImpl(entityAI));
                     entityAI.setPathfinderStrategy(new PathfinderStrategyImpl(entityAI, PathfinderGenerator.A_STAR_PATHFINDER_GENERATOR));
-                    entityAI.setTargetSelectorStrategy(new GuardianTargetSelector(entityAI));
+                    entityAI.setTargetSelectorStrategy(new PlayerRandomTargetSelector(entityAI));
                     nmsPlayerInstance.setAI(entityAI);
                     nmsPlayerInstance.addToWorld();
                     nmsPlayerInstance.setEntityConfiguration(LivingEntityConfiguration.PERSISTENT_LIVING_ENTITY);

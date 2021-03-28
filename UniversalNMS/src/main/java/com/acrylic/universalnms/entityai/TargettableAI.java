@@ -25,7 +25,8 @@ public interface TargettableAI extends PathSeekerAI {
     }
 
     default boolean isAValidTarget(Entity target) {
-        if (target == null || !target.isValid() || target.isDead() || getInstance().getBukkitEntity().equals(target))
+        Entity instanceEntity = getInstance().getBukkitEntity();
+        if (target == null || !target.isValid() || target.isDead() || instanceEntity.equals(target) || !instanceEntity.getWorld().equals(target.getWorld()))
             return false;
         if (target instanceof Player) {
             Player player = (Player) target;

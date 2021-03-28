@@ -77,7 +77,8 @@ public interface NMSPlayerInstance
         entityPacketHandler.getAddPlayerInfoPacket().apply(PlayerInfoPacket.Info.ADD_PLAYER, player);
         entityPacketHandler.getMetadataPacket().apply(player);
         entityPacketHandler.getSpawnPacket().apply(player);
-        entityPacketHandler.resendPackets();
+        if (entityPacketHandler.getRenderer() != null)
+            entityPacketHandler.resendPackets();
     }
 
     default void setSkin(@Nullable Skin skin) {

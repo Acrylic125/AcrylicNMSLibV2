@@ -6,9 +6,7 @@ import com.acrylic.universalnms.entity.NMSEntityInstance;
 import com.acrylic.universalnms.entity.NMSPlayerInstance;
 import com.acrylic.universalnms.entityai.PathSeekerAI;
 import com.acrylic.universalnms.entityai.strategies.PathfinderStrategy;
-import com.acrylic.universalnms.pathfinder.Path;
-import com.acrylic.universalnms.pathfinder.Pathfinder;
-import com.acrylic.universalnms.pathfinder.PathfinderGenerator;
+import com.acrylic.universalnms.pathfinder.*;
 import math.ProbabilityKt;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -22,7 +20,7 @@ public class PathfinderStrategyImpl implements PathfinderStrategy {
 
     private static final ExecutorService executorService = Executors.newFixedThreadPool(12);
 
-    private Iterator<Location> focussedPath;
+    private Iterator<ComputedPathPoint> focussedPath;
     private float speed = 0.6f;
     private boolean locked = false;
     private long
@@ -67,17 +65,19 @@ public class PathfinderStrategyImpl implements PathfinderStrategy {
             } else if (state == PathfindingState.TRAVERSING) {
                 if (focussedPath.hasNext()) {
                     NMSEntityInstance nmsEntityInstance = pathSeekerAI.getInstance();
-                    Location next = focussedPath.next(),
-                            iLocation = nmsEntityInstance.getBukkitEntity().getLocation();
+                    ComputedPathPoint next = focussedPath.next();
+                    Location iLocation = nmsEntityInstance.getBukkitEntity().getLocation();
                     if (next == null)
                         return;
                     double x = next.getX() - iLocation.getX(),
                             y = next.getY() - iLocation.getY(),
                             z = next.getZ() - iLocation.getZ();
-                    if (nmsEntityInstance.getEntityConfiguration().useTeleportForPathfindingStrategy())
-                        nmsEntityInstance.teleport(next);
-                    else
-                        nmsEntityInstance.setVelocity(x, y, z);
+                    if (nmsEntityInstance.getEntityConfiguration().useTeleportForPathfindingStrategy()) {
+                        nmsEntityInstance.teleport(next.getLocation(iLocation.getWorld()));
+                    } else {
+                        nmsEntityInstance.setNoClip(next.getPathType() == PathType.BYPASS);
+                        nmsEntityInstance.move(x, y, z);
+                    }
                     nmsEntityInstance.setYawAndPitch((float) Math.toDegrees(Math.atan2(z, x) - 90f), (float) ((-90f * y) / Math.sqrt(x * x + y * y + z * z)));
                 } else {
                     completeTraversal();

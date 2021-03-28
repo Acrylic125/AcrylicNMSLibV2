@@ -13,10 +13,10 @@ public interface Path {
     Pathfinder getPathfinder();
 
     @NotNull
-    Collection<Location> getLocations();
+    Collection<ComputedPathPoint> getLocations();
 
     @NotNull
-    Iterator<Location> iterator();
+    Iterator<ComputedPathPoint> iterator();
 
     float getPointsPerBlock();
 

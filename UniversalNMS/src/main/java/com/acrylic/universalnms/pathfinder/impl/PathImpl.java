@@ -1,8 +1,6 @@
 package com.acrylic.universalnms.pathfinder.impl;
 
-import com.acrylic.universalnms.pathfinder.Path;
-import com.acrylic.universalnms.pathfinder.PathReader;
-import com.acrylic.universalnms.pathfinder.Pathfinder;
+import com.acrylic.universalnms.pathfinder.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
@@ -15,7 +13,7 @@ import java.util.LinkedList;
 public class PathImpl implements Path {
 
     private final Pathfinder pathfinder;
-    private final Collection<Location> locations;
+    private final Collection<ComputedPathPoint> locations;
     private final float pointsPerBlocks;
 
     public PathImpl(Pathfinder pathfinder, Location[] points, float pointsPerBlocks) {
@@ -36,13 +34,13 @@ public class PathImpl implements Path {
 
     @NotNull
     @Override
-    public Collection<Location> getLocations() {
+    public Collection<ComputedPathPoint> getLocations() {
         return locations;
     }
 
     @NotNull
     @Override
-    public Iterator<Location> iterator() {
+    public Iterator<ComputedPathPoint> iterator() {
         return locations.iterator();
     }
 
@@ -51,11 +49,11 @@ public class PathImpl implements Path {
         return pointsPerBlocks;
     }
 
-    private static Collection<Location> map(Pathfinder pathfinder, Location[] points, float pointsPerBlocks) {
+    private static Collection<ComputedPathPoint> map(Pathfinder pathfinder, Location[] points, float pointsPerBlocks) {
         if (points.length <= 0)
             return new LinkedList<>();
         PathReader pathReader = pathfinder.getPathReader();
-        Collection<Location> map = new LinkedList<>();
+        Collection<ComputedPathPoint> map = new LinkedList<>();
         Location cursor = points[0];
         Vector direction = new Vector(0, 0, 0);
         for (int section = 1; section < points.length; section++) {
@@ -68,9 +66,10 @@ public class PathImpl implements Path {
                     .setZ((endOfSection.getZ() - cursor.getZ()) / endSectionIndex);
             for (int j = 0; j < endSectionIndex; j++) {
                 cursor.add(direction);
-                float y = pathReader.getPathTypeResultAt(cursor).getResultY();
+                PathTypeResult pathTypeResult = pathReader.getPathTypeResultAt(cursor);
+                float y = pathTypeResult.getResultY();
                 cursor.setY(y);
-                map.add(cursor.clone());
+                map.add(new ComputedPathPoint((float) cursor.getX(), (float) cursor.getY(), (float) cursor.getZ(), pathTypeResult.getPathType()));
             }
         }
         return map;
