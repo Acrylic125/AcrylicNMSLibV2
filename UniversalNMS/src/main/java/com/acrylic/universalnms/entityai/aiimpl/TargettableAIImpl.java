@@ -2,6 +2,7 @@ package com.acrylic.universalnms.entityai.aiimpl;
 
 import com.acrylic.universalnms.entity.NMSEntityInstance;
 import com.acrylic.universalnms.entityai.TargettableAI;
+import com.acrylic.universalnms.entityai.strategies.PathfinderStrategy;
 import com.acrylic.universalnms.entityai.strategies.TargetSelectorStrategy;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -43,10 +44,13 @@ public class TargettableAIImpl
         if (target != null) {
             if (isAValidTarget(target)) {
                 Location location = target.getLocation();
-                setTargetLocation(
-                        (location.distanceSquared(getInstance().getBukkitEntity().getLocation()) > (dontPathfindRange * dontPathfindRange))
-                                ? location : null
-                );
+                if (location.distanceSquared(getInstance().getBukkitEntity().getLocation()) < (dontPathfindRange * dontPathfindRange)) {
+                    setTargetLocation(null);
+                    if (pathfinderStrategy != null)
+                        pathfinderStrategy.completeTraversal();
+                } else {
+                    setTargetLocation(location);
+                }
             } else {
                 setTargetLocation(null);
                 setTarget(null);

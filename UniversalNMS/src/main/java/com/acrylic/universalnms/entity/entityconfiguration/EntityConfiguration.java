@@ -57,4 +57,21 @@ public interface EntityConfiguration {
      */
     boolean shouldRunAIByNMSEntities();
 
+    /**
+     *
+     * This will signal to any pathfinder strategy that
+     * teleporting should be used (If true) instea of using
+     * a different means of achieving the same goal. This
+     * can improve the performance of entity traversals in the
+     * expense of unnatural movements. It is highly enable this
+     * if this entity is going to be spawned in swarms
+     * instead of a singular (few) unit(s).
+     *
+     * @return Whether teleporting should be used when
+     * traversing.
+     *
+     * @see com.acrylic.universalnms.entityai.strategyimpl.SimplePathQuitterStrategyImpl
+     */
+    boolean useTeleportForPathfindingStrategy();
+
 }

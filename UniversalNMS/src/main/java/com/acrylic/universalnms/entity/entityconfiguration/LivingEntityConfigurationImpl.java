@@ -24,12 +24,12 @@ public class LivingEntityConfigurationImpl
         }
 
         public LivingBuilder removeFromRetrieverOnDeath(boolean b) {
-            entityConfiguration.flags = BitMaskUtils.setBitToMask(entityConfiguration.flags, 0x08, b);
+            entityConfiguration.livingFlags = BitMaskUtils.setBitToMask(entityConfiguration.livingFlags, 0x01, b);
             return this;
         }
 
         public LivingBuilder deleteOnDeath(boolean b) {
-            entityConfiguration.flags = BitMaskUtils.setBitToMask(entityConfiguration.flags, 0x10, b);
+            entityConfiguration.livingFlags = BitMaskUtils.setBitToMask(entityConfiguration.livingFlags, 0x02, b);
             return this;
         }
 
@@ -54,23 +54,19 @@ public class LivingEntityConfigurationImpl
         }
     }
 
+    /*
+     * Remove from retriever on death (0x01),
+     * Delete on death (0x2).
+     */
+    protected int livingFlags = 0x01 | 0x02;
     private long
             timeAfterDeathToRemoveFromRetriever = 0,
             timeAfterDeathToDelete = 3_000;
 
-
-    public LivingEntityConfigurationImpl() {
-        /*
-         * Remove from retriever on death (0x08),
-         * Delete on death (0x10).
-         */
-        this.flags |= 0x08 | 0x10;
-    }
-
     //0x08
     @Override
     public boolean shouldRemoveFromRetrieverOnDeath() {
-        return (flags & 0x08) == 0x08;
+        return (livingFlags & 0x01) == 0x01;
     }
 
     @Override
@@ -81,7 +77,7 @@ public class LivingEntityConfigurationImpl
     //0x10
     @Override
     public boolean shouldDeleteOnDeath() {
-        return (flags & 0x10) == 0x10;
+        return (livingFlags & 0x02) == 0x02;
     }
 
     @Override

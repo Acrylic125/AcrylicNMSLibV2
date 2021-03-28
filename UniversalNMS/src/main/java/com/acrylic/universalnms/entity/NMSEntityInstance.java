@@ -167,4 +167,6 @@ public interface NMSEntityInstance extends EntityInstance {
         nmsEntities.getEntityRetriever().unregister(this);
     }
 
+    boolean isOnGround();
+
 }

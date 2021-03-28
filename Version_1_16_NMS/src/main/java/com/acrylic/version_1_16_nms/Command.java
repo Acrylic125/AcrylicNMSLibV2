@@ -41,7 +41,6 @@ public class Command {
                     Player player = (Player) commandExecuted.getSender();
                     NMSPlayerInstanceImpl npc = new NMSPlayerInstanceImpl(player.getLocation(), null, "Trump");
                     npc.getPacketHandler().setRenderer(new EntityPlayerCheckableRenderer(npc.getBukkitEntity()));
-                    npc.setAnimations(EntityAnimationEnum.SNEAK);
                     //npc.asAnimator();
                     //npc.setAnimations(EntityAnimationEnum.HURT, EntityAnimationEnum.SLEEP, EntityAnimationEnum.CRIT);
                     AggressiveAI entityAI = new AggressiveAI(npc);

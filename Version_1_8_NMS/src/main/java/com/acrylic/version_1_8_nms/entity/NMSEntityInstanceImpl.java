@@ -149,4 +149,9 @@ public abstract class NMSEntityInstanceImpl
     public void setInstanceTicks(int ticks) {
         this.instanceTicks = ticks;
     }
+
+    @Override
+    public boolean isOnGround() {
+        return getNMSEntity().onGround;
+    }
 }

@@ -64,6 +64,11 @@ public class EntityConfigurationImpl implements EntityConfiguration {
             return (B) this;
         }
 
+        public B useTeleportForPathfinderStrategy(boolean b) {
+            getBuildFrom().flags = BitMaskUtils.setBitToMask(getBuildFrom().flags, 0x04, b);
+            return (B) this;
+        }
+
         public abstract EntityConfigurationImpl getBuildFrom();
 
         public abstract EntityConfigurationImpl build();
@@ -108,6 +113,12 @@ public class EntityConfigurationImpl implements EntityConfiguration {
     @Override
     public boolean shouldRunAIByNMSEntities() {
         return (flags & 0x02) == 0x02;
+    }
+
+    //0x04
+    @Override
+    public boolean useTeleportForPathfindingStrategy() {
+        return (flags & 0x04) == 0x04;
     }
 
 }

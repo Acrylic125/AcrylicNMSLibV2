@@ -2,13 +2,8 @@ package com.acrylic.version_1_16_nms.entity;
 
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universalnms.entity.NMSEntityInstance;
-import com.acrylic.universalnms.entity.entityconfiguration.EntityConfiguration;
 import com.acrylic.universalnms.entityai.EntityAI;
 import net.minecraft.server.v1_16_R3.*;
-import org.bukkit.craftbukkit.v1_16_R3.CraftServer;
-import org.bukkit.craftbukkit.v1_16_R3.entity.CraftCreeper;
-import org.bukkit.craftbukkit.v1_16_R3.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_16_R3.util.CraftChatMessage;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -151,5 +146,10 @@ public abstract class NMSEntityInstanceImpl
     @Override
     public void setInstanceTicks(int ticks) {
         this.instanceTicks = ticks;
+    }
+
+    @Override
+    public boolean isOnGround() {
+        return getNMSEntity().isOnGround();
     }
 }

@@ -10,10 +10,10 @@ import org.jetbrains.annotations.Nullable;
 
 public class PathSeekerAIImpl implements PathSeekerAI {
 
-    private final NMSEntityInstance nmsEntityInstance;
-    private PathfinderStrategy pathfinderStrategy;
-    private PathQuitterStrategy pathQuitterStrategy;
-    private Location targetLocation;
+    protected final NMSEntityInstance nmsEntityInstance;
+    protected PathfinderStrategy pathfinderStrategy;
+    protected PathQuitterStrategy pathQuitterStrategy;
+    protected Location targetLocation;
     private boolean locked = false;
 
     public PathSeekerAIImpl(@NotNull NMSEntityInstance nmsEntityInstance) {
