@@ -12,6 +12,7 @@ import com.acrylic.universalnms.packets.types.TeleportPacket;
 import com.acrylic.universalnms.renderer.PlayerCheckableRenderer;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -168,5 +169,25 @@ public interface NMSEntityInstance extends EntityInstance {
     }
 
     boolean isOnGround();
+
+    /**
+     *
+     * This method cleans off any traces of thie specified
+     * player from this entity instance.
+     *
+     * For instance, if the entity is held within the
+     * renderer, the player will be deintiialized.
+     *
+     * @see com.acrylic.universalnms.renderer.RangedPlayerCheckableRenderer#deinitialize(Player)
+     * @see com.acrylic.universalnms.entityai.aiimpl.TargettableAIImpl#cleanPlayer(Player)
+     *
+     * @param player The player.
+     */
+    default void cleanPlayer(@NotNull Player player) {
+        getPacketHandler().getRenderer().deinitialize(player);
+        EntityAI entityAI = getAI();
+        if (entityAI != null)
+            entityAI.cleanPlayer(player);
+    }
 
 }

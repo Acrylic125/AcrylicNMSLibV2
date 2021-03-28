@@ -7,6 +7,7 @@ import com.acrylic.universalnms.entityai.strategies.TargetSelectorStrategy;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -89,5 +90,11 @@ public class TargettableAIImpl
     public boolean isAValidTarget(Entity target) {
         return TargettableAI.super.isAValidTarget(target) &&
                 (untargetRangeBetweenInstanceAndTarget == -1 || (target.getLocation().distanceSquared(getInstance().getBukkitEntity().getLocation()) <= (untargetRangeBetweenInstanceAndTarget * untargetRangeBetweenInstanceAndTarget)));
+    }
+
+    @Override
+    public void cleanPlayer(@NotNull Player player) {
+        if (player.equals(getTarget()))
+            setTarget(null);
     }
 }

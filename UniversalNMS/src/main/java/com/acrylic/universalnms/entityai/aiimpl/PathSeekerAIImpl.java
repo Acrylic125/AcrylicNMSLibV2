@@ -5,6 +5,7 @@ import com.acrylic.universalnms.entityai.PathSeekerAI;
 import com.acrylic.universalnms.entityai.strategies.PathQuitterStrategy;
 import com.acrylic.universalnms.entityai.strategies.PathfinderStrategy;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,6 +32,10 @@ public class PathSeekerAIImpl implements PathSeekerAI {
             pathfinderStrategy.tick();
         if (pathQuitterStrategy != null && !pathQuitterStrategy.isLocked())
             pathQuitterStrategy.tick();
+    }
+
+    @Override
+    public void cleanPlayer(@NotNull Player player) {
     }
 
     @Override

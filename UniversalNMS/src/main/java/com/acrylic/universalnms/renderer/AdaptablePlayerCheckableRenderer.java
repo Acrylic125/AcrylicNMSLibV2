@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
+@Deprecated
 public class AdaptablePlayerCheckableRenderer<R extends PlayerCheckableRenderer>
         extends AdaptableRenderer<R, Player>
         implements PlayerCheckableRenderer {
@@ -38,6 +39,16 @@ public class AdaptablePlayerCheckableRenderer<R extends PlayerCheckableRenderer>
     public void deinitializeAll() {
         if (deinitialize != null)
             runForAllRendered(deinitialize);
+    }
+
+    @Override
+    public void initialize(@NotNull Player player) {
+
+    }
+
+    @Override
+    public void deinitialize(@NotNull Player player) {
+
     }
 
     @Override

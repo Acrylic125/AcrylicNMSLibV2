@@ -1,9 +1,14 @@
 package com.acrylic.universalnms.entity.manager;
 
+import com.acrylic.universal.events.AbstractEventBuilder;
+import com.acrylic.universal.events.EventBuilder;
 import com.acrylic.universal.interfaces.Terminable;
 import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universal.threads.TaskType;
 import com.acrylic.universalnms.entity.NMSEntityInstance;
+import org.bukkit.entity.Player;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -11,7 +16,7 @@ public final class NMSEntities implements Terminable, Runnable {
 
     private NMSEntityRetriever<NMSEntityInstance> entityRetriever;
     /**
-     * The entity ticker triggers the {@link NMSEntityInstance#tick()}
+     * The entity ticker triggers the {@link NMSEntityInstance#tick(NMSEntityInstance.TickSource)}
      * method which functions as a gateway to manipulate the entity be it
      * via the AI or other functionalities of the entity that cannot be
      * accessed elsewhere.
@@ -20,6 +25,7 @@ public final class NMSEntities implements Terminable, Runnable {
      * the retriever.
      */
     private final Scheduler<TaskType.RepeatingTask> entityTicker;
+    private final AbstractEventBuilder<PlayerRespawnEvent> deathRefresher;
 
     public NMSEntities(@NotNull JavaPlugin plugin) {
         this(plugin, new NMSEntityRetriever<>());
@@ -32,7 +38,15 @@ public final class NMSEntities implements Terminable, Runnable {
                 .plugin(plugin)
                 .setName("NMS Entity Ticker @ " + plugin.getName())
                 .handle(this);
+        this.deathRefresher = EventBuilder.listen(PlayerRespawnEvent.class)
+                .plugin(plugin)
+                .setEventName("NMS Entity Death Refresher @ " + plugin.getName())
+                .handle(playerRespawnEvent -> {
+                    Player player = playerRespawnEvent.getPlayer();
+                    entityRetriever.getCached().forEach((id, instance) -> instance.cleanPlayer(player));
+                });
         this.entityTicker.build();
+        this.deathRefresher.register();
     }
 
     public void setEntityRetriever(@NotNull NMSEntityRetriever<NMSEntityInstance> entityRetriever) {

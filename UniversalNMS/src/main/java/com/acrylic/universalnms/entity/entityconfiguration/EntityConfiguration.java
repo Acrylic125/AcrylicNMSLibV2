@@ -1,6 +1,5 @@
 package com.acrylic.universalnms.entity.entityconfiguration;
 
-import com.acrylic.universal.entity.EntityInstance;
 import com.acrylic.universalnms.entity.NMSEntityInstance;
 import org.jetbrains.annotations.Nullable;
 

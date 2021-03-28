@@ -96,6 +96,22 @@ public class RangedPlayerCheckableRenderer implements PlayerCheckableRenderer {
     }
 
     @Override
+    public void initialize(@NotNull Player player) {
+        if (initialize != null)
+            initialize.accept(player);
+        if (!rendered.contains(player.getUniqueId()))
+            rendered.add(player.getUniqueId());
+    }
+
+    @Override
+    public void deinitialize(@NotNull Player player) {
+        if (deinitialize != null && rendered.contains(player.getUniqueId())) {
+            deinitialize.accept(player);
+            rendered.remove(player.getUniqueId());
+        }
+    }
+
+    @Override
     public void runForAllRendered(@NotNull Consumer<Player> action) {
         for (UUID uuid : rendered) {
             Player player = Bukkit.getPlayer(uuid);

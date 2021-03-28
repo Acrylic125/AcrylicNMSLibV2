@@ -1,6 +1,8 @@
 package com.acrylic.universalnms.entityai;
 
 import com.acrylic.universalnms.entity.NMSEntityInstance;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * An Entity AI object represents an intermediary system
@@ -19,5 +21,7 @@ public interface EntityAI extends Lockable {
      * and all it's intermediary functions.
      */
     void tick();
+
+    void cleanPlayer(@NotNull Player player);
 
 }
