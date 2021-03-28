@@ -33,6 +33,16 @@ public class LivingEntityConfigurationImpl
             return this;
         }
 
+        public LivingBuilder timeAfterDeathToRemoveFromRetriever(long time) {
+            entityConfiguration.timeAfterDeathToRemoveFromRetriever = time;
+            return this;
+        }
+
+        public LivingBuilder timeAfterDeathToDelete(long time) {
+            entityConfiguration.timeAfterDeathToDelete = time;
+            return this;
+        }
+
         @Override
         public LivingEntityConfigurationImpl getBuildFrom() {
             return entityConfiguration;
@@ -43,6 +53,11 @@ public class LivingEntityConfigurationImpl
             return entityConfiguration;
         }
     }
+
+    private long
+            timeAfterDeathToRemoveFromRetriever = 0,
+            timeAfterDeathToDelete = 3_000;
+
 
     public LivingEntityConfigurationImpl() {
         /*
@@ -58,9 +73,19 @@ public class LivingEntityConfigurationImpl
         return (flags & 0x08) == 0x08;
     }
 
+    @Override
+    public long getTimeAfterDeathToRemoveFromRetriever() {
+        return timeAfterDeathToRemoveFromRetriever;
+    }
+
     //0x10
     @Override
     public boolean shouldDeleteOnDeath() {
         return (flags & 0x10) == 0x10;
+    }
+
+    @Override
+    public long getTimeAfterDeathToDelete() {
+        return timeAfterDeathToDelete;
     }
 }

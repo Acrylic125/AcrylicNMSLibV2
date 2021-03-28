@@ -4,6 +4,7 @@ import com.acrylic.universal.command.CommandBuilder;
 import com.acrylic.universal.command.CommandExecuted;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universalnms.NMSLib;
+import com.acrylic.universalnms.entityai.processors.AsyncProcessor;
 import com.acrylic.universalnms.particles.ParticleBuilder;
 import com.acrylic.universalnms.pathfinder.Pathfinder;
 import com.acrylic.universalnms.pathfinder.PathfinderGenerator;

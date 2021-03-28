@@ -6,6 +6,7 @@ import com.acrylic.universal.files.bukkit.Configuration;
 import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.entity.manager.NMSEntities;
+import com.acrylic.universalnms.entityai.processors.AsyncProcessor;
 import com.acrylic.universalnms.send.GlobalBatchPacketSender;
 import com.acrylic.version_1_8_nms.factory.NMSAbstractFactoryImpl;
 import com.acrylic.version_1_8_nms.nmsentityregistry.NMSEntityRegistryImpl;
@@ -28,6 +29,7 @@ public final class AcrylicNMSLib
                                 .plugin(this)
                 )
         );
+        AsyncProcessor.TEMP = new AsyncProcessor<>(this);
         Configuration config = new Configuration("skins.yml", this);
         config.load();
         NMSLib.getSkinMap().loadSkinMapFromConfig(config);
@@ -44,6 +46,7 @@ public final class AcrylicNMSLib
         NMSLib.getNMSEntities().terminate();
         NMSLib.getSkinMap().saveTo(config);
         NMSLib.getNPCTablistRemover().terminate();
+        AsyncProcessor.TEMP.terminate();
     }
 
     private void loadByVersion() {

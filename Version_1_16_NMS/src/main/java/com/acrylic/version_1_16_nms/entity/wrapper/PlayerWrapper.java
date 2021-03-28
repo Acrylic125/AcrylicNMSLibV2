@@ -10,9 +10,11 @@ import net.citizensnpcs.npc.ai.AStarNavigationStrategy;
 import net.minecraft.server.v1_16_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_16_R3.event.CraftEventFactory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Iterator;
 import java.util.UUID;
 
 public class PlayerWrapper
@@ -48,4 +50,6 @@ public class PlayerWrapper
         super.die(damageSource);
         onDeath();
     }
+
+
 }

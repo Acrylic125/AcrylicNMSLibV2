@@ -7,8 +7,7 @@ import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universalnms.entity.entityconfiguration.LivingEntityConfiguration;
 import com.acrylic.universalnms.entityai.aiimpl.AggressiveAI;
 import com.acrylic.universalnms.entityai.aiimpl.TargettableAIImpl;
-import com.acrylic.universalnms.entityai.strategyimpl.PathfinderStrategyImpl;
-import com.acrylic.universalnms.entityai.strategyimpl.PlayerRandomTargetSelector;
+import com.acrylic.universalnms.entityai.strategyimpl.*;
 import com.acrylic.universalnms.enums.EntityAnimationEnum;
 import com.acrylic.universalnms.enums.Gamemode;
 import com.acrylic.universalnms.particles.ParticleBuilder;
@@ -40,19 +39,20 @@ public class Command {
                 .filter(CommandExecuted::isExecutedByPlayer)
                 .handle(commandExecuted -> {
                     Player player = (Player) commandExecuted.getSender();
-                    NMSPlayerInstanceImpl armorStandInstance = new NMSPlayerInstanceImpl(player.getLocation(), null, "Trump");
-                    armorStandInstance.getPacketHandler().setRenderer(new EntityPlayerCheckableRenderer(armorStandInstance.getBukkitEntity()));
-                    armorStandInstance.setAnimations(EntityAnimationEnum.SNEAK);
-                    //armorStandInstance.asAnimator();
-                    //armorStandInstance.setAnimations(EntityAnimationEnum.HURT, EntityAnimationEnum.SLEEP, EntityAnimationEnum.CRIT);
-                    AggressiveAI entityAI = new AggressiveAI(armorStandInstance);
+                    NMSPlayerInstanceImpl npc = new NMSPlayerInstanceImpl(player.getLocation(), null, "Trump");
+                    npc.getPacketHandler().setRenderer(new EntityPlayerCheckableRenderer(npc.getBukkitEntity()));
+                    npc.setAnimations(EntityAnimationEnum.SNEAK);
+                    //npc.asAnimator();
+                    //npc.setAnimations(EntityAnimationEnum.HURT, EntityAnimationEnum.SLEEP, EntityAnimationEnum.CRIT);
+                    AggressiveAI entityAI = new AggressiveAI(npc);
                     entityAI.setPathfinderStrategy(new PathfinderStrategyImpl(entityAI, PathfinderGenerator.A_STAR_PATHFINDER_GENERATOR));
                     //entityAI.setTarget(player);
-                    entityAI.setAttackCooldown(2000);
+                    //entityAI.setPathQuitterStrategy(new SimplePathQuitterStrategyImpl(entityAI));
+                    entityAI.setAttackCooldown(400);
                     entityAI.setTargetSelectorStrategy(new PlayerRandomTargetSelector(entityAI));
-                    armorStandInstance.setAI(entityAI);
-                    armorStandInstance.setSkin("Acrylic123");
-                    armorStandInstance.setEquipment(new EntityEquipmentBuilderImpl().
+                    npc.setAI(entityAI);
+                    npc.setSkin("Acrylic123");
+                    npc.setEquipment(new EntityEquipmentBuilderImpl().
                             setItemInHand(ItemBuilder.of(Material.NETHERITE_SWORD)
                                     .enchant(Enchantment.DAMAGE_ALL, 1)
                                     .enchant(Enchantment.FIRE_ASPECT, 1)
@@ -66,9 +66,9 @@ public class Command {
                             .setBoots(ItemBuilder.of(Material.NETHER_BRICK)
                                     .enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4))
                     );
-                    armorStandInstance.addToWorld();
-                    armorStandInstance.setEntityConfiguration(LivingEntityConfiguration.PERSISTENT_LIVING_ENTITY);
-                    armorStandInstance.register();
+                    npc.addToWorld();
+                    npc.setEntityConfiguration(LivingEntityConfiguration.PERSISTENT_LIVING_ENTITY);
+                    npc.register();
 
                 }).arguments(
                         CommandBuilder.create("p")

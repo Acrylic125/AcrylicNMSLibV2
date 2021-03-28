@@ -1,5 +1,6 @@
 package com.acrylic.universalnms.entity.wrapper;
 
+import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.entity.NMSLivingEntityInstance;
 import com.acrylic.universalnms.entity.entityconfiguration.LivingEntityConfiguration;
@@ -14,9 +15,17 @@ public interface NMSLivingEntityWrapper extends NMSEntityWrapper {
     default void onDeath() {
         LivingEntityConfiguration configuration = getEntityInstance().getEntityConfiguration();
         if (configuration.shouldRemoveFromRetrieverOnDeath())
-            NMSLib.getNMSEntities().getEntityRetriever().unregister(getEntityInstance());
+            Scheduler.sync()
+                    .runDelayedTask(configuration.getTimeAfterDeathToRemoveFromRetriever())
+                    .setName("Unregister Entity on death")
+                    .plugin(NMSLib.getPlugin())
+                    .handleThenBuild(() -> NMSLib.getNMSEntities().getEntityRetriever().unregister(getEntityInstance()));
         if (configuration.shouldDeleteOnDeath())
-            getEntityInstance().delete();
+            Scheduler.sync()
+                    .runDelayedTask(configuration.getTimeAfterDeathToDelete())
+                    .setName("Delete Entity on death")
+                    .plugin(NMSLib.getPlugin())
+                    .handleThenBuild(() -> getEntityInstance().delete());
     }
 
 }

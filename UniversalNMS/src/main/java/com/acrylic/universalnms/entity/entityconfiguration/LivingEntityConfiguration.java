@@ -17,6 +17,8 @@ public interface LivingEntityConfiguration extends EntityConfiguration {
      */
     boolean shouldRemoveFromRetrieverOnDeath();
 
+    long getTimeAfterDeathToRemoveFromRetriever();
+
     /**
      * THIS WILL NOT REMOVE THE ENTITY INSTANCE FROM
      * THE RETRIEVER UNLESS {@link #shouldRemoveFromRetrieverOnDeath()}
@@ -25,4 +27,7 @@ public interface LivingEntityConfiguration extends EntityConfiguration {
      * @return Runs the {@link EntityInstance#delete()} method on death.
      */
     boolean shouldDeleteOnDeath();
+
+    long getTimeAfterDeathToDelete();
+
 }

@@ -29,8 +29,8 @@ public class PathSeekerAIImpl implements PathSeekerAI {
     public void tick() {
         if (pathfinderStrategy != null && !pathfinderStrategy.isLocked())
             pathfinderStrategy.tick();
-        if (pathfinderStrategy != null && !pathfinderStrategy.isLocked())
-            pathfinderStrategy.tick();
+        if (pathQuitterStrategy != null && !pathQuitterStrategy.isLocked())
+            pathQuitterStrategy.tick();
     }
 
     @Override
