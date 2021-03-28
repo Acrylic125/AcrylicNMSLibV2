@@ -24,6 +24,7 @@ public class PlayerPacketHandlerImpl implements PlayerPacketHandler {
     private final TeleportPacketImpl teleportPacket = new TeleportPacketImpl();
     private final EntityEquipmentPacketsImpl equipmentPackets = new EntityEquipmentPacketsImpl();
     private final EntityMetadataPacketImpl entityMetadataPacket = new EntityMetadataPacketImpl();
+    private final EntityAnimationPacketsImpl entityAnimationPackets = new EntityAnimationPacketsImpl();
     private final BatchSender displaySender = new BatchSender();
     private PlayerCheckableRenderer renderer;
 
@@ -44,6 +45,7 @@ public class PlayerPacketHandlerImpl implements PlayerPacketHandler {
         displaySender.attachSender(equipmentPackets.getSender());
         displaySender.attachSender(headRotationPacket.getSender());
         displaySender.attachSender(teleportPacket.getSender());
+        displaySender.attachSender(entityAnimationPackets.getSender());
     }
 
     @NotNull
@@ -111,6 +113,12 @@ public class PlayerPacketHandlerImpl implements PlayerPacketHandler {
     public void updateMetadata() {
         entityMetadataPacket.apply(entityInstance.getNMSEntity());
         entityMetadataPacket.getSender().sendToAllByRenderer(renderer);
+    }
+
+    @NotNull
+    @Override
+    public EntityAnimationPackets getAnimationPackets() {
+        return entityAnimationPackets;
     }
 
     @Override

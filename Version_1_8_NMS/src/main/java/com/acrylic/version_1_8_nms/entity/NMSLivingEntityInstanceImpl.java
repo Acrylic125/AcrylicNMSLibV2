@@ -5,6 +5,7 @@ import com.acrylic.version_1_8_nms.NMSUtils;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class NMSLivingEntityInstanceImpl
         extends NMSEntityInstanceImpl
@@ -60,8 +61,8 @@ public abstract class NMSLivingEntityInstanceImpl
     }
 
     @Override
-    public void damage(float damage) {
-        getNMSEntity().damageEntity(DamageSource.GENERIC, damage);
+    public void damage(float damage, @Nullable com.acrylic.universalnms.enums.DamageSource damageSource) {
+        getNMSEntity().damageEntity(NMSUtils.convertToNMSDamageSource(damageSource), damage);
     }
 
     private void damageEntity(EntityLiving victim, EntityLiving nmsLivingAttacker, float baseDamage) {

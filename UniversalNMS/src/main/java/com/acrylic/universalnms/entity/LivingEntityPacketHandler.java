@@ -1,5 +1,6 @@
 package com.acrylic.universalnms.entity;
 
+import com.acrylic.universalnms.packets.types.EntityAnimationPackets;
 import com.acrylic.universalnms.packets.types.EntityEquipmentPackets;
 import com.acrylic.universalnms.packets.types.EntityMetadataPacket;
 import org.jetbrains.annotations.NotNull;
@@ -17,5 +18,8 @@ public interface LivingEntityPacketHandler extends EntityPacketHandler {
     EntityMetadataPacket getMetadataPacket();
 
     void updateMetadata();
+
+    @NotNull
+    EntityAnimationPackets getAnimationPackets();
 
 }

@@ -43,7 +43,6 @@ public interface EntityAnimationPackets extends MultiPacketWrapper {
             case STOP_ELYTRA:
                 attachStopElytraAnimation(entity);
                 break;
-
         }
     }
 

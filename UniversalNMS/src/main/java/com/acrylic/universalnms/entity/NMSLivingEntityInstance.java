@@ -5,10 +5,12 @@ import com.acrylic.universal.entity.equipment.EntityEquipmentBuilder;
 import com.acrylic.universalnms.entity.entityconfiguration.EntityConfiguration;
 import com.acrylic.universalnms.entity.entityconfiguration.LivingEntityConfiguration;
 import com.acrylic.universalnms.entity.wrapper.NMSLivingEntityWrapper;
+import com.acrylic.universalnms.enums.DamageSource;
 import com.acrylic.universalnms.packets.types.EntityEquipmentPackets;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EntityEquipment;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface NMSLivingEntityInstance extends NMSEntityInstance, LivingEntityInstance {
 
@@ -31,7 +33,7 @@ public interface NMSLivingEntityInstance extends NMSEntityInstance, LivingEntity
 
     void damage(@NotNull LivingEntity attacker, float damage);
 
-    void damage(float damage);
+    void damage(float damage, @Nullable DamageSource damageSource);
 
     @Override
     default void setEquipment(@NotNull EntityEquipmentBuilder entityEquipmentBuilder) {
@@ -78,6 +80,6 @@ public interface NMSLivingEntityInstance extends NMSEntityInstance, LivingEntity
     default void tick(TickSource tickSource) {
         NMSEntityInstance.super.tick(tickSource);
         if (getFireTicks() > 0 && !getBukkitEntity().isInvulnerable())
-            damage(0.5f);
+            damage(0.5f, DamageSource.BURN);
     }
 }

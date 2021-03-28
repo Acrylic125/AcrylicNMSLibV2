@@ -2,10 +2,12 @@ package com.acrylic.version_1_16_nms.entity;
 
 import com.acrylic.universalnms.entity.NMSLivingEntityInstance;
 import com.acrylic.version_1_16_nms.NMSUtils;
+import net.citizensnpcs.util.NMSBridge;
+import net.citizensnpcs.util.PlayerAnimation;
 import net.minecraft.server.v1_16_R3.*;
-import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class NMSLivingEntityInstanceImpl
         extends NMSEntityInstanceImpl
@@ -53,6 +55,37 @@ public abstract class NMSLivingEntityInstanceImpl
             //baseDamage += EnchantmentManager.a(nmsAttacker.bA(), victim.getMonsterType());
             damageEntity(victim, nmsAttacker, baseDamage);
         }
+        //
+//        EntityLiving target = getHandle(btarget);
+//        if (nmsAttacker instanceof EntityPlayer) {
+//            EntityPlayer humanHandle = (EntityPlayer)handle;
+//            humanHandle.attack(target);
+//            PlayerAnimation.ARM_SWING.play(humanHandle.getBukkitEntity());
+//        } else if (handle instanceof EntityInsentient) {
+//            ((EntityInsentient)handle).attackEntity(target);
+//        } else {
+//            AttributeModifiable attackDamage = handle.getAttributeInstance(GenericAttributes.ATTACK_DAMAGE);
+//            float f = (float)(attackDamage == null ? 1.0D : attackDamage.getValue());
+//            int i = 0;
+//            if (target instanceof EntityLiving) {
+//                f += EnchantmentManager.a(handle.getItemInMainHand(), target.getMonsterType());
+//                i += EnchantmentManager.a(Enchantments.KNOCKBACK, handle);
+//            }
+//
+//            boolean flag = target.damageEntity(DamageSource.mobAttack(handle), f);
+//            if (flag) {
+//                if (i > 0) {
+//                    target.f(-Math.sin((double)handle.yaw * 3.141592653589793D / 180.0D) * (double)i * 0.5D, 0.1D, Math.cos((double)handle.yaw * 3.141592653589793D / 180.0D) * (double)i * 0.5D);
+//                    handle.setMot(handle.getMot().d(0.6D, 1.0D, 0.6D));
+//                }
+//
+//                int fireAspectLevel = EnchantmentManager.getFireAspectEnchantmentLevel(handle);
+//                if (fireAspectLevel > 0) {
+//                    target.setOnFire(fireAspectLevel * 4);
+//                }
+//
+//            }
+//        }
     }
 
     @Override
@@ -61,8 +94,8 @@ public abstract class NMSLivingEntityInstanceImpl
     }
 
     @Override
-    public void damage(float damage) {
-        getNMSEntity().damageEntity(DamageSource.GENERIC, damage);
+    public void damage(float damage, @Nullable com.acrylic.universalnms.enums.DamageSource damageSource) {
+        getNMSEntity().damageEntity(NMSUtils.convertToNMSDamageSource(damageSource), damage);
     }
 
     private void damageEntity(EntityLiving victim, EntityLiving nmsLivingAttacker, float baseDamage) {

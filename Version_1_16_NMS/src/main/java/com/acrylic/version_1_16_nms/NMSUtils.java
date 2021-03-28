@@ -119,4 +119,32 @@ public final class NMSUtils {
     public static byte getByteAngle(double angle) {
         return getByteAngle((float) angle);
     }
+
+    public static DamageSource convertToNMSDamageSource(com.acrylic.universalnms.enums.DamageSource damageSource) {
+        if (damageSource == null)
+            return null;
+        switch (damageSource) {
+            case DRAGON_BREATH: return DamageSource.DRAGON_BREATH;
+            case LAVA: return DamageSource.LAVA;
+            case BURN: return DamageSource.BURN;
+            case FALL: return DamageSource.FALL;
+            case FIRE: return DamageSource.FIRE;
+            case ANVIL: return DamageSource.ANVIL;
+            case DROWN: return DamageSource.DROWN;
+            case MAGIC: return DamageSource.MAGIC;
+            case STUCK: return DamageSource.STUCK;
+            case CACTUS: return DamageSource.CACTUS;
+            case DRYOUT: return DamageSource.DRYOUT;
+            case STARVE: return DamageSource.STARVE;
+            case WITHER: return DamageSource.WITHER;
+            case CRAMMING: return DamageSource.CRAMMING;
+            case HOT_FLOOR: return DamageSource.HOT_FLOOR;
+            case LIGHTNING: return DamageSource.LIGHTNING;
+            case OUT_OF_WORLD: return DamageSource.OUT_OF_WORLD;
+            case FALLING_BLOCK: return DamageSource.FALLING_BLOCK;
+            case FLY_INTO_WALL: return DamageSource.FLY_INTO_WALL;
+            case SWEET_BERRY_BUSH: return DamageSource.SWEET_BERRY_BUSH;
+            default: return null;
+        }
+    }
 }

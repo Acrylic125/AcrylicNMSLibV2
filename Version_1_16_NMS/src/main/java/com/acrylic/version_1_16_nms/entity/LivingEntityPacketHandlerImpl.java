@@ -2,10 +2,7 @@ package com.acrylic.version_1_16_nms.entity;
 
 import com.acrylic.universalnms.entity.EntityPacketHandler;
 import com.acrylic.universalnms.entity.LivingEntityPacketHandler;
-import com.acrylic.universalnms.packets.types.EntityDestroyPacket;
-import com.acrylic.universalnms.packets.types.EntityMetadataPacket;
-import com.acrylic.universalnms.packets.types.EntitySpawnPacket;
-import com.acrylic.universalnms.packets.types.TeleportPacket;
+import com.acrylic.universalnms.packets.types.*;
 import com.acrylic.universalnms.renderer.PlayerCheckableRenderer;
 import com.acrylic.universalnms.send.BatchSender;
 import com.acrylic.version_1_16_nms.packets.types.*;
@@ -22,6 +19,7 @@ public class LivingEntityPacketHandlerImpl implements LivingEntityPacketHandler 
     private final TeleportPacketImpl teleportPacket = new TeleportPacketImpl();
     private final EntityEquipmentPacketsImpl equipmentPackets = new EntityEquipmentPacketsImpl();
     private final EntityMetadataPacketImpl entityMetadataPacket = new EntityMetadataPacketImpl();
+    private final EntityAnimationPacketsImpl entityAnimationPackets = new EntityAnimationPacketsImpl();
     private final BatchSender displaySender = new BatchSender();
     private PlayerCheckableRenderer renderer;
 
@@ -35,6 +33,7 @@ public class LivingEntityPacketHandlerImpl implements LivingEntityPacketHandler 
         displaySender.attachSender(entitySpawnPacket.getSender());
         displaySender.attachSender(entityMetadataPacket.getSender());
         displaySender.attachSender(equipmentPackets.getSender());
+        displaySender.attachSender(entityAnimationPackets.getSender());
     }
 
     @NotNull
@@ -59,6 +58,12 @@ public class LivingEntityPacketHandlerImpl implements LivingEntityPacketHandler 
     public void updateMetadata() {
         entityMetadataPacket.apply(entityInstance.getNMSEntity());
         entityMetadataPacket.getSender().sendToAllByRenderer(renderer);
+    }
+
+    @NotNull
+    @Override
+    public EntityAnimationPackets getAnimationPackets() {
+        return entityAnimationPackets;
     }
 
     @Override
