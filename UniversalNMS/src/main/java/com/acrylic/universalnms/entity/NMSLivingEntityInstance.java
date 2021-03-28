@@ -38,6 +38,8 @@ public interface NMSLivingEntityInstance extends NMSEntityInstance, LivingEntity
 
     void damage(float damage, @Nullable DamageSource damageSource);
 
+    void attack(@NotNull LivingEntity victim);
+
     @Override
     default void setEquipment(@NotNull EntityEquipmentBuilder entityEquipmentBuilder) {
         entityEquipmentBuilder.apply(getBukkitEntity());

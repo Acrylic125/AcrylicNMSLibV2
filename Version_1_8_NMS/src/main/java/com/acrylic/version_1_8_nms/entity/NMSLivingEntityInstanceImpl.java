@@ -42,16 +42,18 @@ public abstract class NMSLivingEntityInstanceImpl
 
     @Override
     public void damage(@NotNull LivingEntity attacker) {
-        EntityLiving nmsAttacker = NMSUtils.convertToNMSEntity(attacker);
-        EntityLiving victim = getNMSEntity();
-        if (nmsAttacker instanceof EntityPlayer) {
-            EntityPlayer entityLiving = (EntityPlayer) nmsAttacker;
+        damage(getNMSEntity(), NMSUtils.convertToNMSEntity(attacker));
+    }
+
+    private void damage(EntityLiving victim, EntityLiving attacker) {
+        if (attacker instanceof EntityPlayer) {
+            EntityPlayer entityLiving = (EntityPlayer) attacker;
             entityLiving.attack(victim);
         } else {
-            AttributeInstance attackDamage = nmsAttacker.getAttributeInstance(GenericAttributes.ATTACK_DAMAGE);
+            AttributeInstance attackDamage = attacker.getAttributeInstance(GenericAttributes.ATTACK_DAMAGE);
             float baseDamage = (float) (attackDamage == null ? 1.0f : attackDamage.getValue());
-            baseDamage += EnchantmentManager.a(nmsAttacker.bA(), victim.getMonsterType());
-            damageEntity(victim, nmsAttacker, baseDamage);
+            baseDamage += EnchantmentManager.a(attacker.bA(), victim.getMonsterType());
+            damageEntity(victim, attacker, baseDamage);
         }
     }
 
@@ -72,6 +74,11 @@ public abstract class NMSLivingEntityInstanceImpl
             if (fireAspectLevel > 0)
                 victim.setOnFire(fireAspectLevel * 4);
         }
+    }
+
+    @Override
+    public void attack(@NotNull LivingEntity victim) {
+        damage(NMSUtils.convertToNMSEntity(victim), getNMSEntity());
     }
 
     @Override

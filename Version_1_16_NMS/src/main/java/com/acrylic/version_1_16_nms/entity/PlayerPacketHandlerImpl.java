@@ -151,4 +151,6 @@ public class PlayerPacketHandlerImpl implements PlayerPacketHandler {
     public EntityAnimationPackets getAnimationPackets() {
         return entityAnimationPackets;
     }
+
+
 }

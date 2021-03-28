@@ -3,6 +3,7 @@ package com.acrylic.universalnms.entityai.aiimpl;
 import com.acrylic.universalnms.entity.NMSEntityInstance;
 import com.acrylic.universalnms.entityai.TargettableAI;
 import com.acrylic.universalnms.entityai.strategies.TargetSelectorStrategy;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;
@@ -40,11 +41,16 @@ public class TargettableAIImpl
             targetSelectorStrategy.tick();
         Entity target = getTarget();
         if (target != null) {
-            Location location = target.getLocation();
-            setTargetLocation(
-                    (location.distanceSquared(getInstance().getBukkitEntity().getLocation()) > (dontPathfindRange * dontPathfindRange))
-                            ? location : null
-            );
+            if (isAValidTarget(target)) {
+                Location location = target.getLocation();
+                setTargetLocation(
+                        (location.distanceSquared(getInstance().getBukkitEntity().getLocation()) > (dontPathfindRange * dontPathfindRange))
+                                ? location : null
+                );
+            } else {
+                setTargetLocation(null);
+                setTarget(null);
+            }
         } else {
             setTargetLocation(null);
         }
@@ -65,5 +71,19 @@ public class TargettableAIImpl
 
     public void setUntargetRangeBetweenInstanceAndTarget(float untargetRangeBetweenInstanceAndTarget) {
         this.untargetRangeBetweenInstanceAndTarget = untargetRangeBetweenInstanceAndTarget;
+    }
+
+    public TargetSelectorStrategy getTargetSelectorStrategy() {
+        return targetSelectorStrategy;
+    }
+
+    public void setTargetSelectorStrategy(@Nullable TargetSelectorStrategy targetSelectorStrategy) {
+        this.targetSelectorStrategy = targetSelectorStrategy;
+    }
+
+    @Override
+    public boolean isAValidTarget(Entity target) {
+        return TargettableAI.super.isAValidTarget(target) &&
+                (untargetRangeBetweenInstanceAndTarget == -1 || (target.getLocation().distanceSquared(getInstance().getBukkitEntity().getLocation()) <= (untargetRangeBetweenInstanceAndTarget * untargetRangeBetweenInstanceAndTarget)));
     }
 }

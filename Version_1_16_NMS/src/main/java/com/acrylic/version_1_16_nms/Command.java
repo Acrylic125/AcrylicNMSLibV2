@@ -5,8 +5,10 @@ import com.acrylic.universal.command.CommandExecuted;
 import com.acrylic.universal.entity.equipment.EntityEquipmentBuilderImpl;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universalnms.entity.entityconfiguration.LivingEntityConfiguration;
+import com.acrylic.universalnms.entityai.aiimpl.AggressiveAI;
 import com.acrylic.universalnms.entityai.aiimpl.TargettableAIImpl;
 import com.acrylic.universalnms.entityai.strategyimpl.PathfinderStrategyImpl;
+import com.acrylic.universalnms.entityai.strategyimpl.PlayerRandomTargetSelector;
 import com.acrylic.universalnms.enums.EntityAnimationEnum;
 import com.acrylic.universalnms.enums.Gamemode;
 import com.acrylic.universalnms.particles.ParticleBuilder;
@@ -16,6 +18,7 @@ import com.acrylic.version_1_16_nms.entity.NMSPlayerInstanceImpl;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import net.minecraft.server.v1_16_R3.DamageSource;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 
 public class Command {
@@ -39,15 +42,29 @@ public class Command {
                     Player player = (Player) commandExecuted.getSender();
                     NMSPlayerInstanceImpl armorStandInstance = new NMSPlayerInstanceImpl(player.getLocation(), null, "Trump");
                     armorStandInstance.getPacketHandler().setRenderer(new EntityPlayerCheckableRenderer(armorStandInstance.getBukkitEntity()));
+                    armorStandInstance.setAnimations(EntityAnimationEnum.SNEAK);
                     //armorStandInstance.asAnimator();
-                    armorStandInstance.setAnimations(EntityAnimationEnum.HURT, EntityAnimationEnum.SLEEP, EntityAnimationEnum.CRIT);
-                    TargettableAIImpl entityAI = new TargettableAIImpl(armorStandInstance);
+                    //armorStandInstance.setAnimations(EntityAnimationEnum.HURT, EntityAnimationEnum.SLEEP, EntityAnimationEnum.CRIT);
+                    AggressiveAI entityAI = new AggressiveAI(armorStandInstance);
                     entityAI.setPathfinderStrategy(new PathfinderStrategyImpl(entityAI, PathfinderGenerator.A_STAR_PATHFINDER_GENERATOR));
-                    entityAI.setTarget(player);
-                    //armorStandInstance.setAI(entityAI);
+                    //entityAI.setTarget(player);
+                    entityAI.setAttackCooldown(2000);
+                    entityAI.setTargetSelectorStrategy(new PlayerRandomTargetSelector(entityAI));
+                    armorStandInstance.setAI(entityAI);
                     armorStandInstance.setSkin("Acrylic123");
                     armorStandInstance.setEquipment(new EntityEquipmentBuilderImpl().
-                            setItemInHand(ItemBuilder.of(Material.DIAMOND_PICKAXE))
+                            setItemInHand(ItemBuilder.of(Material.NETHERITE_SWORD)
+                                    .enchant(Enchantment.DAMAGE_ALL, 1)
+                                    .enchant(Enchantment.FIRE_ASPECT, 1)
+                                    .enchant(Enchantment.KNOCKBACK, 3))
+                            .setHelmet(ItemBuilder.of(Material.NETHERITE_HELMET)
+                                    .enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4))
+                            .setChestplate(ItemBuilder.of(Material.NETHERITE_CHESTPLATE)
+                                    .enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4))
+                            .setLeggings(ItemBuilder.of(Material.NETHERITE_LEGGINGS)
+                                    .enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4))
+                            .setBoots(ItemBuilder.of(Material.NETHER_BRICK)
+                                    .enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4))
                     );
                     armorStandInstance.addToWorld();
                     armorStandInstance.setEntityConfiguration(LivingEntityConfiguration.PERSISTENT_LIVING_ENTITY);
