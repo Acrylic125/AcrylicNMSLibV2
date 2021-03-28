@@ -29,4 +29,9 @@ public class NMSEntityFactoryImpl implements NMSEntityFactory {
     public NMSGiantInstance getNewNMSGiantInstance(@NotNull Location location, @Nullable PlayerCheckableRenderer renderer) {
         return new NMSGiantInstanceImpl(location, renderer);
     }
+
+    @Override
+    public NMSPlayerInstance getNewNMSPlayerInstance(@NotNull Location location, @Nullable PlayerCheckableRenderer renderer, @Nullable String name) {
+        return new NMSPlayerInstanceImpl(location, renderer, name);
+    }
 }

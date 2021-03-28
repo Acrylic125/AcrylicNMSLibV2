@@ -31,4 +31,11 @@ public interface NMSEntityFactory {
     default NMSGiantInstance getNewNMSGiantInstance(@NotNull Location location) {
         return getNewNMSGiantInstance(location, null);
     }
+
+    NMSPlayerInstance getNewNMSPlayerInstance(@NotNull Location location, @Nullable PlayerCheckableRenderer renderer, @Nullable String name);
+
+    default NMSPlayerInstance getNewNMSPlayerInstance(@NotNull Location location, @Nullable String name) {
+        return getNewNMSPlayerInstance(location, null, name);
+    }
+
 }
