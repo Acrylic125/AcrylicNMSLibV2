@@ -7,6 +7,7 @@ import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universalnms.entity.entityconfiguration.LivingEntityConfiguration;
 import com.acrylic.universalnms.entityai.aiimpl.TargettableAIImpl;
 import com.acrylic.universalnms.entityai.strategyimpl.PathfinderStrategyImpl;
+import com.acrylic.universalnms.enums.EntityAnimationEnum;
 import com.acrylic.universalnms.enums.Gamemode;
 import com.acrylic.universalnms.particles.ParticleBuilder;
 import com.acrylic.universalnms.pathfinder.PathfinderGenerator;
@@ -39,10 +40,11 @@ public class Command {
                     NMSPlayerInstanceImpl armorStandInstance = new NMSPlayerInstanceImpl(player.getLocation(), null, "Trump");
                     armorStandInstance.getPacketHandler().setRenderer(new EntityPlayerCheckableRenderer(armorStandInstance.getBukkitEntity()));
                     //armorStandInstance.asAnimator();
+                    armorStandInstance.setAnimations(EntityAnimationEnum.HURT, EntityAnimationEnum.SLEEP, EntityAnimationEnum.CRIT);
                     TargettableAIImpl entityAI = new TargettableAIImpl(armorStandInstance);
                     entityAI.setPathfinderStrategy(new PathfinderStrategyImpl(entityAI, PathfinderGenerator.A_STAR_PATHFINDER_GENERATOR));
                     entityAI.setTarget(player);
-                    armorStandInstance.setAI(entityAI);
+                    //armorStandInstance.setAI(entityAI);
                     armorStandInstance.setSkin("Acrylic123");
                     armorStandInstance.setEquipment(new EntityEquipmentBuilderImpl().
                             setItemInHand(ItemBuilder.of(Material.DIAMOND_PICKAXE))

@@ -10,17 +10,20 @@ public interface PacketFactory {
 
     EntityEquipmentPackets getNewEquipmentPackets();
 
-    //EntityHeadRotationPacket getNewEntityHeadRotationPacket();
-
     EntityMetadataPacket getNewEntityMetadataPacket();
 
     LivingEntitySpawnPacket getNewLivingEntityDisplayPackets();
 
     TeleportPacket getNewTeleportPacket();
 
-    SoundPacket getSoundPacket();
+    SoundPacket getNewSoundPacket();
 
     //TablistHeaderFooterPacket getNewTablistHeaderFooterPacket();
 
+    PlayerInfoPacket getNewPlayerInfoPacket();
+
+    EntityOrientationPackets getNewEntityOrientationPackets();
+
+    EntityAnimationPackets getNewEntityAnimationPackets();
 
 }

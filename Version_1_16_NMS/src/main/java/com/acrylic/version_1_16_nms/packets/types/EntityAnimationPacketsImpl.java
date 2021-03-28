@@ -84,7 +84,7 @@ public class EntityAnimationPacketsImpl
         net.minecraft.server.v1_16_R3.Entity nmsEntity = NMSUtils.convertToNMSEntity(entity);
         if (!(nmsEntity instanceof EntityHuman))
             throw new IllegalArgumentException("Sleep animation only supports EntityHuman entities.");
-        ((EntityHuman) entity).entitySleep(NMSUtils.getBlockPosition(location));
+        nmsEntity.setPose(EntityPose.SLEEPING);
         EntityMetadataPacketImpl metadataPacket = new EntityMetadataPacketImpl();
         metadataPacket.apply(entity);
         return metadataPacket.getPacket();

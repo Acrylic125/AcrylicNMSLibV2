@@ -37,7 +37,23 @@ public class PacketFactoryImpl implements PacketFactory {
     }
 
     @Override
-    public SoundPacket getSoundPacket() {
+    public SoundPacket getNewSoundPacket() {
         return new SoundPacketImpl();
     }
+
+    @Override
+    public PlayerInfoPacket getNewPlayerInfoPacket() {
+        return new PlayerInfoPacketImpl();
+    }
+
+    @Override
+    public EntityOrientationPackets getNewEntityOrientationPackets() {
+        return new EntityOrientationPacketsImpl();
+    }
+
+    @Override
+    public EntityAnimationPackets getNewEntityAnimationPackets() {
+        return new EntityAnimationPacketsImpl();
+    }
+
 }

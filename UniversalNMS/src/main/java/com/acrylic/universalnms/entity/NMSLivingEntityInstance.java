@@ -2,10 +2,13 @@ package com.acrylic.universalnms.entity;
 
 import com.acrylic.universal.entity.LivingEntityInstance;
 import com.acrylic.universal.entity.equipment.EntityEquipmentBuilder;
+import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.entity.entityconfiguration.EntityConfiguration;
 import com.acrylic.universalnms.entity.entityconfiguration.LivingEntityConfiguration;
 import com.acrylic.universalnms.entity.wrapper.NMSLivingEntityWrapper;
 import com.acrylic.universalnms.enums.DamageSource;
+import com.acrylic.universalnms.enums.EntityAnimationEnum;
+import com.acrylic.universalnms.packets.types.EntityAnimationPackets;
 import com.acrylic.universalnms.packets.types.EntityEquipmentPackets;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EntityEquipment;
@@ -82,4 +85,45 @@ public interface NMSLivingEntityInstance extends NMSEntityInstance, LivingEntity
         if (getFireTicks() > 0 && !getBukkitEntity().isInvulnerable())
             damage(0.5f, DamageSource.BURN);
     }
+
+    default void animateOnce(EntityAnimationEnum animation) {
+        EntityAnimationPackets entityAnimationPackets = NMSLib.getPacketFactory().getNewEntityAnimationPackets();
+        entityAnimationPackets.attach(getBukkitEntity(), animation);
+        entityAnimationPackets.getSender().sendToAllByRenderer(getPacketHandler().getRenderer());
+    }
+
+    default void animateManyOnce(EntityAnimationEnum... animations) {
+        EntityAnimationPackets entityAnimationPackets = NMSLib.getPacketFactory().getNewEntityAnimationPackets();
+        entityAnimationPackets.attach(getBukkitEntity(), animations);
+        entityAnimationPackets.getSender().sendToAllByRenderer(getPacketHandler().getRenderer());
+    }
+
+    default void addAnimation(EntityAnimationEnum animation) {
+        LivingEntityPacketHandler packetHandler = getPacketHandler();
+        EntityAnimationPackets entityAnimationPackets = packetHandler.getAnimationPackets();
+        entityAnimationPackets.attach(getBukkitEntity(), animation);
+        entityAnimationPackets.getSender().sendToAllByRenderer(packetHandler.getRenderer());
+    }
+
+    default void addAnimations(EntityAnimationEnum... animations) {
+        LivingEntityPacketHandler packetHandler = getPacketHandler();
+        EntityAnimationPackets entityAnimationPackets = packetHandler.getAnimationPackets();
+        entityAnimationPackets.attach(getBukkitEntity(), animations);
+        entityAnimationPackets.getSender().sendToAllByRenderer(packetHandler.getRenderer());
+    }
+
+    default void setAnimation(EntityAnimationEnum animation) {
+        LivingEntityPacketHandler packetHandler = getPacketHandler();
+        EntityAnimationPackets entityAnimationPackets = packetHandler.getAnimationPackets();
+        entityAnimationPackets.set(getBukkitEntity(), animation);
+        entityAnimationPackets.getSender().sendToAllByRenderer(packetHandler.getRenderer());
+    }
+
+    default void setAnimations(EntityAnimationEnum... animations) {
+        LivingEntityPacketHandler packetHandler = getPacketHandler();
+        EntityAnimationPackets entityAnimationPackets = packetHandler.getAnimationPackets();
+        entityAnimationPackets.set(getBukkitEntity(), animations);
+        entityAnimationPackets.getSender().sendToAllByRenderer(packetHandler.getRenderer());
+    }
+
 }

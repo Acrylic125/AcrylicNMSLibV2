@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 public interface EntityAnimationPackets extends MultiPacketWrapper {
 
-    default void apply(@NotNull Entity entity, @NotNull EntityAnimationEnum animation) {
+    default void attach(@NotNull Entity entity, @NotNull EntityAnimationEnum animation) {
         switch (animation) {
             case ARM_SWING:
                 attachArmSwingingAnimation(entity);
@@ -46,9 +46,19 @@ public interface EntityAnimationPackets extends MultiPacketWrapper {
         }
     }
 
-    default void apply(@NotNull Entity entity, @NotNull EntityAnimationEnum... animations) {
+    default void attach(@NotNull Entity entity, @NotNull EntityAnimationEnum... animations) {
         for (EntityAnimationEnum animation : animations)
-            apply(entity, animation);
+            attach(entity, animation);
+    }
+
+    default void set(@NotNull Entity entity, @NotNull EntityAnimationEnum animation) {
+        getPackets().clear();
+        attach(entity, animation);
+    }
+
+    default void set(@NotNull Entity entity, @NotNull EntityAnimationEnum... animations) {
+        getPackets().clear();
+        attach(entity, animations);
     }
 
     EntityAnimationPackets attachArmSwingingAnimation(@NotNull Entity entity);
