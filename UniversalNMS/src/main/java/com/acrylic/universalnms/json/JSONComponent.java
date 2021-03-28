@@ -1,70 +1,29 @@
 package com.acrylic.universalnms.json;
 
-import com.acrylic.universal.items.ItemUtils;
-import com.acrylic.universal.text.ChatUtils;
-import com.acrylic.universalnms.nbt.NBTCompound;
+import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.nbt.NBTItem;
-import net.md_5.bungee.api.chat.*;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
-public final class JSONComponent implements AbstractJSONComponent {
+public interface JSONComponent {
 
-    private final TextComponent textComponent;
-
-    public static JSONComponent of(String text) {
-        return new JSONComponent(text);
+    static JSONComponent of(@NotNull String text) {
+        return NMSLib.getNMSUtilityFactory().getNewJSONComponent(text);
     }
 
-    private JSONComponent(String text) {
-        textComponent = new TextComponent(TextComponent.fromLegacyText((ChatUtils.get(text))));
-    }
+    JSONComponent subText(String... text);
 
-    @Override
-    public AbstractJSONComponent subText(String... text) {
-        final ComponentBuilder componentBuilder = new ComponentBuilder(ChatUtils.get(text[0]));
-        int i = 0;
-        if (text.length > 1) {
-            for (String s : text) {
-                i++;
-                if (i <= 1)
-                    continue;
-                componentBuilder.append("\n" + ChatUtils.get(s));
-            }
-        }
-        textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,componentBuilder.create()));
-        return this;
-    }
+    JSONComponent command(String text);
 
-    @Override
-    public AbstractJSONComponent command(String text) {
-        textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,text));
-        return this;
-    }
+    JSONComponent suggestCommand(String text);
 
-    @Override
-    public AbstractJSONComponent suggestCommand(String text) {
-        textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,text));
-        return this;
-    }
+    JSONComponent item(ItemStack item);
 
-    @Override
-    public AbstractJSONComponent item(NBTItem nbtItem) {
-        if (ItemUtils.isAir(nbtItem.getOriginalItem()))
-            return this;
-        NBTCompound NBTCompound = nbtItem.getCompound();
-        assert NBTCompound != null;
-        HoverEvent event = new HoverEvent(HoverEvent.Action.SHOW_ITEM, new BaseComponent[]{new TextComponent(NBTCompound.getCompoundString())});
-        textComponent.setHoverEvent(event);
-        return this;
-    }
+    JSONComponent item(NBTItem nbtItem);
 
-    @Override
-    public AbstractJSONComponent link(String link) {
-        textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,link));
-        return this;
-    }
+    JSONComponent link(String text);
 
-    @Override
-    public TextComponent getTextComponent() {
-        return textComponent;
-    }
+    TextComponent getTextComponent();
+
 }

@@ -1,5 +1,9 @@
 package com.acrylic.universalnms.factory;
 
+import com.acrylic.universalnms.json.JSON;
+import com.acrylic.universalnms.json.JSONComponent;
+import com.acrylic.universalnms.json.JSONComponentImpl;
+import com.acrylic.universalnms.json.JSONImpl;
 import com.acrylic.universalnms.worldexaminer.BoundingBoxExaminer;
 import com.acrylic.universalnms.nbt.NBTEntity;
 import com.acrylic.universalnms.nbt.NBTItem;
@@ -118,5 +122,15 @@ public interface NMSUtilityFactory {
     default Object getBlockPlaceSound(@NotNull Location location) {
         return getBlockPlaceSound(location.getBlock());
     }
+
+    default JSON getNewJSON() {
+        return new JSONImpl();
+    }
+
+    default JSON getNewJSON(@NotNull JSONComponent component) {
+        return new JSONImpl(component);
+    }
+
+    JSONComponent getNewJSONComponent(@NotNull String text);
 
 }

@@ -1,67 +1,23 @@
 package com.acrylic.universalnms.json;
 
-import com.acrylic.universalnms.send.SingleSender;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.chat.ComponentSerializer;
-import org.bukkit.entity.Player;
+import com.acrylic.universalnms.NMSLib;
+import com.acrylic.universalnms.send.Sendable;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Consumer;
+public interface JSON extends Sendable, Cloneable {
 
-/**
- * Example:
- *
- * new JSON().append(JSONComponent.of("&eHello LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOL").item(p.getItemInHand()))
- *                 .append(JSONComponent.of(" LOL").suggestCommand("/kill ").subText("&7Click to kill."))
- *                 .append(JSONComponent.of(" Idiot"))
- *                 .append(JSONComponent.of(" &6&lMe! "))
- *                 .send(p);
- */
-public final class JSON implements AbstractJSON {
-
-    private final TextComponent textComponent;
-
-    private JSON(TextComponent textComponent) {
-        this.textComponent = (TextComponent) textComponent.duplicate();
+    static JSON create() {
+        return NMSLib.getNMSUtilityFactory().getNewJSON();
     }
 
-    public JSON(AbstractJSONComponent component) {
-        textComponent = new TextComponent(component.getTextComponent());
+    static JSON create(@NotNull JSONComponent jsonComponent) {
+        return NMSLib.getNMSUtilityFactory().getNewJSON(jsonComponent);
     }
 
-    public JSON() {
-        textComponent = new TextComponent("");
-    }
+    JSON append(JSONComponent component);
 
-    @Override
-    public AbstractJSON append(AbstractJSONComponent component) {
-        textComponent.addExtra(component.getTextComponent());
-        return this;
-    }
+    String toJson();
 
-    @Override
-    public String toJson() {
-        return toString();
-    }
+    JSON duplicate();
 
-    @Override
-    public AbstractJSON duplicate() {
-        return new JSON(textComponent);
-    }
-
-    @Override
-    public String toString() {
-        return ComponentSerializer.toString(textComponent);
-    }
-
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
-
-    @Override
-    public SingleSender getSender() {
-        return SingleSender.builder(player -> player.spigot().sendMessage(textComponent)).build();
-    }
 }

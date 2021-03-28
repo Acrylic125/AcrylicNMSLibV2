@@ -1,6 +1,5 @@
 package com.acrylic.universalnms.entity;
 
-import com.acrylic.universalnms.packets.types.EntityAnimationPackets;
 import com.acrylic.universalnms.packets.types.EntityOrientationPackets;
 import com.acrylic.universalnms.packets.types.NamedPlayerSpawnPacket;
 import com.acrylic.universalnms.packets.types.PlayerInfoPacket;

@@ -1,6 +1,7 @@
 package com.acrylic.version_1_8_nms.factory;
 
 import com.acrylic.universalnms.factory.NMSUtilityFactory;
+import com.acrylic.universalnms.json.JSONComponent;
 import com.acrylic.universalnms.worldexaminer.BoundingBoxExaminer;
 import com.acrylic.universalnms.nbt.NBTEntity;
 import com.acrylic.universalnms.nbt.NBTItem;
@@ -10,6 +11,7 @@ import com.acrylic.universalnms.particles.ItemParticles;
 import com.acrylic.universalnms.particles.Particles;
 import com.acrylic.universalnms.worldexaminer.ChunkExaminer;
 import com.acrylic.version_1_8_nms.NMSUtils;
+import com.acrylic.version_1_8_nms.json.JSONComponentImpl;
 import com.acrylic.version_1_8_nms.nbt.NBTEntityImpl;
 import com.acrylic.version_1_8_nms.nbt.NBTItemImpl;
 import com.acrylic.version_1_8_nms.nbt.NBTTileEntityImpl;
@@ -87,5 +89,9 @@ public final class NMSUtilityFactoryImpl implements NMSUtilityFactory {
         return NMSUtils.convertToNMSBlock(block).stepSound.getPlaceSound();
     }
 
+    @Override
+    public JSONComponent getNewJSONComponent(@NotNull String text) {
+        return new JSONComponentImpl(text);
+    }
 
 }

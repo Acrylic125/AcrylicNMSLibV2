@@ -1,6 +1,8 @@
 package com.acrylic.version_1_16_nms.factory;
 
 import com.acrylic.universalnms.factory.NMSUtilityFactory;
+import com.acrylic.universalnms.json.JSONComponent;
+import com.acrylic.universalnms.json.JSONComponentImpl;
 import com.acrylic.universalnms.worldexaminer.BoundingBoxExaminer;
 import com.acrylic.universalnms.nbt.NBTEntity;
 import com.acrylic.universalnms.nbt.NBTItem;
@@ -89,5 +91,10 @@ public final class NMSUtilityFactoryImpl implements NMSUtilityFactory {
     public Object getBlockPlaceSound(@NotNull Block block) {
         net.minecraft.server.v1_16_R3.Block nmsBlock = NMSUtils.convertToNMSBlock(block);
         return nmsBlock.getStepSound(nmsBlock.getBlockData()).getStepSound();
+    }
+
+    @Override
+    public JSONComponent getNewJSONComponent(@NotNull String text) {
+        return new JSONComponentImpl(text);
     }
 }
