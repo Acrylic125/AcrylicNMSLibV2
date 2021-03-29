@@ -6,6 +6,7 @@ import com.acrylic.universalnms.entity.entityconfiguration.EntityConfiguration;
 import com.acrylic.universalnms.entityai.EntityAI;
 import net.minecraft.server.v1_8_R3.DataWatcher;
 import net.minecraft.server.v1_8_R3.Entity;
+import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

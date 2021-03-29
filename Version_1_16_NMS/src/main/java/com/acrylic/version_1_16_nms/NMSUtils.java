@@ -1,5 +1,6 @@
 package com.acrylic.version_1_16_nms;
 
+import com.acrylic.universal.text.ChatUtils;
 import net.minecraft.server.v1_16_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -146,5 +147,9 @@ public final class NMSUtils {
             case SWEET_BERRY_BUSH: return DamageSource.SWEET_BERRY_BUSH;
             default: return null;
         }
+    }
+
+    public static IChatBaseComponent toChatComponent(String text) {
+        return IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + ChatUtils.get(text) + "\"}");
     }
 }

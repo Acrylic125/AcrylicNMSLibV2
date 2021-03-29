@@ -1,5 +1,6 @@
 package com.acrylic.version_1_8_nms;
 
+import com.acrylic.universal.text.ChatUtils;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -137,5 +138,9 @@ public final class NMSUtils {
             case FALLING_BLOCK: return DamageSource.FALLING_BLOCK;
             default: return null;
         }
+    }
+
+    public static IChatBaseComponent toChatComponent(String text) {
+        return IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + ChatUtils.get(text) + "\"}");
     }
 }

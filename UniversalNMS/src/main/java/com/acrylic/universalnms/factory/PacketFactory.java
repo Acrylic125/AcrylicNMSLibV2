@@ -18,12 +18,16 @@ public interface PacketFactory {
 
     SoundPacket getNewSoundPacket();
 
-    //TablistHeaderFooterPacket getNewTablistHeaderFooterPacket();
+    TablistHeaderFooterPacket getNewTablistHeaderFooterPacket();
 
     PlayerInfoPacket getNewPlayerInfoPacket();
 
     EntityOrientationPackets getNewEntityOrientationPackets();
 
     EntityAnimationPackets getNewEntityAnimationPackets();
+
+    TitlePacket getNewTitlePacket();
+
+    ChatPacket getNewChatPacket();
 
 }

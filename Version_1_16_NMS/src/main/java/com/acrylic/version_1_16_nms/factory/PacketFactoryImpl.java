@@ -42,6 +42,11 @@ public class PacketFactoryImpl implements PacketFactory {
     }
 
     @Override
+    public TablistHeaderFooterPacket getNewTablistHeaderFooterPacket() {
+        return new TablistHeaderFooterPacketImpl();
+    }
+
+    @Override
     public PlayerInfoPacket getNewPlayerInfoPacket() {
         return new PlayerInfoPacketImpl();
     }
@@ -54,5 +59,15 @@ public class PacketFactoryImpl implements PacketFactory {
     @Override
     public EntityAnimationPackets getNewEntityAnimationPackets() {
         return new EntityAnimationPacketsImpl();
+    }
+
+    @Override
+    public TitlePacket getNewTitlePacket() {
+        return new TitlePacketImpl();
+    }
+
+    @Override
+    public ChatPacket getNewChatPacket() {
+        return new ChatPacketImpl();
     }
 }
