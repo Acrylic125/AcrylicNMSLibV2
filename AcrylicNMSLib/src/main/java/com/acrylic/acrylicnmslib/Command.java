@@ -6,7 +6,10 @@ import com.acrylic.universal.command.CommandExecuted;
 import com.acrylic.universal.command.CommandUtils;
 import com.acrylic.universal.entity.equipment.EntityEquipmentBuilderImpl;
 import com.acrylic.universal.text.ChatUtils;
+import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universalnms.NMSLib;
+import com.acrylic.universalnms.entity.NMSArmorStandInstance;
+import com.acrylic.universalnms.entity.NMSGiantInstance;
 import com.acrylic.universalnms.entity.NMSPlayerInstance;
 import com.acrylic.universalnms.entity.entityconfiguration.LivingEntityConfiguration;
 import com.acrylic.universalnms.entityai.aiimpl.AggressiveAI;
@@ -59,6 +62,12 @@ public class Command {
                 .timer(true)
                 .handle(commandExecuted -> {
                     Player player = (Player) commandExecuted.getSender();
+                    NMSArmorStandInstance a = NMSArmorStandInstance.builder(player.getLocation())
+                            .asHologram()
+                            .name("&e&lThis is a really nice name &6&lhere!")
+                            .buildEntityInstance();
+                    a.getPacketHandler().useEntityPlayerCheckableRenderer();
+                    a.register();
 
                 }).arguments(getAStarCommand(), getNPCTestCommand(), getNewTitle(),
                         getNewActionBar(), getNewGameInfo());

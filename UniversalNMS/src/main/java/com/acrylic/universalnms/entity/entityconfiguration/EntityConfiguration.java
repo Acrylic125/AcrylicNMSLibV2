@@ -16,7 +16,11 @@ import java.util.function.Predicate;
  */
 public interface EntityConfiguration {
 
-    EntityConfiguration DEFAULT_ENTITY = new EntityConfigurationImpl();
+    EntityConfiguration
+            DEFAULT_ENTITY = new EntityConfigurationImpl(),
+            NO_AI_ENTITY = EntityConfigurationImpl.entityBuilder()
+                    .runAIByNMSEntities(false)
+                    .build();
 
     /**
      * The amount of ticks to recheck the renderer.

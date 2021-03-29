@@ -14,8 +14,14 @@ import com.acrylic.universalnms.particles.ParticleBuilder;
 import com.acrylic.universalnms.pathfinder.PathfinderGenerator;
 import com.acrylic.universalnms.renderer.EntityPlayerCheckableRenderer;
 import com.acrylic.version_1_16_nms.entity.NMSPlayerInstanceImpl;
+import com.acrylic.version_1_16_nms.entity.wrapper.ArmorStandWrapper;
+import com.acrylic.version_1_16_nms.packets.SinglePacketWrapperImpl;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import net.minecraft.server.v1_16_R3.DamageSource;
+import net.minecraft.server.v1_16_R3.EntityArmorStand;
+import net.minecraft.server.v1_16_R3.PacketPlayOutEntityMetadata;
+import net.minecraft.server.v1_16_R3.PacketPlayOutSpawnEntityLiving;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -75,17 +81,9 @@ public class Command {
                                 .timer(true)
                                 .handle(commandExecuted -> {
                                     Player player = (Player) commandExecuted.getSender();
-                            ParticleBuilder.blockDustParticleBuilder()
-                                    .location(player.getLocation())
-                                    .speed(0.15f)
-                                    .item(ItemBuilder.of(Material.GOLD_BLOCK).build())
-                                    .offset(1, 1, 1)
-                                    .amount(100)
-                                    .build()
-                                    .getSender()
-                                    .sendTo(player);
+                                    Location loc = player.getLocation();
 
-                        })
+                                })
                 );
     }
 

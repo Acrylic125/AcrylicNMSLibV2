@@ -22,15 +22,19 @@ public class EntityEquipmentPacketsImpl
     private ArrayList<PacketPlayOutEntityEquipment> entityEquipments;
 
     public void apply(@NotNull EntityLiving entity) {
-        entityEquipments = new ArrayList<>(1);
-        List<Pair<EnumItemSlot, net.minecraft.server.v1_16_R3.ItemStack>> equipment = new ArrayList<>(itemStackMap.size());
-        int id = entity.getId();
-        itemStackMap.forEach((slot, item) -> {
-            if (item == null)
-                item = Items.AIR.createItemStack();
-            equipment.add(new Pair<>(slot, item));
-        });
-        entityEquipments.add(new PacketPlayOutEntityEquipment(id, equipment));
+        if (itemStackMap.size() <= 0) {
+            entityEquipments = new ArrayList<>(0);
+        } else {
+            entityEquipments = new ArrayList<>(1);
+            List<Pair<EnumItemSlot, net.minecraft.server.v1_16_R3.ItemStack>> equipment = new ArrayList<>(itemStackMap.size());
+            int id = entity.getId();
+            itemStackMap.forEach((slot, item) -> {
+                if (item == null)
+                    item = Items.AIR.createItemStack();
+                equipment.add(new Pair<>(slot, item));
+            });
+            entityEquipments.add(new PacketPlayOutEntityEquipment(id, equipment));
+        }
     }
 
     @Override
