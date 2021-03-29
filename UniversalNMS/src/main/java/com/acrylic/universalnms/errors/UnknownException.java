@@ -1,5 +1,10 @@
 package com.acrylic.universalnms.errors;
 
+/**
+ * This exception is meant as a temporary solution
+ * to report any bugs and unintended effects.
+ */
+@Deprecated
 public class UnknownException extends RuntimeException {
 
     public UnknownException() {

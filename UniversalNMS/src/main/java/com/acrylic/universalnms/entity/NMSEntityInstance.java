@@ -9,7 +9,8 @@ import com.acrylic.universalnms.entity.wrapper.NMSEntityWrapper;
 import com.acrylic.universalnms.entityai.EntityAI;
 import com.acrylic.universalnms.packets.types.EntityDestroyPacket;
 import com.acrylic.universalnms.packets.types.TeleportPacket;
-import com.acrylic.universalnms.renderer.PlayerCheckableRenderer;
+import com.acrylic.universalnms.renderer.PlayerInitializableRenderer;
+import com.acrylic.universalnms.renderer.RangedPlayerInitializableRenderer;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -17,6 +18,7 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.UUID;
 import java.util.function.Predicate;
 
 public interface NMSEntityInstance extends EntityInstance {
@@ -39,6 +41,18 @@ public interface NMSEntityInstance extends EntityInstance {
          */
         @Deprecated
         ROOT
+    }
+
+    default int getID() {
+        return getBukkitEntity().getEntityId();
+    }
+
+    default UUID getUUID() {
+        return getBukkitEntity().getUniqueId();
+    }
+
+    default Location getLocation() {
+        return getBukkitEntity().getLocation();
     }
 
     void setEntityConfiguration(@NotNull EntityConfiguration entityConfiguration);
@@ -95,7 +109,7 @@ public interface NMSEntityInstance extends EntityInstance {
     default void tick(TickSource tickSource) {
         EntityAI ai = getAI();
         EntityPacketHandler packetHandler = getPacketHandler();
-        PlayerCheckableRenderer renderer = packetHandler.getRenderer();;
+        PlayerInitializableRenderer renderer = packetHandler.getRenderer();;
         EntityConfiguration entityConfiguration = getEntityConfiguration();
         int ticks = getInstanceTicks();
         Predicate<NMSEntityInstance>
@@ -178,7 +192,7 @@ public interface NMSEntityInstance extends EntityInstance {
      * For instance, if the entity is held within the
      * renderer, the player will be deintiialized.
      *
-     * @see com.acrylic.universalnms.renderer.RangedPlayerCheckableRenderer#deinitialize(Player)
+     * @see RangedPlayerInitializableRenderer#deinitialize(Player)
      * @see com.acrylic.universalnms.entityai.aiimpl.TargettableAIImpl#cleanPlayer(Player)
      *
      * @param player The player.

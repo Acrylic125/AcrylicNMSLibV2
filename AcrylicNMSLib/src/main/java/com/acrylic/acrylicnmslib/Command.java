@@ -1,37 +1,26 @@
 package com.acrylic.acrylicnmslib;
 
-import com.acrylic.acrylicnmslib.plugin.AcrylicNMSPlugin;
 import com.acrylic.universal.command.CommandBuilder;
 import com.acrylic.universal.command.CommandExecuted;
-import com.acrylic.universal.command.CommandUtils;
 import com.acrylic.universal.entity.equipment.EntityEquipmentBuilderImpl;
 import com.acrylic.universal.text.ChatUtils;
-import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.entity.NMSArmorStandInstance;
-import com.acrylic.universalnms.entity.NMSGiantInstance;
 import com.acrylic.universalnms.entity.NMSPlayerInstance;
 import com.acrylic.universalnms.entity.entityconfiguration.LivingEntityConfiguration;
 import com.acrylic.universalnms.entityai.aiimpl.AggressiveAI;
-import com.acrylic.universalnms.entityai.strategyimpl.GuardianTargetSelector;
 import com.acrylic.universalnms.entityai.strategyimpl.PathfinderStrategyImpl;
 import com.acrylic.universalnms.entityai.strategyimpl.PlayerRandomTargetSelector;
 import com.acrylic.universalnms.enums.ChatMessageType;
 import com.acrylic.universalnms.enums.TitleType;
-import com.acrylic.universalnms.json.JSON;
-import com.acrylic.universalnms.json.JSONComponent;
 import com.acrylic.universalnms.packets.types.ChatPacket;
-import com.acrylic.universalnms.packets.types.TablistHeaderFooterPacket;
 import com.acrylic.universalnms.packets.types.TitlePacket;
 import com.acrylic.universalnms.particles.ParticleBuilder;
 import com.acrylic.universalnms.pathfinder.Pathfinder;
 import com.acrylic.universalnms.pathfinder.PathfinderGenerator;
-import com.acrylic.universalnms.pathfinder.impl.PathExaminerByHeightImpl;
-import com.acrylic.universalnms.renderer.EntityPlayerCheckableRenderer;
+import com.acrylic.universalnms.renderer.EntityPlayerInitializableRenderer;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import com.comphenix.protocol.wrappers.EnumWrappers;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
@@ -92,7 +81,7 @@ public class Command {
                                     .setBoots(ItemBuilder.of(Material.NETHER_BRICK)
                                             .enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4)))
                             .buildEntityInstance();
-                    nmsPlayerInstance.getPacketHandler().setRenderer(new EntityPlayerCheckableRenderer(nmsPlayerInstance.getBukkitEntity()));
+                    nmsPlayerInstance.getPacketHandler().setRenderer(new EntityPlayerInitializableRenderer(nmsPlayerInstance.getBukkitEntity()));
                     AggressiveAI entityAI = new AggressiveAI(nmsPlayerInstance);
                     entityAI.setAttackCooldown(400);
                     //entityAI.setPathQuitterStrategy(new SimplePathQuitterStrategyImpl(entityAI));

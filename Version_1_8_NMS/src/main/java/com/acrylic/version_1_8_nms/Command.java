@@ -6,15 +6,12 @@ import com.acrylic.universal.command.CommandExecuted;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universalnms.entity.NMSEntityInstance;
-import com.acrylic.universalnms.renderer.EntityPlayerCheckableRenderer;
+import com.acrylic.universalnms.renderer.EntityPlayerInitializableRenderer;
 import com.acrylic.version_1_8.equipment.EntityEquipmentBuilderImpl;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import com.acrylic.version_1_8_nms.entity.NMSGiantInstanceImpl;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -40,7 +37,7 @@ public class Command {
                 .handle(commandExecuted -> {
                     Player player = (Player) commandExecuted.getSender();
                     NMSGiantInstanceImpl armorStandInstance = new NMSGiantInstanceImpl(player.getLocation(), null);
-                    armorStandInstance.getPacketHandler().setRenderer(new EntityPlayerCheckableRenderer(armorStandInstance.getBukkitEntity()));
+                    armorStandInstance.getPacketHandler().setRenderer(new EntityPlayerInitializableRenderer(armorStandInstance.getBukkitEntity()));
                     armorStandInstance.asAnimator();
                     armorStandInstance.upsideDown();
                     armorStandInstance.setEquipment(new EntityEquipmentBuilderImpl().

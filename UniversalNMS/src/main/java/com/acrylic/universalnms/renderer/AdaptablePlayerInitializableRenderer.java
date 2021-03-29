@@ -6,13 +6,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Consumer;
 
 @Deprecated
-public class AdaptablePlayerCheckableRenderer<R extends PlayerCheckableRenderer>
+public class AdaptablePlayerInitializableRenderer<R extends PlayerInitializableRenderer>
         extends AdaptableRenderer<R, Player>
-        implements PlayerCheckableRenderer {
+        implements PlayerInitializableRenderer {
 
     private Consumer<Player> initialize, deinitialize;
 
-    public AdaptablePlayerCheckableRenderer(@NotNull R adaptFrom) {
+    public AdaptablePlayerInitializableRenderer(@NotNull R adaptFrom) {
         super(adaptFrom);
     }
 
@@ -57,7 +57,7 @@ public class AdaptablePlayerCheckableRenderer<R extends PlayerCheckableRenderer>
     }
 
     @Override
-    public AdaptablePlayerCheckableRenderer<R> clone() {
-        return new AdaptablePlayerCheckableRenderer<>(getAdaptFrom());
+    public AdaptablePlayerInitializableRenderer<R> clone() {
+        return new AdaptablePlayerInitializableRenderer<>(getAdaptFrom());
     }
 }

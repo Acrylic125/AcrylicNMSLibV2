@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
-public interface PlayerCheckableRenderer extends Renderer<Player> {
+public interface PlayerInitializableRenderer extends Renderer<Player> {
 
     void doChecks();
 
@@ -22,10 +22,10 @@ public interface PlayerCheckableRenderer extends Renderer<Player> {
     void deinitialize(@NotNull Player player);
 
     @Override
-    PlayerCheckableRenderer clone();
+    PlayerInitializableRenderer clone();
 
     /**
-     * @return  If someone is being rendered for.
+     * @return If someone is being rendered for.
      */
     boolean isInUse();
 

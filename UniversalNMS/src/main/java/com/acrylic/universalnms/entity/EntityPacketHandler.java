@@ -3,10 +3,8 @@ package com.acrylic.universalnms.entity;
 import com.acrylic.universalnms.packets.types.EntityDestroyPacket;
 import com.acrylic.universalnms.packets.types.EntitySpawnPacket;
 import com.acrylic.universalnms.packets.types.TeleportPacket;
-import com.acrylic.universalnms.renderer.EntityPlayerCheckableRenderer;
-import com.acrylic.universalnms.renderer.PlayerCheckableRenderer;
-import com.acrylic.universalnms.renderer.Renderer;
-import org.bukkit.Bukkit;
+import com.acrylic.universalnms.renderer.EntityPlayerInitializableRenderer;
+import com.acrylic.universalnms.renderer.PlayerInitializableRenderer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,18 +13,18 @@ public interface EntityPacketHandler {
     @NotNull
     NMSEntityInstance getEntityInstance();
 
-    void setRenderer(@NotNull PlayerCheckableRenderer renderer);
+    void setRenderer(@NotNull PlayerInitializableRenderer renderer);
 
-    PlayerCheckableRenderer getRenderer();
+    PlayerInitializableRenderer getRenderer();
 
-    default EntityPlayerCheckableRenderer useEntityPlayerCheckableRenderer() {
-        EntityPlayerCheckableRenderer renderer = new EntityPlayerCheckableRenderer(getEntityInstance().getBukkitEntity());
+    default EntityPlayerInitializableRenderer useEntityPlayerCheckableRenderer() {
+        EntityPlayerInitializableRenderer renderer = new EntityPlayerInitializableRenderer(getEntityInstance().getBukkitEntity());
         setRenderer(renderer);
         return renderer;
     }
 
-    default EntityPlayerCheckableRenderer useEntityPlayerCheckableRenderer(double range) {
-        EntityPlayerCheckableRenderer renderer = useEntityPlayerCheckableRenderer();
+    default EntityPlayerInitializableRenderer useEntityPlayerCheckableRenderer(double range) {
+        EntityPlayerInitializableRenderer renderer = useEntityPlayerCheckableRenderer();
         renderer.setRange(range);
         return renderer;
     }
@@ -44,7 +42,7 @@ public interface EntityPacketHandler {
     void hideEntityFromPlayer(Player player);
 
     static void initializeRenderer(EntityPacketHandler entityPacketHandler) {
-        PlayerCheckableRenderer renderer = entityPacketHandler.getRenderer();
+        PlayerInitializableRenderer renderer = entityPacketHandler.getRenderer();
         renderer.setOnInitialize(entityPacketHandler::displayEntityToPlayer);
         renderer.setOnDeinitialize(entityPacketHandler::hideEntityFromPlayer);
     }

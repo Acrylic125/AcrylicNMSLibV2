@@ -9,18 +9,18 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class RangedPlayerCheckableRenderer implements PlayerCheckableRenderer {
+public class RangedPlayerInitializableRenderer implements PlayerInitializableRenderer {
 
     private double range = 32;
     private volatile Location location;
     private volatile Collection<UUID> rendered;
     private Consumer<Player> initialize, deinitialize;
 
-    public RangedPlayerCheckableRenderer() {
+    public RangedPlayerInitializableRenderer() {
         this(new HashSet<>());
     }
 
-    public RangedPlayerCheckableRenderer(@NotNull Collection<UUID> rendered) {
+    public RangedPlayerInitializableRenderer(@NotNull Collection<UUID> rendered) {
         this.rendered = rendered;
     }
 
@@ -125,8 +125,8 @@ public class RangedPlayerCheckableRenderer implements PlayerCheckableRenderer {
     }
 
     @Override
-    public RangedPlayerCheckableRenderer clone() {
-        return new RangedPlayerCheckableRenderer(rendered);
+    public RangedPlayerInitializableRenderer clone() {
+        return new RangedPlayerInitializableRenderer(rendered);
     }
 
     @Override

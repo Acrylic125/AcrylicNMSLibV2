@@ -3,12 +3,9 @@ package com.acrylic.version_1_16_nms.entity;
 import com.acrylic.universalnms.entity.NMSPlayerInstance;
 import com.acrylic.universalnms.entity.entityconfiguration.EntityConfiguration;
 import com.acrylic.universalnms.entity.entityconfiguration.LivingEntityConfiguration;
-import com.acrylic.universalnms.entity.entityconfiguration.LivingEntityConfigurationImpl;
 import com.acrylic.universalnms.entity.wrapper.NMSLivingEntityWrapper;
-import com.acrylic.universalnms.entityai.EntityAI;
 import com.acrylic.universalnms.enums.Gamemode;
-import com.acrylic.universalnms.renderer.PlayerCheckableRenderer;
-import com.acrylic.version_1_16_nms.NMSUtils;
+import com.acrylic.universalnms.renderer.PlayerInitializableRenderer;
 import com.acrylic.version_1_16_nms.entity.wrapper.PlayerWrapper;
 import com.acrylic.version_1_16_nms.packets.types.EntityOrientationPacketsImpl;
 import com.mojang.authlib.properties.Property;
@@ -18,7 +15,6 @@ import net.minecraft.server.v1_16_R3.EntityPlayer;
 import net.minecraft.server.v1_16_R3.EnumGamemode;
 import net.minecraft.server.v1_16_R3.PlayerChunkMap;
 import org.bukkit.Location;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -36,7 +32,7 @@ public class NMSPlayerInstanceImpl
     private final PlayerPacketHandlerImpl entityPacketHandler;
     private LivingEntityConfiguration configuration = LivingEntityConfiguration.DEFAULT_LIVING_ENTITY;
 
-    public NMSPlayerInstanceImpl(@NotNull Location location, @Nullable PlayerCheckableRenderer renderer, @Nullable String name) {
+    public NMSPlayerInstanceImpl(@NotNull Location location, @Nullable PlayerInitializableRenderer renderer, @Nullable String name) {
         this.playerWrapper = new PlayerWrapper(this, location, name);
         playerWrapper.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
         this.entityPacketHandler = new PlayerPacketHandlerImpl(this, renderer);

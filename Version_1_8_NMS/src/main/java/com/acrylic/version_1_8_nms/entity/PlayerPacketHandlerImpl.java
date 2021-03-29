@@ -4,7 +4,7 @@ import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.entity.EntityPacketHandler;
 import com.acrylic.universalnms.entity.PlayerPacketHandler;
 import com.acrylic.universalnms.packets.types.*;
-import com.acrylic.universalnms.renderer.PlayerCheckableRenderer;
+import com.acrylic.universalnms.renderer.PlayerInitializableRenderer;
 import com.acrylic.universalnms.send.BatchSender;
 import com.acrylic.version_1_8_nms.packets.types.*;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
@@ -26,9 +26,9 @@ public class PlayerPacketHandlerImpl implements PlayerPacketHandler {
     private final EntityMetadataPacketImpl entityMetadataPacket = new EntityMetadataPacketImpl();
     private final EntityAnimationPacketsImpl entityAnimationPackets = new EntityAnimationPacketsImpl();
     private final BatchSender displaySender = new BatchSender();
-    private PlayerCheckableRenderer renderer;
+    private PlayerInitializableRenderer renderer;
 
-    public PlayerPacketHandlerImpl(@NotNull NMSPlayerInstanceImpl entityInstance, @Nullable PlayerCheckableRenderer renderer) {
+    public PlayerPacketHandlerImpl(@NotNull NMSPlayerInstanceImpl entityInstance, @Nullable PlayerInitializableRenderer renderer) {
         this.entityInstance = entityInstance;
         this.renderer = renderer;
         if (renderer != null)
@@ -79,13 +79,13 @@ public class PlayerPacketHandlerImpl implements PlayerPacketHandler {
     }
 
     @Override
-    public void setRenderer(@NotNull PlayerCheckableRenderer renderer) {
+    public void setRenderer(@NotNull PlayerInitializableRenderer renderer) {
         this.renderer = renderer;
         EntityPacketHandler.initializeRenderer(this);
     }
 
     @Override
-    public PlayerCheckableRenderer getRenderer() {
+    public PlayerInitializableRenderer getRenderer() {
         if (renderer == null)
             EntityPacketHandler.throwNoRendererError();
         return renderer;

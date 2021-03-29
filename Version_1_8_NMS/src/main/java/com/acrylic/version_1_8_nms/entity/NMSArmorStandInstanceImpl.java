@@ -4,16 +4,13 @@ import com.acrylic.universalnms.entity.NMSArmorStandInstance;
 import com.acrylic.universalnms.entity.entityconfiguration.EntityConfiguration;
 import com.acrylic.universalnms.entity.entityconfiguration.LivingEntityConfiguration;
 import com.acrylic.universalnms.entity.wrapper.NMSLivingEntityWrapper;
-import com.acrylic.universalnms.entityai.EntityAI;
-import com.acrylic.universalnms.renderer.PlayerCheckableRenderer;
-import com.acrylic.universalnms.renderer.Renderer;
+import com.acrylic.universalnms.renderer.PlayerInitializableRenderer;
 import com.acrylic.version_1_8_nms.NMSUtils;
 import com.acrylic.version_1_8_nms.entity.wrapper.ArmorStandWrapper;
 import net.minecraft.server.v1_8_R3.EntityArmorStand;
 import net.minecraft.server.v1_8_R3.Vector3f;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Player;
 import org.bukkit.util.EulerAngle;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -26,12 +23,12 @@ public class NMSArmorStandInstanceImpl
     private final LivingEntityPacketHandlerImpl entityPacketHandler;
     private LivingEntityConfiguration configuration = LivingEntityConfiguration.DEFAULT_LIVING_ENTITY;
 
-    public NMSArmorStandInstanceImpl(@NotNull Location location, @Nullable PlayerCheckableRenderer renderer) {
+    public NMSArmorStandInstanceImpl(@NotNull Location location, @Nullable PlayerInitializableRenderer renderer) {
         this.armorStand = new ArmorStandWrapper(this, NMSUtils.convertToNMSWorld(location.getWorld()), location.getX(), location.getY(), location.getZ());
         this.entityPacketHandler = new LivingEntityPacketHandlerImpl(this, renderer);
     }
 
-    public NMSArmorStandInstanceImpl(@NotNull ArmorStandWrapper armorStand, @Nullable PlayerCheckableRenderer renderer) {
+    public NMSArmorStandInstanceImpl(@NotNull ArmorStandWrapper armorStand, @Nullable PlayerInitializableRenderer renderer) {
         this.armorStand = armorStand;
         this.entityPacketHandler = new LivingEntityPacketHandlerImpl(this, renderer);
     }

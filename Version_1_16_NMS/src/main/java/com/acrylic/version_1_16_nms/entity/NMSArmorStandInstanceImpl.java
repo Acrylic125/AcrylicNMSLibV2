@@ -4,8 +4,7 @@ import com.acrylic.universalnms.entity.NMSArmorStandInstance;
 import com.acrylic.universalnms.entity.entityconfiguration.EntityConfiguration;
 import com.acrylic.universalnms.entity.entityconfiguration.LivingEntityConfiguration;
 import com.acrylic.universalnms.entity.wrapper.NMSLivingEntityWrapper;
-import com.acrylic.universalnms.entityai.EntityAI;
-import com.acrylic.universalnms.renderer.PlayerCheckableRenderer;
+import com.acrylic.universalnms.renderer.PlayerInitializableRenderer;
 import com.acrylic.version_1_16_nms.NMSUtils;
 import com.acrylic.version_1_16_nms.entity.wrapper.ArmorStandWrapper;
 import net.minecraft.server.v1_16_R3.EntityArmorStand;
@@ -24,12 +23,12 @@ public class NMSArmorStandInstanceImpl
     private final LivingEntityPacketHandlerImpl entityPacketHandler;
     private LivingEntityConfiguration configuration = LivingEntityConfiguration.DEFAULT_LIVING_ENTITY;
 
-    public NMSArmorStandInstanceImpl(@NotNull Location location, @Nullable PlayerCheckableRenderer renderer) {
+    public NMSArmorStandInstanceImpl(@NotNull Location location, @Nullable PlayerInitializableRenderer renderer) {
         this.armorStand = new ArmorStandWrapper(this, NMSUtils.convertToNMSWorld(location.getWorld()), location.getX(), location.getY(), location.getZ());
         this.entityPacketHandler = new LivingEntityPacketHandlerImpl(this, renderer);
     }
 
-    public NMSArmorStandInstanceImpl(@NotNull ArmorStandWrapper armorStand, @Nullable PlayerCheckableRenderer renderer) {
+    public NMSArmorStandInstanceImpl(@NotNull ArmorStandWrapper armorStand, @Nullable PlayerInitializableRenderer renderer) {
         this.armorStand = armorStand;
         this.entityPacketHandler = new LivingEntityPacketHandlerImpl(this, renderer);
     }
