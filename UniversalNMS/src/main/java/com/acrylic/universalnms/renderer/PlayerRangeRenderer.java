@@ -1,4 +1,4 @@
-package com.acrylic.universalnms.render;
+package com.acrylic.universalnms.renderer;
 
 import com.acrylic.universalnms.entity.NMSEntityInstance;
 import org.bukkit.Bukkit;

@@ -1,10 +1,11 @@
 package com.acrylic.universalnms.entity;
 
+import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.packets.types.EntityDestroyPacket;
 import com.acrylic.universalnms.packets.types.EntitySpawnPacket;
 import com.acrylic.universalnms.packets.types.TeleportPacket;
-import com.acrylic.universalnms.renderer.EntityPlayerInitializableRenderer;
-import com.acrylic.universalnms.renderer.PlayerInitializableRenderer;
+import com.acrylic.universalnms.renderer.AbstractEntityRenderer;
+import com.acrylic.universalnms.renderer.RangedEntityRenderer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,18 +14,18 @@ public interface EntityPacketHandler {
     @NotNull
     NMSEntityInstance getEntityInstance();
 
-    void setRenderer(@NotNull PlayerInitializableRenderer renderer);
+    void setRenderer(@NotNull AbstractEntityRenderer renderer);
 
-    PlayerInitializableRenderer getRenderer();
+    AbstractEntityRenderer getRenderer();
 
-    default EntityPlayerInitializableRenderer useEntityPlayerCheckableRenderer() {
-        EntityPlayerInitializableRenderer renderer = new EntityPlayerInitializableRenderer(getEntityInstance().getBukkitEntity());
+    default RangedEntityRenderer useEntityPlayerCheckableRenderer() {
+        RangedEntityRenderer renderer = new RangedEntityRenderer(getEntityInstance().getBukkitEntity());
         setRenderer(renderer);
         return renderer;
     }
 
-    default EntityPlayerInitializableRenderer useEntityPlayerCheckableRenderer(double range) {
-        EntityPlayerInitializableRenderer renderer = useEntityPlayerCheckableRenderer();
+    default RangedEntityRenderer useEntityPlayerCheckableRenderer(float range) {
+        RangedEntityRenderer renderer = useEntityPlayerCheckableRenderer();
         renderer.setRange(range);
         return renderer;
     }
@@ -41,10 +42,19 @@ public interface EntityPacketHandler {
 
     void hideEntityFromPlayer(Player player);
 
+    static void terminateCurrentRenderer(EntityPacketHandler entityPacketHandler, AbstractEntityRenderer abstractEntityRenderer) {
+        if (abstractEntityRenderer == null)
+            return;
+        abstractEntityRenderer.unbindEntity(entityPacketHandler.getEntityInstance());
+        NMSLib.getNMSEntities().getDefaultRendererWorker().checkForRemoval(abstractEntityRenderer);
+    }
+
     static void initializeRenderer(EntityPacketHandler entityPacketHandler) {
-        PlayerInitializableRenderer renderer = entityPacketHandler.getRenderer();
-        renderer.setOnInitialize(entityPacketHandler::displayEntityToPlayer);
-        renderer.setOnDeinitialize(entityPacketHandler::hideEntityFromPlayer);
+        AbstractEntityRenderer renderer = entityPacketHandler.getRenderer();
+        renderer.bindEntity(entityPacketHandler.getEntityInstance(), new AbstractEntityRenderer.ActionHolder(
+                entityPacketHandler::displayEntityToPlayer, entityPacketHandler::hideEntityFromPlayer
+        ));
+        NMSLib.getNMSEntities().getDefaultRendererWorker().register(renderer);
     }
 
     void updatePackets();

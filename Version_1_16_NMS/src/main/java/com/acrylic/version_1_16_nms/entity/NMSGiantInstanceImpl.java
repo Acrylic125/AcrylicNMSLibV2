@@ -5,7 +5,7 @@ import com.acrylic.universalnms.entity.NMSGiantInstance;
 import com.acrylic.universalnms.entity.entityconfiguration.EntityConfiguration;
 import com.acrylic.universalnms.entity.entityconfiguration.LivingEntityConfiguration;
 import com.acrylic.universalnms.entity.wrapper.NMSLivingEntityWrapper;
-import com.acrylic.universalnms.renderer.PlayerInitializableRenderer;
+import com.acrylic.universalnms.renderer.AbstractEntityRenderer;
 import com.acrylic.version_1_16_nms.NMSUtils;
 import com.acrylic.version_1_16_nms.entity.wrapper.GiantWrapper;
 import net.minecraft.server.v1_16_R3.EntityGiantZombie;
@@ -23,13 +23,13 @@ public class NMSGiantInstanceImpl
     private final LivingEntityPacketHandlerImpl entityPacketHandler;
     private LivingEntityConfiguration configuration = LivingEntityConfiguration.DEFAULT_LIVING_ENTITY;
 
-    public NMSGiantInstanceImpl(@NotNull Location location, @Nullable PlayerInitializableRenderer renderer) {
+    public NMSGiantInstanceImpl(@NotNull Location location, @Nullable AbstractEntityRenderer renderer) {
         this.giant = new GiantWrapper(this, EntityTypes.GIANT, NMSUtils.convertToNMSWorld(location.getWorld()));
         giant.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
         this.entityPacketHandler = new LivingEntityPacketHandlerImpl(this, renderer);
     }
 
-    public NMSGiantInstanceImpl(@NotNull GiantWrapper giant, @Nullable PlayerInitializableRenderer renderer) {
+    public NMSGiantInstanceImpl(@NotNull GiantWrapper giant, @Nullable AbstractEntityRenderer renderer) {
         this.giant = giant;
         this.entityPacketHandler = new LivingEntityPacketHandlerImpl(this, renderer);
     }

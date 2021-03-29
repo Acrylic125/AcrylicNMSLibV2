@@ -9,8 +9,6 @@ import com.acrylic.universalnms.entity.wrapper.NMSEntityWrapper;
 import com.acrylic.universalnms.entityai.EntityAI;
 import com.acrylic.universalnms.packets.types.EntityDestroyPacket;
 import com.acrylic.universalnms.packets.types.TeleportPacket;
-import com.acrylic.universalnms.renderer.PlayerInitializableRenderer;
-import com.acrylic.universalnms.renderer.RangedPlayerInitializableRenderer;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -108,23 +106,16 @@ public interface NMSEntityInstance extends EntityInstance {
 
     default void tick(TickSource tickSource) {
         EntityAI ai = getAI();
-        EntityPacketHandler packetHandler = getPacketHandler();
-        PlayerInitializableRenderer renderer = packetHandler.getRenderer();;
         EntityConfiguration entityConfiguration = getEntityConfiguration();
         int ticks = getInstanceTicks();
         Predicate<NMSEntityInstance>
-                runAIIf = entityConfiguration.getRunAIIf(),
-                checkRendererIf = entityConfiguration.getCheckRendererIf();
+                runAIIf = entityConfiguration.getRunAIIf();
         if (ai != null && !ai.isLocked() &&
                 (runAIIf == null || runAIIf.test(this)) &&
-                !(entityConfiguration.silentAIIfNoOneIsRendered() && !renderer.isInUse()) &&
+                !(entityConfiguration.silentAIIfNoOneIsRendered() && !getPacketHandler().getRenderer().isBeingUsedBySomeone()) &&
                 !(tickSource == TickSource.NMS_ENTITIES && !entityConfiguration.shouldRunAIByNMSEntities())
         )
             ai.tick();
-        if ((ticks % entityConfiguration.getTicksToCheckRender() == 0) &&
-                (checkRendererIf == null || checkRendererIf.test(this))) {
-            renderer.doChecks();
-        }
         int fireTicks = getFireTicks();
         if (fireTicks > 0) {
             fireTicks--;
@@ -192,13 +183,13 @@ public interface NMSEntityInstance extends EntityInstance {
      * For instance, if the entity is held within the
      * renderer, the player will be deintiialized.
      *
-     * @see RangedPlayerInitializableRenderer#deinitialize(Player)
+     * @see com.acrylic.universalnms.renderer.AbstractEntityRenderer#terminateFor(Player)
      * @see com.acrylic.universalnms.entityai.aiimpl.TargettableAIImpl#cleanPlayer(Player)
      *
      * @param player The player.
      */
     default void cleanPlayer(@NotNull Player player) {
-        getPacketHandler().getRenderer().deinitialize(player);
+        getPacketHandler().getRenderer().terminateFor(player);
         EntityAI entityAI = getAI();
         if (entityAI != null)
             entityAI.cleanPlayer(player);

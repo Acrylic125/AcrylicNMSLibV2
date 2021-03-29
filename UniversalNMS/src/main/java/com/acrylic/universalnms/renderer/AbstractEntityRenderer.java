@@ -1,4 +1,4 @@
-package com.acrylic.universalnms.render;
+package com.acrylic.universalnms.renderer;
 
 import com.acrylic.universalnms.entity.NMSEntityInstance;
 import org.bukkit.entity.Player;
@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-import static com.acrylic.universalnms.render.EntityRendererWorker.RENDERER_ID_COUNTER;
+import static com.acrylic.universalnms.renderer.EntityRendererWorker.RENDERER_ID_COUNTER;
 
 public abstract class AbstractEntityRenderer
         implements InitializableRenderer<Player> {
@@ -108,4 +108,9 @@ public abstract class AbstractEntityRenderer
     public int getID() {
         return id;
     }
+
+    public void onRegister(EntityRendererWorker worker) {}
+
+    public void onUnregister(EntityRendererWorker worker) {}
+
 }

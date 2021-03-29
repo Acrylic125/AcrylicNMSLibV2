@@ -1,4 +1,4 @@
-package com.acrylic.universalnms.render;
+package com.acrylic.universalnms.renderer;
 
 @FunctionalInterface
 public interface RendererAction<T> {

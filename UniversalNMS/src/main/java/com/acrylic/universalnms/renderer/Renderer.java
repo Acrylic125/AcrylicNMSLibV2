@@ -9,5 +9,4 @@ public interface Renderer<T> {
     void runForAllRendered(@NotNull Consumer<T> action);
 
     Renderer<T> clone();
-
 }

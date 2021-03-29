@@ -4,7 +4,7 @@ import com.acrylic.universalnms.entity.EntityPacketHandler;
 import com.acrylic.universalnms.packets.types.EntityDestroyPacket;
 import com.acrylic.universalnms.packets.types.EntitySpawnPacket;
 import com.acrylic.universalnms.packets.types.TeleportPacket;
-import com.acrylic.universalnms.renderer.PlayerInitializableRenderer;
+import com.acrylic.universalnms.renderer.AbstractEntityRenderer;
 import com.acrylic.version_1_16_nms.packets.types.EntityDestroyPacketImpl;
 import com.acrylic.version_1_16_nms.packets.types.EntitySpawnPacketImpl;
 import com.acrylic.version_1_16_nms.packets.types.TeleportPacketImpl;
@@ -18,13 +18,13 @@ public class EntityPacketHandlerImpl implements EntityPacketHandler {
     private final EntitySpawnPacketImpl entitySpawnPacket = new EntitySpawnPacketImpl();
     private final TeleportPacketImpl teleportPacket = new TeleportPacketImpl();
     private final EntityDestroyPacketImpl entityDestroyPacket = new EntityDestroyPacketImpl();
-    private PlayerInitializableRenderer renderer;
+    private AbstractEntityRenderer renderer;
 
-    public EntityPacketHandlerImpl(@NotNull NMSEntityInstanceImpl entityInstance, @Nullable PlayerInitializableRenderer renderer) {
+    public EntityPacketHandlerImpl(@NotNull NMSEntityInstanceImpl entityInstance, @Nullable AbstractEntityRenderer renderer) {
         this.entityInstance = entityInstance;
         this.renderer = renderer;
         if (renderer != null)
-            EntityPacketHandler.initializeRenderer(this);
+            setRenderer(renderer);
         this.entityDestroyPacket.apply(entityInstance.getNMSEntity());
     }
 
@@ -35,13 +35,14 @@ public class EntityPacketHandlerImpl implements EntityPacketHandler {
     }
 
     @Override
-    public void setRenderer(@NotNull PlayerInitializableRenderer renderer) {
+    public void setRenderer(@NotNull AbstractEntityRenderer renderer) {
+        EntityPacketHandler.terminateCurrentRenderer(this, this.renderer);
         this.renderer = renderer;
         EntityPacketHandler.initializeRenderer(this);
     }
 
     @Override
-    public PlayerInitializableRenderer getRenderer() {
+    public AbstractEntityRenderer getRenderer() {
         if (renderer == null)
             EntityPacketHandler.throwNoRendererError();
         return renderer;

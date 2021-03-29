@@ -8,7 +8,7 @@ import com.acrylic.universalnms.entity.entityconfiguration.LivingEntityConfigura
 import com.acrylic.universalnms.entityai.aiimpl.AggressiveAI;
 import com.acrylic.universalnms.entityai.strategyimpl.*;
 import com.acrylic.universalnms.pathfinder.PathfinderGenerator;
-import com.acrylic.universalnms.renderer.EntityPlayerInitializableRenderer;
+import com.acrylic.universalnms.renderer.RangedEntityRenderer;
 import com.acrylic.version_1_16_nms.entity.NMSPlayerInstanceImpl;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import org.bukkit.Location;
@@ -36,7 +36,7 @@ public class Command {
                 .handle(commandExecuted -> {
                     Player player = (Player) commandExecuted.getSender();
                     NMSPlayerInstanceImpl npc = new NMSPlayerInstanceImpl(player.getLocation(), null, "Trump");
-                    npc.getPacketHandler().setRenderer(new EntityPlayerInitializableRenderer(npc.getBukkitEntity()));
+                    npc.getPacketHandler().setRenderer(new RangedEntityRenderer(npc.getBukkitEntity()));
                     //npc.asAnimator();
                     //npc.setAnimations(EntityAnimationEnum.HURT, EntityAnimationEnum.SLEEP, EntityAnimationEnum.CRIT);
                     AggressiveAI entityAI = new AggressiveAI(npc);

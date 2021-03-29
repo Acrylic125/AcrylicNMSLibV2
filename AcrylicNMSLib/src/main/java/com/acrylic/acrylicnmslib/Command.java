@@ -18,7 +18,7 @@ import com.acrylic.universalnms.packets.types.TitlePacket;
 import com.acrylic.universalnms.particles.ParticleBuilder;
 import com.acrylic.universalnms.pathfinder.Pathfinder;
 import com.acrylic.universalnms.pathfinder.PathfinderGenerator;
-import com.acrylic.universalnms.renderer.EntityPlayerInitializableRenderer;
+import com.acrylic.universalnms.renderer.RangedEntityRenderer;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import org.bukkit.Material;
@@ -81,7 +81,7 @@ public class Command {
                                     .setBoots(ItemBuilder.of(Material.NETHER_BRICK)
                                             .enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4)))
                             .buildEntityInstance();
-                    nmsPlayerInstance.getPacketHandler().setRenderer(new EntityPlayerInitializableRenderer(nmsPlayerInstance.getBukkitEntity()));
+                    nmsPlayerInstance.getPacketHandler().setRenderer(new RangedEntityRenderer(nmsPlayerInstance.getBukkitEntity()));
                     AggressiveAI entityAI = new AggressiveAI(nmsPlayerInstance);
                     entityAI.setAttackCooldown(400);
                     //entityAI.setPathQuitterStrategy(new SimplePathQuitterStrategyImpl(entityAI));

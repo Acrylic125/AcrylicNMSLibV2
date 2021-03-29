@@ -5,7 +5,7 @@ import com.acrylic.universalnms.entity.entityconfiguration.EntityConfiguration;
 import com.acrylic.universalnms.entity.entityconfiguration.LivingEntityConfiguration;
 import com.acrylic.universalnms.entity.wrapper.NMSLivingEntityWrapper;
 import com.acrylic.universalnms.enums.Gamemode;
-import com.acrylic.universalnms.renderer.PlayerInitializableRenderer;
+import com.acrylic.universalnms.renderer.AbstractEntityRenderer;
 import com.acrylic.version_1_8_nms.entity.wrapper.PlayerWrapper;
 import com.acrylic.version_1_8_nms.packets.types.EntityOrientationPacketsImpl;
 import com.mojang.authlib.properties.Property;
@@ -27,7 +27,7 @@ public class NMSPlayerInstanceImpl
     private final PlayerPacketHandlerImpl entityPacketHandler;
     private LivingEntityConfiguration configuration = LivingEntityConfiguration.DEFAULT_LIVING_ENTITY;
 
-    public NMSPlayerInstanceImpl(@NotNull Location location, @Nullable PlayerInitializableRenderer renderer, @Nullable String name) {
+    public NMSPlayerInstanceImpl(@NotNull Location location, @Nullable AbstractEntityRenderer renderer, @Nullable String name) {
         this.playerWrapper = new PlayerWrapper(this, location, name);
         playerWrapper.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
         this.entityPacketHandler = new PlayerPacketHandlerImpl(this, renderer);

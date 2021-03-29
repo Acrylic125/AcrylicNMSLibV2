@@ -3,7 +3,8 @@ package com.acrylic.version_1_16_nms.entity;
 import com.acrylic.universalnms.entity.EntityPacketHandler;
 import com.acrylic.universalnms.entity.LivingEntityPacketHandler;
 import com.acrylic.universalnms.packets.types.*;
-import com.acrylic.universalnms.renderer.PlayerInitializableRenderer;
+import com.acrylic.universalnms.renderer.AbstractEntityRenderer;
+import com.acrylic.universalnms.renderer.AbstractEntityRenderer;
 import com.acrylic.universalnms.send.BatchSender;
 import com.acrylic.version_1_16_nms.packets.types.*;
 import net.minecraft.server.v1_16_R3.EntityLiving;
@@ -21,9 +22,9 @@ public class LivingEntityPacketHandlerImpl implements LivingEntityPacketHandler 
     private final EntityMetadataPacketImpl entityMetadataPacket = new EntityMetadataPacketImpl();
     private final EntityAnimationPacketsImpl entityAnimationPackets = new EntityAnimationPacketsImpl();
     private final BatchSender displaySender = new BatchSender();
-    private PlayerInitializableRenderer renderer;
+    private AbstractEntityRenderer renderer;
 
-    public LivingEntityPacketHandlerImpl(@NotNull NMSLivingEntityInstanceImpl entityInstance, @Nullable PlayerInitializableRenderer renderer) {
+    public LivingEntityPacketHandlerImpl(@NotNull NMSLivingEntityInstanceImpl entityInstance, @Nullable AbstractEntityRenderer renderer) {
         this.entityInstance = entityInstance;
         if (renderer != null)
             setRenderer(renderer);
@@ -66,13 +67,14 @@ public class LivingEntityPacketHandlerImpl implements LivingEntityPacketHandler 
     }
 
     @Override
-    public void setRenderer(@NotNull PlayerInitializableRenderer renderer) {
+    public void setRenderer(@NotNull AbstractEntityRenderer renderer) {
+        EntityPacketHandler.terminateCurrentRenderer(this, this.renderer);
         this.renderer = renderer;
         EntityPacketHandler.initializeRenderer(this);
     }
 
     @Override
-    public PlayerInitializableRenderer getRenderer() {
+    public AbstractEntityRenderer getRenderer() {
         if (renderer == null)
             EntityPacketHandler.throwNoRendererError();
         return renderer;

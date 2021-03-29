@@ -6,6 +6,7 @@ import com.acrylic.universal.interfaces.Terminable;
 import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universal.threads.TaskType;
 import com.acrylic.universalnms.entity.NMSEntityInstance;
+import com.acrylic.universalnms.renderer.EntityRendererWorker;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -26,6 +27,7 @@ public final class NMSEntities implements Terminable, Runnable {
      */
     private final Scheduler<TaskType.RepeatingTask> entityTicker;
     private final AbstractEventBuilder<PlayerRespawnEvent> deathRefresher;
+    private EntityRendererWorker defaultRendererWorker;
 
     public NMSEntities(@NotNull JavaPlugin plugin) {
         this(plugin, new NMSEntityRetriever<>());
@@ -47,6 +49,7 @@ public final class NMSEntities implements Terminable, Runnable {
                 });
         this.entityTicker.build();
         this.deathRefresher.register();
+        this.defaultRendererWorker = new EntityRendererWorker();
     }
 
     public void setEntityRetriever(@NotNull NMSEntityRetriever<NMSEntityInstance> entityRetriever) {
@@ -58,6 +61,14 @@ public final class NMSEntities implements Terminable, Runnable {
         return entityRetriever;
     }
 
+    public EntityRendererWorker getDefaultRendererWorker() {
+        return defaultRendererWorker;
+    }
+
+    public void setDefaultRendererWorker(@NotNull EntityRendererWorker defaultRendererWorker) {
+        this.defaultRendererWorker = defaultRendererWorker;
+    }
+
     @Override
     public void terminate() {
         entityTicker.cancel();
@@ -65,6 +76,7 @@ public final class NMSEntities implements Terminable, Runnable {
 
     @Override
     public void run() {
+        defaultRendererWorker.run();
         for (NMSEntityInstance entityInstance : entityRetriever.getCached().values())
             entityInstance.tick(NMSEntityInstance.TickSource.NMS_ENTITIES);
     }
