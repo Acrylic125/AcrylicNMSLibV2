@@ -16,7 +16,7 @@ import java.util.UUID;
 
 public class RangedEntityRenderer extends SimpleEntityRenderer {
 
-    private final WeakReference<Entity> watchFrom;
+    private final Entity watchFrom;
     private Location location;
     private float range = 32;
 
@@ -27,12 +27,12 @@ public class RangedEntityRenderer extends SimpleEntityRenderer {
 
     public RangedEntityRenderer(@NotNull NMSEntityInstance watchFrom) {
         this.location = null;
-        this.watchFrom = new WeakReference<>(watchFrom.getBukkitEntity());
+        this.watchFrom = watchFrom.getBukkitEntity();
     }
 
     public RangedEntityRenderer(@NotNull Entity watchFrom) {
         this.location = null;
-        this.watchFrom = new WeakReference<>(watchFrom);
+        this.watchFrom = watchFrom;
     }
 
     public RangedEntityRenderer(@NotNull Collection<UUID> cached, @NotNull Location location) {
@@ -44,13 +44,13 @@ public class RangedEntityRenderer extends SimpleEntityRenderer {
     public RangedEntityRenderer(@NotNull Collection<UUID> cached, @NotNull NMSEntityInstance watchFrom) {
         super(cached);
         this.location = null;
-        this.watchFrom = new WeakReference<>(watchFrom.getBukkitEntity());
+        this.watchFrom = watchFrom.getBukkitEntity();
     }
 
     public RangedEntityRenderer(@NotNull Collection<UUID> cached, @NotNull Entity watchFrom) {
         super(cached);
         this.location = null;
-        this.watchFrom = new WeakReference<>(watchFrom);
+        this.watchFrom = watchFrom;
     }
 
     public double getRange() {
@@ -72,7 +72,7 @@ public class RangedEntityRenderer extends SimpleEntityRenderer {
     @Override
     public synchronized void run() {
         if (watchFrom != null)
-            location = Objects.requireNonNull(watchFrom.get()).getLocation();
+            location = watchFrom.getLocation();
         if (cached != null) {
             Iterator<UUID> iterator = cached.iterator();
             iterator.forEachRemaining(uuid -> {
@@ -81,7 +81,6 @@ public class RangedEntityRenderer extends SimpleEntityRenderer {
                     if (player != null)
                         runTermination(player);
                     iterator.remove();
-                    //Bukkit.broadcastMessage("Removed");
                 }
             });
             for (Player player : Bukkit.getOnlinePlayers()) {
@@ -89,21 +88,20 @@ public class RangedEntityRenderer extends SimpleEntityRenderer {
                 if (isPlayerValid(player) && !cached.contains(uuid)) {
                     runInitialization(player);
                     cached.add(uuid);
-                    //Bukkit.broadcastMessage("Added");
                 }
             }
         }
     }
 
     private boolean isPlayerValid(@Nullable Player player) {
-        return player != null && player.isOnline() && player.getLocation().distanceSquared(location) <= (range * range);
+        return player != null && location.getWorld().equals(player.getWorld()) && player.isOnline() && player.getLocation().distanceSquared(location) <= (range * range);
     }
 
     @Override
     public RangedEntityRenderer clone() {
         RangedEntityRenderer rangedEntityRenderer;
         if (watchFrom != null)
-            rangedEntityRenderer = new RangedEntityRenderer(cached, Objects.requireNonNull(watchFrom.get()));
+            rangedEntityRenderer = new RangedEntityRenderer(cached, watchFrom);
         else
             rangedEntityRenderer = new RangedEntityRenderer(cached, location);
         rangedEntityRenderer.range = range;

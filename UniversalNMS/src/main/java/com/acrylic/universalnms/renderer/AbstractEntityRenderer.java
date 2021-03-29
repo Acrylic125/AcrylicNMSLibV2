@@ -1,9 +1,11 @@
 package com.acrylic.universalnms.renderer;
 
 import com.acrylic.universalnms.entity.NMSEntityInstance;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -16,7 +18,7 @@ public abstract class AbstractEntityRenderer
     private final Map<Integer, ActionHolder> entityActionHolders;
 
     public AbstractEntityRenderer() {
-        this(new WeakHashMap<>());
+        this(new HashMap<>());
     }
 
     public AbstractEntityRenderer(@NotNull Map<Integer, ActionHolder> entityActionHolders) {
