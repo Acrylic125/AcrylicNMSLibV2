@@ -1,6 +1,5 @@
 package com.acrylic.universalnms.render;
 
-import com.acrylic.universal.interfaces.Terminable;
 import com.acrylic.universalnms.entity.NMSEntityInstance;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -8,9 +7,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import static com.acrylic.universalnms.render.EntityRendererWorker.RENDERER_ID_COUNTER;
+
 public abstract class AbstractEntityRenderer
         implements InitializableRenderer<Player> {
 
+    private final int id = RENDERER_ID_COUNTER.addAndGet(1);
     private final Map<Integer, ActionHolder> entityActionHolders;
 
     public AbstractEntityRenderer() {
@@ -100,4 +102,10 @@ public abstract class AbstractEntityRenderer
 
     }
 
+    @Override
+    public abstract AbstractEntityRenderer clone();
+
+    public int getID() {
+        return id;
+    }
 }

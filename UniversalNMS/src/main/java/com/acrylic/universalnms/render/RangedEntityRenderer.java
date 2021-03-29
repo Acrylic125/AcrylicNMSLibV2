@@ -9,13 +9,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.ref.WeakReference;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.UUID;
 
 public class RangedEntityRenderer extends SimpleEntityRenderer {
 
-    private final WeakReference<NMSEntityInstance> watchFrom;
+    private final WeakReference<Entity> watchFrom;
     private Location location;
     private float range = 32;
 
@@ -25,6 +26,29 @@ public class RangedEntityRenderer extends SimpleEntityRenderer {
     }
 
     public RangedEntityRenderer(@NotNull NMSEntityInstance watchFrom) {
+        this.location = null;
+        this.watchFrom = new WeakReference<>(watchFrom.getBukkitEntity());
+    }
+
+    public RangedEntityRenderer(@NotNull Entity watchFrom) {
+        this.location = null;
+        this.watchFrom = new WeakReference<>(watchFrom);
+    }
+
+    public RangedEntityRenderer(@NotNull Collection<UUID> cached, @NotNull Location location) {
+        super(cached);
+        this.location = location;
+        this.watchFrom = null;
+    }
+
+    public RangedEntityRenderer(@NotNull Collection<UUID> cached, @NotNull NMSEntityInstance watchFrom) {
+        super(cached);
+        this.location = null;
+        this.watchFrom = new WeakReference<>(watchFrom.getBukkitEntity());
+    }
+
+    public RangedEntityRenderer(@NotNull Collection<UUID> cached, @NotNull Entity watchFrom) {
+        super(cached);
         this.location = null;
         this.watchFrom = new WeakReference<>(watchFrom);
     }
@@ -73,6 +97,17 @@ public class RangedEntityRenderer extends SimpleEntityRenderer {
 
     private boolean isPlayerValid(@Nullable Player player) {
         return player != null && player.isOnline() && player.getLocation().distanceSquared(location) <= (range * range);
+    }
+
+    @Override
+    public RangedEntityRenderer clone() {
+        RangedEntityRenderer rangedEntityRenderer;
+        if (watchFrom != null)
+            rangedEntityRenderer = new RangedEntityRenderer(cached, Objects.requireNonNull(watchFrom.get()));
+        else
+            rangedEntityRenderer = new RangedEntityRenderer(cached, location);
+        rangedEntityRenderer.range = range;
+        return rangedEntityRenderer;
     }
 
 }

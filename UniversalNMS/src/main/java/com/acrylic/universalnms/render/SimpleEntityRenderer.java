@@ -30,17 +30,17 @@ public class SimpleEntityRenderer extends AbstractEntityRenderer {
     }
 
     @Override
+    public AbstractEntityRenderer clone() {
+        return new SimpleEntityRenderer(cached);
+    }
+
+    @Override
     public void runForAllRendered(@NotNull Consumer<Player> action) {
         for (UUID uuid : cached) {
             Player player = Bukkit.getPlayer(uuid);
             if (player != null)
                 action.accept(player);
         }
-    }
-
-    @Override
-    public Renderer<Player> clone() {
-        return new SimpleEntityRenderer(cached);
     }
 
     @Override
