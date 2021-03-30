@@ -24,7 +24,7 @@ public class PlayerWrapper
         this.nmsPlayerInstance = nmsPlayerInstance;
         DataWatcher dataWatcher = getDataWatcher();
         dataWatcher.watch(10, (byte) 127); //Displays the skin second layer.
-        playerConnection = new PlayerConnection(NMSUtils.getMCServer(), new NetworkManager(EnumProtocolDirection.SERVERBOUND), this);
+        playerConnection = new EmptyPlayerConnection(NMSUtils.getMCServer(), new NetworkManager(EnumProtocolDirection.CLIENTBOUND), this);
     }
 
     public PlayerWrapper(@NotNull NMSPlayerInstanceImpl nmsPlayerInstance, @NotNull Location location, @Nullable String name) {
@@ -34,7 +34,7 @@ public class PlayerWrapper
         this.nmsPlayerInstance = nmsPlayerInstance;
         DataWatcher dataWatcher = getDataWatcher();
         dataWatcher.watch(10, (byte) 127); //Displays the skin second layer.
-        playerConnection = new PlayerConnection(NMSUtils.getMCServer(), new NetworkManager(EnumProtocolDirection.SERVERBOUND), this);
+        playerConnection = new EmptyPlayerConnection(NMSUtils.getMCServer(), new NetworkManager(EnumProtocolDirection.CLIENTBOUND), this);
     }
 
     @NotNull
@@ -47,5 +47,24 @@ public class PlayerWrapper
     public void die(DamageSource damageSource) {
         super.die(damageSource);
         onDeath();
+    }
+
+    @Override
+    public void t_() {
+        if (this.joining) {
+            this.joining = false;
+        }
+
+        this.playerInteractManager.a();
+        --this.invulnerableTicks;
+        if (this.noDamageTicks > 0)
+            --this.noDamageTicks;
+
+        Entity entity = this.C();
+        if (entity != this) {
+            this.setLocation(entity.locX, entity.locY, entity.locZ, entity.yaw, entity.pitch);
+            this.server.getPlayerList().d(this);
+        }
+        //super.t_();
     }
 }

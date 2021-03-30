@@ -62,6 +62,12 @@ public class LivingEntityPacketHandlerImpl implements LivingEntityPacketHandler 
         return renderer;
     }
 
+    @Nullable
+    @Override
+    public AbstractEntityRenderer getUnvalidatedRenderer() {
+        return renderer;
+    }
+
     @Override
     public EntityDestroyPacket getDestroyPacket() {
         return entityDestroyPacket;

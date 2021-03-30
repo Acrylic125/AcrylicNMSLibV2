@@ -136,17 +136,26 @@ public interface NMSEntityInstance extends EntityInstance {
         teleportPacket.getSender().sendToAllByRenderer(display.getRenderer());
     }
 
-    @Override
-    default void delete() {
+    default void deleteDisplay() {
         Entity entity = getBukkitEntity();
         entity.remove();
         removeFromWorld();
         EntityPacketHandler packetHandler = getPacketHandler();
+        packetHandler.getDestroyPacket().getSender().sendToAllByRenderer(packetHandler.getRenderer());
+    }
+
+    default void unregisterFromNMSEntities() {
+        EntityPacketHandler packetHandler = getPacketHandler();
         AbstractEntityRenderer entityRenderer = packetHandler.getRenderer();
-        packetHandler.getDestroyPacket().getSender().sendToAllByRenderer(entityRenderer);
         unregisterFromRetriever();
         entityRenderer.unbindEntity(this);
         packetHandler.getRendererWorker().checkForRemoval(entityRenderer);
+    }
+
+    @Override
+    default void delete() {
+        deleteDisplay();
+        unregisterFromNMSEntities();
     }
 
     void setAnimationDataWatcher(int mask, boolean b);

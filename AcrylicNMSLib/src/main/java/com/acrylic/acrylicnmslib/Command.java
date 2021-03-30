@@ -4,6 +4,7 @@ import com.acrylic.universal.command.CommandBuilder;
 import com.acrylic.universal.command.CommandExecuted;
 import com.acrylic.universal.entity.equipment.EntityEquipmentBuilderImpl;
 import com.acrylic.universal.text.ChatUtils;
+import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.entity.NMSArmorStandInstance;
 import com.acrylic.universalnms.entity.NMSPlayerInstance;
@@ -68,7 +69,6 @@ public class Command {
                 .handle(commandExecuted -> {
                     Player player = (Player) commandExecuted.getSender();
                     NMSPlayerInstance nmsPlayerInstance = NMSPlayerInstance.builder(player.getLocation(), "")
-                            .skin(commandExecuted.getArg(0))
                             .equipment(new EntityEquipmentBuilderImpl().
                                     setItemInHand(ItemBuilder.of(Material.NETHERITE_SWORD)
                                             .enchant(Enchantment.DAMAGE_ALL, 1))
@@ -80,6 +80,7 @@ public class Command {
                                             .enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4))
                                     .setBoots(ItemBuilder.of(Material.NETHER_BRICK)
                                             .enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4)))
+                            .skin(commandExecuted.getArg(0))
                             .buildEntityInstance();
                     nmsPlayerInstance.getPacketHandler().setRenderer(new RangedEntityRenderer(nmsPlayerInstance.getBukkitEntity()));
                     AggressiveAI entityAI = new AggressiveAI(nmsPlayerInstance);
@@ -91,6 +92,7 @@ public class Command {
                     nmsPlayerInstance.addToWorld();
                     nmsPlayerInstance.setEntityConfiguration(LivingEntityConfiguration.PERSISTENT_LIVING_ENTITY);
                     nmsPlayerInstance.registerFromRetriever();
+
                 });
     }
 

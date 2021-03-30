@@ -49,6 +49,12 @@ public class EntityPacketHandlerImpl implements EntityPacketHandler {
         return renderer;
     }
 
+    @Nullable
+    @Override
+    public AbstractEntityRenderer getUnvalidatedRenderer() {
+        return renderer;
+    }
+
     @NotNull
     @Override
     public EntitySpawnPacket getSpawnPacket() {

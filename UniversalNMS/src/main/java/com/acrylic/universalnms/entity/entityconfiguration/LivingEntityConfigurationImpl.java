@@ -23,18 +23,23 @@ public class LivingEntityConfigurationImpl
             this.entityConfiguration = entityConfiguration;
         }
 
-        public LivingBuilder deleteOnDeath(boolean b) {
+        public LivingBuilder removeFromNMSEntitiesOnDeath(boolean b) {
+            entityConfiguration.livingFlags = BitMaskUtils.setBitToMask(entityConfiguration.livingFlags, 0x01, b);
+            return this;
+        }
+
+        public LivingBuilder deleteDisplayOnDeath(boolean b) {
             entityConfiguration.livingFlags = BitMaskUtils.setBitToMask(entityConfiguration.livingFlags, 0x02, b);
             return this;
         }
 
-        public LivingBuilder timeAfterDeathToRemoveFromRetriever(long time) {
-            entityConfiguration.timeAfterDeathToRemoveFromRetriever = time;
+        public LivingBuilder timeAfterDeathToRemoveFromNMSEntities(long time) {
+            entityConfiguration.timeAfterDeathToRemoveFromNMSEntities = time;
             return this;
         }
 
-        public LivingBuilder timeAfterDeathToDelete(long time) {
-            entityConfiguration.timeAfterDeathToDelete = time;
+        public LivingBuilder timeAfterDeathToDeleteDisplay(long time) {
+            entityConfiguration.timeAfterDeathToDeleteFromDisplay = time;
             return this;
         }
 
@@ -50,21 +55,32 @@ public class LivingEntityConfigurationImpl
     }
 
     /*
-     * Delete on death (0x2).
+     * Remove from NMS Entities on death (0x01),
+     * Delete Display on death (0x2).
      */
-    protected int livingFlags = 0x02;
+    protected int livingFlags = 0x01 | 0x02;
     private long
-            timeAfterDeathToRemoveFromRetriever = 0,
-            timeAfterDeathToDelete = 3_000;
+            timeAfterDeathToRemoveFromNMSEntities = 0,
+            timeAfterDeathToDeleteFromDisplay = 3_000;
 
-    //0x10
     @Override
-    public boolean shouldDeleteOnDeath() {
-        return (livingFlags & 0x02) == 0x02;
+    public boolean shouldRemoveFromNMSEntitiesOnDeath() {
+        return (flags & 0x01) == 0x01;
     }
 
     @Override
-    public long getTimeAfterDeathToDelete() {
-        return timeAfterDeathToDelete;
+    public long getTimeAfterDeathToRemoveFromNMSEntities() {
+        return timeAfterDeathToRemoveFromNMSEntities;
     }
+
+    @Override
+    public boolean shouldDeleteDisplayOnDeath() {
+        return (flags & 0x02) == 0x02;
+    }
+
+    @Override
+    public long getTimeAfterDeathToDeleteDisplay() {
+        return timeAfterDeathToDeleteFromDisplay;
+    }
+
 }

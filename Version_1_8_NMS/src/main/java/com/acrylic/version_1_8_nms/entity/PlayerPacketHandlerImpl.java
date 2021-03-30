@@ -92,6 +92,12 @@ public class PlayerPacketHandlerImpl implements PlayerPacketHandler {
         return renderer;
     }
 
+    @Nullable
+    @Override
+    public AbstractEntityRenderer getUnvalidatedRenderer() {
+        return renderer;
+    }
+
     @NotNull
     @Override
     public NamedPlayerSpawnPacket getSpawnPacket() {

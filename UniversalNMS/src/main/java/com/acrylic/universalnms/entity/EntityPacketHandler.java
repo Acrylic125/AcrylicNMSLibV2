@@ -9,6 +9,7 @@ import com.acrylic.universalnms.renderer.EntityRendererWorker;
 import com.acrylic.universalnms.renderer.RangedEntityRenderer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface EntityPacketHandler {
 
@@ -18,6 +19,9 @@ public interface EntityPacketHandler {
     void setRenderer(@NotNull AbstractEntityRenderer renderer);
 
     AbstractEntityRenderer getRenderer();
+
+    @Nullable
+    AbstractEntityRenderer getUnvalidatedRenderer();
 
     default RangedEntityRenderer useEntityPlayerCheckableRenderer() {
         RangedEntityRenderer renderer = new RangedEntityRenderer(getEntityInstance().getBukkitEntity());

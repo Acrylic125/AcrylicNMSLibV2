@@ -1,6 +1,6 @@
 package com.acrylic.universalnms.entity.entityconfiguration;
 
-import com.acrylic.universal.entity.EntityInstance;
+import com.acrylic.universalnms.entity.NMSEntityInstance;
 
 public interface LivingEntityConfiguration extends EntityConfiguration {
 
@@ -13,12 +13,22 @@ public interface LivingEntityConfiguration extends EntityConfiguration {
                     .runAIByNMSEntities(false)
                     .build();
 
+
     /**
      *
-     * @return Should {@link EntityInstance#delete()} method be executed on death.
+     * @return If the entity instance should be removed
+     * from the retriever on death.
      */
-    boolean shouldDeleteOnDeath();
+    boolean shouldRemoveFromNMSEntitiesOnDeath();
 
-    long getTimeAfterDeathToDelete();
+    long getTimeAfterDeathToRemoveFromNMSEntities();
+
+    /**
+     *
+     * @return Should {@link NMSEntityInstance#deleteDisplay()} method be executed on death.
+     */
+    boolean shouldDeleteDisplayOnDeath();
+
+    long getTimeAfterDeathToDeleteDisplay();
 
 }

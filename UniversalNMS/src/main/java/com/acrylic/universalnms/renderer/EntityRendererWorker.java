@@ -2,7 +2,6 @@ package com.acrylic.universalnms.renderer;
 
 import com.acrylic.universal.interfaces.Index;
 import com.acrylic.universal.interfaces.Terminable;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -32,7 +31,6 @@ public class EntityRendererWorker implements Runnable, Terminable, Index {
 
     public boolean checkForRemoval(@NotNull AbstractEntityRenderer renderer) {
         if (shouldRemove(renderer)) {
-            Bukkit.broadcastMessage("UGGGG");
             unregister(renderer);
             return true;
         }
@@ -54,7 +52,6 @@ public class EntityRendererWorker implements Runnable, Terminable, Index {
                         renderer.run();
                     } else {
                         it.remove();
-                        Bukkit.broadcastMessage("FFGGGG ");
                     }
                 }
             }

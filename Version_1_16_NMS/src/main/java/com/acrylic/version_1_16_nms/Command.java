@@ -11,6 +11,7 @@ import com.acrylic.universalnms.pathfinder.PathfinderGenerator;
 import com.acrylic.universalnms.renderer.RangedEntityRenderer;
 import com.acrylic.version_1_16_nms.entity.NMSPlayerInstanceImpl;
 import com.acrylic.version_1_8.items.ItemBuilder;
+import net.citizensnpcs.nms.v1_16_R3.entity.EntityHumanNPC;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;

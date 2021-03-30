@@ -77,7 +77,7 @@ public interface NMSPlayerInstance
         entityPacketHandler.getAddPlayerInfoPacket().apply(PlayerInfoPacket.Info.ADD_PLAYER, player);
         entityPacketHandler.getMetadataPacket().apply(player);
         entityPacketHandler.getSpawnPacket().apply(player);
-        if (entityPacketHandler.getRenderer() != null)
+        if (entityPacketHandler.getUnvalidatedRenderer() != null)
             entityPacketHandler.resendPackets();
     }
 

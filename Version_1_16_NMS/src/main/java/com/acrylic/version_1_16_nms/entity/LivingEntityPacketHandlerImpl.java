@@ -80,6 +80,12 @@ public class LivingEntityPacketHandlerImpl implements LivingEntityPacketHandler 
         return renderer;
     }
 
+    @Nullable
+    @Override
+    public AbstractEntityRenderer getUnvalidatedRenderer() {
+        return renderer;
+    }
+
     @NotNull
     @Override
     public EntitySpawnPacket getSpawnPacket() {
