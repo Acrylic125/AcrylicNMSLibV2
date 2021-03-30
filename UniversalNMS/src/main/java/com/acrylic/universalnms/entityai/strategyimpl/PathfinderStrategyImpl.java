@@ -8,7 +8,6 @@ import com.acrylic.universalnms.entityai.PathSeekerAI;
 import com.acrylic.universalnms.entityai.strategies.PathfinderStrategy;
 import com.acrylic.universalnms.pathfinder.*;
 import math.ProbabilityKt;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
@@ -47,7 +46,7 @@ public class PathfinderStrategyImpl implements PathfinderStrategy {
                 state = PathfindingState.SEARCHING;
                 search(targetLocation);
             } else if (state == PathfindingState.TRAVERSING) {
-                if (focussedPath.hasNext() && (maximumTimeToTraverse == -1 || traverseTimeToStop < System.currentTimeMillis())) {
+                if (focussedPath.hasNext() && (maximumTimeToTraverse == -1 || traverseTimeToStop > System.currentTimeMillis())) {
                     NMSEntityInstance nmsEntityInstance = pathSeekerAI.getInstance();
                     ComputedPathPoint next = focussedPath.next();
                     Location iLocation = nmsEntityInstance.getBukkitEntity().getLocation();
