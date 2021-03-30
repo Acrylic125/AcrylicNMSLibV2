@@ -24,6 +24,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Iterator;
 import java.util.UUID;
 
+/**
+ * Optimisations adapted from
+ * https://github.com/CitizensDev/Citizens2/blob/master/v1_16_R3/src/main/java/net/citizensnpcs/nms/v1_16_R3/entity/EntityHumanNPC.java
+ */
 public class PlayerWrapper
         extends EntityPlayer
         implements NMSLivingEntityWrapper {
