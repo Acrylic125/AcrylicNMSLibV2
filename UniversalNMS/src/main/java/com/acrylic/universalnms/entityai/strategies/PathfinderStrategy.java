@@ -34,15 +34,10 @@ public interface PathfinderStrategy extends AIStrategy {
     PathfindingState getPathfindingState();
 
     @NotNull
-    PathfinderGenerator getPathfinderGenerator();
-
-    @NotNull
     @Override
     PathSeekerAI getEntityAI();
 
     float getSpeed();
-
-    long getMaximumTraverseTime();
 
     void completeTraversal();
 

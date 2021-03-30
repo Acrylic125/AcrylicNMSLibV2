@@ -22,6 +22,7 @@ import com.acrylic.universalnms.pathfinder.PathfinderGenerator;
 import com.acrylic.universalnms.renderer.RangedEntityRenderer;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import com.comphenix.protocol.wrappers.EnumWrappers;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
@@ -70,7 +71,7 @@ public class Command {
                     Player player = (Player) commandExecuted.getSender();
                     NMSPlayerInstance nmsPlayerInstance = NMSPlayerInstance.builder(player.getLocation(), "")
                             .equipment(new EntityEquipmentBuilderImpl().
-                                    setItemInHand(ItemBuilder.of(Material.NETHERITE_SWORD)
+                                    setItemInHand(ItemBuilder.of(Material.BOW)
                                             .enchant(Enchantment.DAMAGE_ALL, 1))
                                     .setHelmet(ItemBuilder.of(Material.NETHERITE_HELMET)
                                             .enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4))
