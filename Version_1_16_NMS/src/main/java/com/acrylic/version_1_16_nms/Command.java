@@ -63,7 +63,7 @@ public class Command {
                     );
                     npc.addToWorld();
                     npc.setEntityConfiguration(LivingEntityConfiguration.PERSISTENT_LIVING_ENTITY);
-                    npc.register();
+                    npc.registerFromRetriever();
 
                 }).arguments(
                         CommandBuilder.create("p")

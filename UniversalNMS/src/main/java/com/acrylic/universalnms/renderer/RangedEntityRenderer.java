@@ -8,10 +8,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Objects;
 import java.util.UUID;
 
 public class RangedEntityRenderer extends SimpleEntityRenderer {

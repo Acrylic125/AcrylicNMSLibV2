@@ -23,23 +23,6 @@ public interface EntityConfiguration {
                     .build();
 
     /**
-     * The amount of ticks to recheck the renderer.
-     * By default, it is every 20 ticks. It is not recommended
-     * to repeatedly check the renderer as it may be performance
-     * heavy.
-     *
-     * @return The amount of ticks.
-     */
-    int getTicksToCheckRender();
-
-    /**
-     *
-     * @return The condition for the renderer to check.
-     */
-    @Nullable
-    Predicate<NMSEntityInstance> getCheckRendererIf();
-
-    /**
      *
      * @return Should the AI run even if no one is being
      * rendered for.

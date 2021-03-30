@@ -44,11 +44,6 @@ public class EntityConfigurationImpl implements EntityConfiguration {
             return (B) this;
         }
 
-        public B checkRendererIf(@Nullable Predicate<NMSEntityInstance> condition) {
-            getBuildFrom().checkRendererIf = condition;
-            return (B) this;
-        }
-
         public B runAIIf(@Nullable Predicate<NMSEntityInstance> condition) {
             getBuildFrom().runAIIf = condition;
             return (B) this;
@@ -83,19 +78,7 @@ public class EntityConfigurationImpl implements EntityConfiguration {
             flags = 0x01 | 0x02,
             ticksToCheckRenderer = 20;
     private Predicate<NMSEntityInstance>
-            checkRendererIf,
             runAIIf;
-
-    @Override
-    public int getTicksToCheckRender() {
-        return ticksToCheckRenderer;
-    }
-
-    @Nullable
-    @Override
-    public Predicate<NMSEntityInstance> getCheckRendererIf() {
-        return checkRendererIf;
-    }
 
     //0x01
     @Override

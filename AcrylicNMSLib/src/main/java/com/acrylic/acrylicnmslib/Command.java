@@ -56,7 +56,7 @@ public class Command {
                             .name("&e&lThis is a really nice name &6&lhere!")
                             .buildEntityInstance();
                     a.getPacketHandler().useEntityPlayerCheckableRenderer();
-                    a.register();
+                    a.registerFromRetriever();
 
                 }).arguments(getAStarCommand(), getNPCTestCommand(), getNewTitle(),
                         getNewActionBar(), getNewGameInfo());
@@ -90,7 +90,7 @@ public class Command {
                     nmsPlayerInstance.setAI(entityAI);
                     nmsPlayerInstance.addToWorld();
                     nmsPlayerInstance.setEntityConfiguration(LivingEntityConfiguration.PERSISTENT_LIVING_ENTITY);
-                    nmsPlayerInstance.register();
+                    nmsPlayerInstance.registerFromRetriever();
                 });
     }
 

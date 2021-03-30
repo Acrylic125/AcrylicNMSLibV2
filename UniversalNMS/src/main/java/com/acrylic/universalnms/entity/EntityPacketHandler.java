@@ -5,6 +5,7 @@ import com.acrylic.universalnms.packets.types.EntityDestroyPacket;
 import com.acrylic.universalnms.packets.types.EntitySpawnPacket;
 import com.acrylic.universalnms.packets.types.TeleportPacket;
 import com.acrylic.universalnms.renderer.AbstractEntityRenderer;
+import com.acrylic.universalnms.renderer.EntityRendererWorker;
 import com.acrylic.universalnms.renderer.RangedEntityRenderer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -42,11 +43,15 @@ public interface EntityPacketHandler {
 
     void hideEntityFromPlayer(Player player);
 
+    default EntityRendererWorker getRendererWorker() {
+        return NMSLib.getNMSEntities().getDefaultRendererWorker();
+    }
+
     static void terminateCurrentRenderer(EntityPacketHandler entityPacketHandler, AbstractEntityRenderer abstractEntityRenderer) {
         if (abstractEntityRenderer == null)
             return;
         abstractEntityRenderer.unbindEntity(entityPacketHandler.getEntityInstance());
-        NMSLib.getNMSEntities().getDefaultRendererWorker().checkForRemoval(abstractEntityRenderer);
+        entityPacketHandler.getRendererWorker().checkForRemoval(abstractEntityRenderer);
     }
 
     static void initializeRenderer(EntityPacketHandler entityPacketHandler) {
@@ -54,7 +59,7 @@ public interface EntityPacketHandler {
         renderer.bindEntity(entityPacketHandler.getEntityInstance(), new AbstractEntityRenderer.ActionHolder(
                 entityPacketHandler::displayEntityToPlayer, entityPacketHandler::hideEntityFromPlayer
         ));
-        NMSLib.getNMSEntities().getDefaultRendererWorker().register(renderer);
+        entityPacketHandler.getRendererWorker().register(renderer);
     }
 
     void updatePackets();

@@ -9,6 +9,7 @@ import com.acrylic.universalnms.entity.wrapper.NMSEntityWrapper;
 import com.acrylic.universalnms.entityai.EntityAI;
 import com.acrylic.universalnms.packets.types.EntityDestroyPacket;
 import com.acrylic.universalnms.packets.types.TeleportPacket;
+import com.acrylic.universalnms.renderer.AbstractEntityRenderer;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -140,9 +141,12 @@ public interface NMSEntityInstance extends EntityInstance {
         Entity entity = getBukkitEntity();
         entity.remove();
         removeFromWorld();
-        EntityDestroyPacket destroyPacket = getPacketHandler().getDestroyPacket();
-        destroyPacket.apply(entity);
-        destroyPacket.getSender().sendToAllOnline();
+        EntityPacketHandler packetHandler = getPacketHandler();
+        AbstractEntityRenderer entityRenderer = packetHandler.getRenderer();
+        packetHandler.getDestroyPacket().getSender().sendToAllByRenderer(entityRenderer);
+        unregisterFromRetriever();
+        entityRenderer.unbindEntity(this);
+        packetHandler.getRendererWorker().checkForRemoval(entityRenderer);
     }
 
     void setAnimationDataWatcher(int mask, boolean b);
@@ -157,20 +161,12 @@ public interface NMSEntityInstance extends EntityInstance {
         move(vector.getX(), vector.getY(), vector.getZ());
     }
 
-    default void register() {
-        register(NMSLib.getNMSEntities());
+    default void registerFromRetriever() {
+        NMSLib.getNMSEntities().getEntityRetriever().register(this);
     }
 
-    default void register(@NotNull NMSEntities nmsEntities) {
-        nmsEntities.getEntityRetriever().register(this);
-    }
-
-    default void unregister() {
-        unregister(NMSLib.getNMSEntities());
-    }
-
-    default void unregister(@NotNull NMSEntities nmsEntities) {
-        nmsEntities.getEntityRetriever().unregister(this);
+    default void unregisterFromRetriever() {
+        NMSLib.getNMSEntities().getEntityRetriever().unregister(this);
     }
 
     boolean isOnGround();

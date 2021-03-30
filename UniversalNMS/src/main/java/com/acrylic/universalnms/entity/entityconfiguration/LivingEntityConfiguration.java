@@ -13,22 +13,9 @@ public interface LivingEntityConfiguration extends EntityConfiguration {
                     .runAIByNMSEntities(false)
                     .build();
 
-
     /**
      *
-     * @return If the entity instance should be removed
-     * from the retriever on death.
-     */
-    boolean shouldRemoveFromRetrieverOnDeath();
-
-    long getTimeAfterDeathToRemoveFromRetriever();
-
-    /**
-     * THIS WILL NOT REMOVE THE ENTITY INSTANCE FROM
-     * THE RETRIEVER UNLESS {@link #shouldRemoveFromRetrieverOnDeath()}
-     * IS TRUE!
-     *
-     * @return Runs the {@link EntityInstance#delete()} method on death.
+     * @return Should {@link EntityInstance#delete()} method be executed on death.
      */
     boolean shouldDeleteOnDeath();
 

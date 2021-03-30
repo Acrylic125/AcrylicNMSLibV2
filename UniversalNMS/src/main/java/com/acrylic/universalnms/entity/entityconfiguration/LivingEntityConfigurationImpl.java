@@ -23,11 +23,6 @@ public class LivingEntityConfigurationImpl
             this.entityConfiguration = entityConfiguration;
         }
 
-        public LivingBuilder removeFromRetrieverOnDeath(boolean b) {
-            entityConfiguration.livingFlags = BitMaskUtils.setBitToMask(entityConfiguration.livingFlags, 0x01, b);
-            return this;
-        }
-
         public LivingBuilder deleteOnDeath(boolean b) {
             entityConfiguration.livingFlags = BitMaskUtils.setBitToMask(entityConfiguration.livingFlags, 0x02, b);
             return this;
@@ -55,24 +50,12 @@ public class LivingEntityConfigurationImpl
     }
 
     /*
-     * Remove from retriever on death (0x01),
      * Delete on death (0x2).
      */
-    protected int livingFlags = 0x01 | 0x02;
+    protected int livingFlags = 0x02;
     private long
             timeAfterDeathToRemoveFromRetriever = 0,
             timeAfterDeathToDelete = 3_000;
-
-    //0x08
-    @Override
-    public boolean shouldRemoveFromRetrieverOnDeath() {
-        return (livingFlags & 0x01) == 0x01;
-    }
-
-    @Override
-    public long getTimeAfterDeathToRemoveFromRetriever() {
-        return timeAfterDeathToRemoveFromRetriever;
-    }
 
     //0x10
     @Override
