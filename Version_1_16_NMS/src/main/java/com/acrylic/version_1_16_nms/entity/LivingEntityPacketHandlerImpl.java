@@ -57,7 +57,8 @@ public class LivingEntityPacketHandlerImpl implements LivingEntityPacketHandler 
     @Override
     public void updateMetadata() {
         entityMetadataPacket.apply(entityInstance.getNMSEntity());
-        entityMetadataPacket.getSender().sendToAllByRenderer(renderer);
+        if (renderer != null)
+            entityMetadataPacket.getSender().sendToAllByRenderer(renderer);
     }
 
     @NotNull

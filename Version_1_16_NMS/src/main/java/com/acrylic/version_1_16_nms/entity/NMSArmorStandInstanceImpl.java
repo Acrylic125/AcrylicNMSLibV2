@@ -47,6 +47,7 @@ public class NMSArmorStandInstanceImpl
     @Override
     public void setArms(boolean b) {
         armorStand.setArms(b);
+        entityPacketHandler.updateMetadata();
     }
 
     @Override
@@ -57,6 +58,7 @@ public class NMSArmorStandInstanceImpl
     @Override
     public void setBasePlate(boolean b) {
         armorStand.setBasePlate(b);
+        entityPacketHandler.updateMetadata();
     }
 
     @Override
@@ -67,6 +69,7 @@ public class NMSArmorStandInstanceImpl
     @Override
     public void setGravity(boolean b) {
         armorStand.setNoGravity(!b);
+        entityPacketHandler.updateMetadata();
     }
 
     @Override
@@ -77,6 +80,7 @@ public class NMSArmorStandInstanceImpl
     @Override
     public void setSmall(boolean b) {
         armorStand.setSmall(b);
+        entityPacketHandler.updateMetadata();
     }
 
     @Override
@@ -87,6 +91,7 @@ public class NMSArmorStandInstanceImpl
     @Override
     public void setMarker(boolean b) {
         armorStand.setMarker(b);
+        entityPacketHandler.updateMetadata();
     }
 
     public void setHeadPose(Vector3f vector3f) {
