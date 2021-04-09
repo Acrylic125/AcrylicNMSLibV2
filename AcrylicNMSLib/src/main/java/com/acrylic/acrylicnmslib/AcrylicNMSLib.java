@@ -1,7 +1,7 @@
 package com.acrylic.acrylicnmslib;
 
 import com.acrylic.time.Time;
-import com.acrylic.universal.Universal;
+import com.acrylic.universal.MCLib;
 import com.acrylic.universal.files.bukkit.Configuration;
 import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universalnms.NMSLib;
@@ -47,7 +47,7 @@ public final class AcrylicNMSLib
     }
 
     private void loadByVersion() {
-        short version = Universal.getAcrylicPlugin().getVersionStore().getVersion();
+        short version = MCLib.getLib().getVersion();
         switch (version) {
             case 8:
                 setEntityRegistry(new NMSEntityRegistryImpl());

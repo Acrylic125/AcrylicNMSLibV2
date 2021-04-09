@@ -89,7 +89,7 @@
         <dependency>
             <groupId>com.github.Acrylic125</groupId>
             <artifactId>AcrylicMinecraftLib</artifactId>
-            <version>v1.12d</version>
+            <version>v1.13a</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

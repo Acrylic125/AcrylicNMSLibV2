@@ -1,9 +1,8 @@
 package com.acrylic.universalnms.packets.types;
 
-import com.acrylic.universal.Universal;
+import com.acrylic.universal.MCLib;
 import com.acrylic.universal.entity.equipment.EntityEquipmentBuilder;
 import com.acrylic.universalnms.packets.MultiPacketWrapper;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
@@ -22,7 +21,7 @@ public interface EntityEquipmentPackets extends MultiPacketWrapper {
         setChestplate(equipment.getChestplate());
         setLeggings(equipment.getLeggings());
         setBoots(equipment.getBoots());
-        if (Universal.getAcrylicPlugin().getVersionStore().isLegacyVersion()) {
+        if (MCLib.getLib().isLegacyVersion()) {
             setItemInHand(equipment.getItemInHand());
         } else {
             setItemInHand(equipment.getItemInMainHand());
@@ -36,7 +35,7 @@ public interface EntityEquipmentPackets extends MultiPacketWrapper {
         setLeggings(equipmentBuilder.getLeggings());
         setBoots(equipmentBuilder.getBoots());
         setItemInHand(equipmentBuilder.getItemInHand());
-        if (!Universal.getAcrylicPlugin().getVersionStore().isLegacyVersion()) {
+        if (!MCLib.getLib().isLegacyVersion()) {
             setItemInOffHand(equipmentBuilder.getItemInOffHand());
         }
     }

@@ -1,6 +1,6 @@
 package com.acrylic.universalnms.entityai.strategyimpl;
 
-import com.acrylic.universal.Universal;
+import com.acrylic.universal.MCLib;
 import com.acrylic.universalnms.NMSLib;
 import com.acrylic.universalnms.entityai.PathSeekerAI;
 import com.acrylic.universalnms.entityai.strategies.PathQuitterStrategy;
@@ -69,7 +69,7 @@ public class SimplePathQuitterStrategyImpl implements PathQuitterStrategy {
                 .build()
                 .getSender()
                 .sendToAllByRenderer(renderer);
-        if (!Universal.getAcrylicPlugin().getVersionStore().isLegacyVersion())
+        if (!MCLib.getLib().isLegacyVersion())
             renderer.runForAllRendered(player -> player.playSound(target, Sound.ENTITY_ENDERMAN_TELEPORT, 1f, 0.6f));
     }
 

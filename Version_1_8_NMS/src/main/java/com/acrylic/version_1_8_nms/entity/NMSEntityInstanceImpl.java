@@ -1,12 +1,11 @@
 package com.acrylic.version_1_8_nms.entity;
 
+import com.acrylic.universal.entity.metadata.EntityMetadataMap;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universalnms.entity.NMSEntityInstance;
-import com.acrylic.universalnms.entity.entityconfiguration.EntityConfiguration;
 import com.acrylic.universalnms.entityai.EntityAI;
 import net.minecraft.server.v1_8_R3.DataWatcher;
 import net.minecraft.server.v1_8_R3.Entity;
-import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -14,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 public abstract class NMSEntityInstanceImpl
         implements NMSEntityInstance {
 
+    private final EntityMetadataMap entityMetadataMap = new EntityMetadataMap();
     private EntityAI entityAI;
     private int instanceTicks = 0;
     private int mask = 0;
@@ -154,5 +154,10 @@ public abstract class NMSEntityInstanceImpl
     @Override
     public boolean isOnGround() {
         return getNMSEntity().onGround;
+    }
+
+    @Override
+    public EntityMetadataMap getMetadataMap() {
+        return entityMetadataMap;
     }
 }

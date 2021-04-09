@@ -1,6 +1,6 @@
 package com.acrylic.universalnms.protocollib.packetlistener;
 
-import com.acrylic.universal.Universal;
+import com.acrylic.universal.MCLib;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.ListenerPriority;
@@ -63,7 +63,7 @@ public final class PacketListenerBuilder {
     }
 
     public void build() {
-        build(Universal.getPlugin());
+        build(MCLib.getPlugin());
     }
 
     public void build(@NotNull JavaPlugin plugin) {
