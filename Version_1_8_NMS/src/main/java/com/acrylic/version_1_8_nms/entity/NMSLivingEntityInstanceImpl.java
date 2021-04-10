@@ -12,6 +12,12 @@ public abstract class NMSLivingEntityInstanceImpl
         implements NMSLivingEntityInstance {
 
     @Override
+    public void setName(String s) {
+        super.setName(s);
+        getPacketHandler().updateMetadata();
+    }
+
+    @Override
     public abstract EntityLiving getNMSEntity();
 
     @Override
